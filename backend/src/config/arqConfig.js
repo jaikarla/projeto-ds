@@ -1,0 +1,1 @@
+//Centraliza host, usuários, senhas, portas e outras configurações de ambiente.
