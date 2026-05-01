@@ -1,24 +1,24 @@
-# ADR 001 ? Backend com Node.js e PostgreSQL
+# ADR 001 - Backend com Node.js e PostgreSQL
 
 ## Status
 Accepted
 
 ## Contexto
-Durante a sprint do sistema de BPA, foi necess·rio definir a arquitetura de backend respons·vel pelo processamento das regras de negÛcio, comunicaÁ„o com o banco de dados e integraÁ„o com o front-end.
+Durante a sprint do sistema de BPA, foi necess√°rio definir a arquitetura de backend respons√°vel pelo processamento das regras de neg√≥cio, comunica√ß√£o com o banco de dados e integra√ß√£o com o front-end.
 
-## Decis„o
+## Decis√£o
 Foi decidido utilizar Node.js com JavaScript no backend e PostgreSQL como banco de dados relacional.
 
-A comunicaÁ„o ser· feita via API REST e o sistema ser· organizado em camadas.
+A comunica√ß√£o ser√° feita via API REST e o sistema ser√° organizado em camadas.
 
-## ConsequÍncias
+## Consequ√™ncias
 
 ### Positivas
-- IntegraÁ„o f·cil com o front-end
-- Desenvolvimento r·pido
-- Uso de uma ˙nica linguagem no projeto
+- Integra√ß√£o f√°cil com o front-end
+- Desenvolvimento r√°pido
+- Uso de uma √∫nica linguagem no projeto
 
 ### Negativas
 - Falta de tipagem forte
-- Necessidade de organizaÁ„o manual
+- Necessidade de organiza√ß√£o manual
 - Maior cuidado na modelagem do banco
