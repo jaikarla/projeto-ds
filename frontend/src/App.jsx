@@ -1,13 +1,13 @@
-import { useState } from 'react'
 import './App.css'
+// Importa arquivo CadastroFaturista
+import CadastroFaturista from './CadastroFaturista' 
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1>Hello World! Funcionou :)) </h1>
-    </>
+    
+    <div className="App">
+      <CadastroFaturista />
+    </div>
   )
 }
 

@@ -1,0 +1,50 @@
+/* 
+________________________________________________________________________
+   
+ESTILOS ESPECÍFICOS DA TELA DE CADASTRO DE FATURISTA
+________________________________________________________________________
+*/
+
+/* Estilo para a lista de requisitos da senha */
+.password-requirements {
+  text-align: left;
+  list-style: none; /* Remove as bolinhas padrão da lista */
+  padding: 0;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #888; /* Cor cinza para quando o requisito não foi cumprido */
+}
+
+.password-requirements li {
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 
+   !!!!! criar uma classe '.valid' no JS !!!!!! ___________________________________________________
+   para mudar a cor para verde quando o usuário digitar a senha certa!
+*/
+.password-requirements li.valid {
+  color: #28a745; /* Verde para requisito ok */
+}
+
+/* Estilo para o rótulo da seção de endereço */
+.section-label {
+  text-align: left;
+  margin: 25px 0 10px;
+  color: #004080; /* Azul do tema */
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee; /* Linha sutil para separar as seções */
+  padding-bottom: 5px;
+}
+
+/* Ajuste de responsividade para os campos lado a lado */
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column; /* No celular, os campos ficam um em cima do outro */
+    gap: 0;
+  }
+}

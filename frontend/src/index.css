@@ -1,0 +1,24 @@
+/* O seletor '*' aplica as regras a todos os elementos da página */
+* {
+  margin: 0;        /* Remove as margens padrão que o navegador coloca */
+  padding: 0;       /* Remove o preenchimento padrão */
+  
+  /* O border-box garante que a largura (width) inclua bordas e preenchimentos, evita que os elementos quebrem. */
+  box-sizing: border-box; 
+  
+  /* Define a fonte */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Regras específicas para o corpo (fundo) da página */
+body {
+  background-color: #f0f2f5; /* Cor de fundo cinza claro */
+  
+  /* FLEXBOX: deixa o card de cadastro centralizado no meio da tela */
+  display: flex;             /* Habilita o modo Flexbox */
+  justify-content: center;   /* Centraliza horizontalmente (esquerda/direita) */
+  align-items: center;       /* Centraliza verticalmente (cima/baixo) */
+  
+  /* Define que o corpo da página deve ter, no mínimo, a altura total da tela do navegador */
+  min-height: 100vh; 
+}
