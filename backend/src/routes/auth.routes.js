@@ -1,13 +1,15 @@
 import express from "express";
 const router = express.Router();
 
-//rota para login
-router.post("/login", (req, res) => {});
+//importa o controller de autenticação
+import {
+  login,
+  register,
+  getMe
+} from "../controllers/authController.js";
 
-//rota para registro
-router.post("/register", (req, res) => {});
-
-//rota para obter informações do usuário autenticado
-router.get("/me", (req, res) => {});
+router.post("/login", login);
+router.post("/register", register);
+router.get("/me", getMe);
 
 export default router;
