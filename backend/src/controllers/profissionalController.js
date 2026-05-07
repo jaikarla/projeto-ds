@@ -1,41 +1,89 @@
-//controller para profissionais
+import {
+  listarProfissionais,
+  buscarProfissionalPorId,
+  criarProfissional,
+  atualizarProfissional,
+  deletarProfissional
+} from "../services/profissionalService.js";
+
+//listar todos os profissionais
 export const getProfissionais = (req, res) => {
-  res.status(200).json({ 
-    success: true,
-    message: "Listando profissionais",
-    data: []
+  const profissionais = listarProfissionais();
+
+  res.status(200).json({
+    succes: true,
+    data: profissionais
   });
 };
 
-//controller para buscar profissional por id
+//bucar por id
 export const getProfissionalById = (req, res) => {
+  const { id } = req.params;
+  const profissional = buscarProfissionalPorId(id);
+
+  //se não encontrar o profissional, retorna 404
+  if(!profissional) {
+    return res.status(404).json({
+      success: false,
+      message: "Profissional não encontrado"
+    });
+  }
+
   res.status(200).json({
     success: true,
-    message: `Buscando profissional ${req.params.id}`
+    data: profissional
   });
-};
+}
 
-//controller para criar profissional
+//criar novo profissional
 export const createProfissional = (req, res) => {
-  res.status(201).json({
-    success: true,
-    message: "Profissional criado com sucesso",
-    data: req.body
-  });
+  try {const novo = criarProfissional(req.body);
+    res.status(201).json({
+      success: true,
+      data: novo
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
 
-//controller para atualizar profissional
+//atualizar profissional
 export const updateProfissional = (req, res) => {
+  const { id } = req.params;
+  const atualizado = atualizarProfissional(id, req.body);
+
+  if(!atualizado) {
+    return res.status(404).json({
+      success: false,
+      message: "Profissional não encontrado."
+    });
+  }
+
   res.status(200).json({
     success: true,
-    message: `Profissional ${req.params.id} atualizado`
+    message: "Profissional atualizado com sucesso.",
+    data: atualizado
   });
 };
 
-//controller para deletar profissional
+//deletar profissional
 export const deleteProfissional = (req, res) => {
+  const { id } = req.params;
+  const removido = deletarProfissional(id);
+
+  if (!removido) {
+    return res.status(404).json({
+      success: false,
+      message: "Profissional não encontrado"
+    });
+  }
+
   res.status(200).json({
     success: true,
-    message: `Profissional ${req.params.id} removido`
+    message: "Profissional removido com sucesso"
   });
 };

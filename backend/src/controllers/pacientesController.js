@@ -1,41 +1,90 @@
-//controllers de pacientes
+import {
+  listarPacientes,
+  buscarPacientePorId,
+  criarPaciente,
+  atualizarPaciente,
+  deletarPaciente
+} from "../services/pacienteService.js";
+
+//listar todos os pacientes
 export const getPacientes = (req, res) => {
+  const pacientes = listarPacientes();
+
   res.status(200).json({
-    success: true,
-    message: "Listando pacientes",
-    data: []
+    succes: true,
+    data: pacientes
   });
 };
 
-//controller para buscar paciente por id
+//bucar por id
 export const getPacienteById = (req, res) => {
+  const { id } = req.params;
+  const paciente = buscarPacientePorId(id);
+
+  //se não encontrar o paciente, retorna 404
+  if(!paciente) {
+    return res.status(404).json({
+      success: false,
+      message: "Paciente não encontrado"
+    });
+  }
+
   res.status(200).json({
     success: true,
-    message: `Buscando paciente ${req.params.id}`
+    data: paciente
   });
-};
+}
 
-//controller para criar paciente
+//criar novo paciente
 export const createPaciente = (req, res) => {
-  res.status(201).json({
-    success: true,
-    message: "Paciente criado com sucesso",
-    data: req.body
-  });
+  const { nome, dataNascimento, cpf } = req.body;
+  try { const novo = criarPaciente(req.body);
+    res.status(201).json({
+      success: true,
+      data: novo
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
 
-//controller para atualizar paciente
+//atualizar paciente
 export const updatePaciente = (req, res) => {
+  const { id } = req.params;
+  const atualizado = atualizarPaciente(id, req.body);
+
+  if(!atualizado) {
+    return res.status(404).json({
+      success: false,
+      message: "Paciente não encontrado."
+    });
+  }
+
   res.status(200).json({
     success: true,
-    message: `Paciente ${req.params.id} atualizado`
+    message: "Paciente atualizado com sucesso.",
+    data: atualizado
   });
 };
 
-//controller para deletar paciente
+//deletar paciente
 export const deletePaciente = (req, res) => {
+  const { id } = req.params;
+  const removido = deletarPaciente(id);
+
+  if (!removido) {
+    return res.status(404).json({
+      success: false,
+      message: "Paciente não encontrado"
+    });
+  }
+
   res.status(200).json({
     success: true,
-    message: `Paciente ${req.params.id} removido`
+    message: "Paciente removido com sucesso"
   });
 };
