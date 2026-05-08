@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { ProfessionalsPage } from './features/professionals/ProfessionalsPage'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1>Hello World! Funcionou :)) </h1>
-    </>
+    <main className="app-shell">
+      <header className="topbar">
+        <span>BPA - Boletim Produção Ambulatorial</span>
+      </header>
+
+      <ProfessionalsPage />
+    </main>
   )
 }
 

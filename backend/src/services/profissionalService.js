@@ -16,7 +16,7 @@ export const buscarProfissionalPorId = (id) => {
 export const criarProfissional = (dados) => {
 
   //campos obrigatórios
-  if(!dados.nomeCompleto || !dados.cpf || !dados.cro || !dados.ufConselho || !dados.cns || !dados.especialidade
+  if(!dados.nomeCompleto || !dados.cpf || !dados.cro || !dados.ufConselho || !dados.especialidade
   ){
     throw new Error("Todos os campos são obrigatórios.");
   }
@@ -29,7 +29,7 @@ export const criarProfissional = (dados) => {
   }
 
   //cro
-  const croRegex = /^[A-Z]{3}-\d{5}$/;
+  const croRegex = /^[A-Z]{3}-\d{4,10}$/;
 
   if (!croRegex.test(dados.cro)){
     throw new Error("CRO inválido.");
@@ -38,7 +38,7 @@ export const criarProfissional = (dados) => {
   //cns 
   const cnsRegex = /^\d{15}$/;
 
-  if (!cnsRegex.test(dados.cns)) {
+  if (dados.cns && !cnsRegex.test(dados.cns)) {
     throw new Error("CNS inválido. Deve conter exatamente 15 dígitos numéricos.");
   }
 
@@ -62,7 +62,7 @@ export const criarProfissional = (dados) => {
   }
 
   //cns
-  const cnsExistente = profissionais.find(
+  const cnsExistente = dados.cns && profissionais.find(
     p => p.cns === dados.cns
   );
 
