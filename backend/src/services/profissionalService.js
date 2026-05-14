@@ -16,7 +16,7 @@ export const buscarProfissionalPorId = (id) => {
 export const criarProfissional = (dados) => {
 
   //campos obrigatórios
-  if(!dados.nomeCompleto || !dados.cpf || !dados.cro || !dados.ufConselho || !dados.especialidade
+  if(!dados.nomeCompleto || !dados.cpf || !dados.cro || !dados.ufConselho || !dados.cns || !dados.especialidade
   ){
     throw new Error("Todos os campos são obrigatórios.");
   }
@@ -29,7 +29,7 @@ export const criarProfissional = (dados) => {
   }
 
   //cro
-  const croRegex = /^[A-Z]{3}-\d{4,10}$/;
+  const croRegex = /^[A-Z]{3}-\d{5}$/;
 
   if (!croRegex.test(dados.cro)){
     throw new Error("CRO inválido.");
