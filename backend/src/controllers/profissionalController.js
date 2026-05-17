@@ -25,7 +25,7 @@ export const getProfissionalById = (req, res) => {
   if(!profissional) {
     return res.status(404).json({
       success: false,
-      message: "Profissional não encontrado"
+      message: "Profissional não encontrado."
     });
   }
 
@@ -78,12 +78,12 @@ export const deleteProfissional = (req, res) => {
   if (!removido) {
     return res.status(404).json({
       success: false,
-      message: "Profissional não encontrado"
+      message: "Profissional não encontrado."
     });
   }
 
   res.status(200).json({
     success: true,
-    message: "Profissional removido com sucesso"
+    message: "Profissional removido com sucesso."
   });
 };

@@ -51,7 +51,7 @@ export const criarPaciente = (dados) => {
   const hoje = new Date(); //para não ter data futura
 
   if (dataNascimento > hoje) {
-    throw new Error("Data de nascimento não pode ser futura");
+    throw new Error("Data de nascimento não pode ser futura.");
   }
 
   //sexo
