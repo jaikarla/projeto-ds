@@ -8,8 +8,12 @@ import { describe, test, expect } from "vitest";
 
 //importando a função CRIAR de profissional para testar
 import { criarProfissional } from "../services/profissionalService";
+import { listarProfissionais } from "../services/profissionalService"; //função listar
+import { buscarProfissionalPorId } from "../services/profissionalService"; //função buscar por id
+import { atualizarProfissional } from "../services/profissionalService"; //função atualizar
+import { deletarProfissional } from "../services/profissionalService"; //função deletar 
 
-//TESTES -----------
+//TESTES CRIAR PROFISSIONAL -----------
 describe("Testes para criar profissional", () => {
     //atenção: os testes estão com a função "skip" para não serem executados todos de uma vez, já que alguns deles dependem de um estado específico do "banco de dados" (array de profissionais) para testar as duplicidades. Para testar cada um, basta retirar o "skip" do teste correspondente.
 
@@ -133,7 +137,7 @@ describe("Testes para criar profissional", () => {
     });
 
     //Teste 7
-    test("Deve exibir erro por duplicidade - cns já cadastrado.", () => {
+    test.skip("Deve exibir erro por duplicidade - cns já cadastrado.", () => {
         //primeiro, criamos um profissional com um cns específico
         criarProfissional({
             nomeCompleto: "Carla Souza",
@@ -157,3 +161,18 @@ describe("Testes para criar profissional", () => {
         }).toThrow("CNS já cadastrado.");
     });
 });
+
+//TESTES LISTAR PROFISSIONAL -----------
+describe("Testes para listar profissionais", () => {
+
+    test("Deve listar todos os profissionais cadastrados", () => {
+        const profissionais = listarProfissionais();
+        expect(Array.isArray(profissionais)).toBe(true); //verifica se o resultado é um array
+    });
+});
+
+//TESTE BUSCAR POR ID -----------
+
+//TESTE ATUALIZAR PROFISSIONAL -----------
+
+//TESTE DELETAR PROFISSIONAL -----------

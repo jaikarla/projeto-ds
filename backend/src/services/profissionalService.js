@@ -4,7 +4,7 @@ let idAtual = 1; //id auto-incremental para novos profissionais
 
 //listar todos os profissionais
 export const listarProfissionais = () => {
-  return profissionais;
+    return profissionais;
 };
 
 //buscar por id
