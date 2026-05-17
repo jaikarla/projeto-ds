@@ -32,7 +32,7 @@ export const criarProfissional = (dados) => {
   const croRegex = /^[A-Z]{3}-\d{5}$/;
 
   if (!croRegex.test(dados.cro)){
-    throw new Error("CRO inválido.");
+    throw new Error("CRO inválido. Verifique o formato correto (ex: CRO-12345).");
   }
 
   //cns 
@@ -49,7 +49,7 @@ export const criarProfissional = (dados) => {
   );
 
   if (cpfExistente) {
-    throw new Error("CPF já cadastrado");
+    throw new Error("CPF já cadastrado.");
   }
 
   //cro
@@ -58,7 +58,7 @@ export const criarProfissional = (dados) => {
   );
 
   if (croExistente) {
-    throw new Error("CRO já cadastrado");
+    throw new Error("CRO já cadastrado.");
   }
 
   //cns
@@ -67,7 +67,7 @@ export const criarProfissional = (dados) => {
   );
 
   if (cnsExistente) {
-    throw new Error("CNS já cadastrado");
+    throw new Error("CNS já cadastrado.");
   }
 
   const novo = {
