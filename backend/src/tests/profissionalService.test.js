@@ -11,6 +11,7 @@ import { criarProfissional } from "../services/profissionalService";
 
 //TESTES -----------
 describe("Testes para criar profissional", () => {
+    //atenção: os testes estão com a função "skip" para não serem executados todos de uma vez, já que alguns deles dependem de um estado específico do "banco de dados" (array de profissionais) para testar as duplicidades. Para testar cada um, basta retirar o "skip" do teste correspondente.
 
     //Teste 1
     test.skip("Deve criar um profissional com dados válidos", () => {
