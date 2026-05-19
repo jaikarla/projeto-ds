@@ -14,7 +14,7 @@ import { deletarPaciente } from "../services/pacienteService";
 describe("Testes para criar paciente", () => {
 
     //Teste 1
-    test.skip("Deve criar um paciente com dados válidos", () => {
+    test("Deve criar um paciente com dados válidos", () => {
         const paciente = criarPaciente({
             nomeCompleto: "João Silva",
             dataNascimento: "1990-01-01",
@@ -48,7 +48,7 @@ describe("Testes para criar paciente", () => {
     });
 
     //Teste 2
-    test.skip("Não deve criar um paciente com data de nascimento inválida", () => {
+    test("Não deve criar um paciente com data de nascimento inválida", () => {
         expect(() => {
             criarPaciente({
                 nomeCompleto: "João Silva",
@@ -70,7 +70,7 @@ describe("Testes para criar paciente", () => {
     });
 
     //Teste 3
-    test.skip("Não deve criar um paciente com data de nascimento futura", () => {
+    test("Não deve criar um paciente com data de nascimento futura", () => {
         const dataFutura = new Date();
         dataFutura.setDate(dataFutura.getDate() + 1); //data de amanhã
         expect(() => {
@@ -94,7 +94,7 @@ describe("Testes para criar paciente", () => {
     });
 
     //Teste 4
-    test.skip("Não deve criar um paciente com sexo inválido", () => {
+    test("Não deve criar um paciente com sexo inválido", () => {
         expect(() => {
             criarPaciente({
                 nomeCompleto: "João Silva",
