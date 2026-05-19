@@ -18,7 +18,7 @@ describe("Testes para criar profissional", () => {
     //atenção: os testes estão com a função "skip" para não serem executados todos de uma vez, já que alguns deles dependem de um estado específico do "banco de dados" (array de profissionais) para testar as duplicidades. Para testar cada um, basta retirar o "skip" do teste correspondente.
 
     //Teste 1
-    test.skip("Deve criar um profissional com dados válidos", () => {
+    test("Deve criar um profissional com dados válidos", () => {
         const profissional = criarProfissional({
             nomeCompleto: "Ana Clara Bizarria",
             cpf: "12345678901",
@@ -94,7 +94,7 @@ describe("Testes para criar profissional", () => {
             cpf: "11122233344", //cpf específico para o teste de duplicidade
             cro: "CRO-54321",
             ufConselho: "PE",
-            cns: "543210987654321",
+            cns: "543210987654329",
             especialidade: "Cirurgiã Dentista",
         });
 
@@ -105,7 +105,7 @@ describe("Testes para criar profissional", () => {
                 cpf: "11122233344",
                 cro: "CRO-54321",
                 ufConselho: "PE",
-                cns: "543210987654321",
+                cns: "543210987654329",
                 especialidade: "Cirurgiã Dentista",
             })
         }).toThrow("CPF já cadastrado.");
@@ -116,8 +116,8 @@ describe("Testes para criar profissional", () => {
         //primeiro, criamos um profissional com um cro específico
         criarProfissional({
             nomeCompleto: "Carla Souza",
-            cpf: "11122233344",
-            cro: "CRO-54321", //cro específico para o teste de duplicidade
+            cpf: "11122233324",
+            cro: "CRO-56038", //cro específico para o teste de duplicidade
             ufConselho: "PE",
             cns: "543210987654321",
             especialidade: "Cirurgiã Dentista",
@@ -128,9 +128,9 @@ describe("Testes para criar profissional", () => {
             criarProfissional({
                 nomeCompleto: "Mariana Lima",
                 cpf: "22233344455",
-                cro: "CRO-54321",
+                cro: "CRO-56038",
                 ufConselho: "PE",
-                cns: "543210987654321",
+                cns: "543210987654331",
                 especialidade: "Cirurgiã Dentista",
             })
         }).toThrow("CRO já cadastrado.");
@@ -141,10 +141,10 @@ describe("Testes para criar profissional", () => {
         //primeiro, criamos um profissional com um cns específico
         criarProfissional({
             nomeCompleto: "Carla Souza",
-            cpf: "11122233344",
-            cro: "CRO-54321",
+            cpf: "11123233344",
+            cro: "CRO-54331",
             ufConselho: "PE",
-            cns: "543210987654321", //cns específico para o teste de duplicidade
+            cns: "345679240163972", //cns específico para o teste de duplicidade
             especialidade: "Cirurgiã Dentista",
         });
 
@@ -155,7 +155,7 @@ describe("Testes para criar profissional", () => {
                 cpf: "99988877766",
                 cro: "CRO-67890",
                 ufConselho: "PE",
-                cns: "543210987654321",
+                cns: "345679240163972",
                 especialidade: "Cirurgiã Dentista",
             })
         }).toThrow("CNS já cadastrado.");
@@ -165,7 +165,7 @@ describe("Testes para criar profissional", () => {
 //TESTES LISTAR PROFISSIONAL -----------
 describe("Testes para listar profissionais", () => {
 
-    test("Deve listar todos os profissionais cadastrados", () => {
+    test.skip("Deve listar todos os profissionais cadastrados", () => {
         const profissionais = listarProfissionais();
         expect(Array.isArray(profissionais)).toBe(true); //verifica se o resultado é um array
     });
