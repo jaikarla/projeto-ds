@@ -1,4 +1,4 @@
-const pool = require('../config/db')
+import pool from '../config/db.js'
 
 const Atendimento = {
 
@@ -193,4 +193,4 @@ const Atendimento = {
 
 }
 
-module.exports = Atendimento
+export default Atendimento

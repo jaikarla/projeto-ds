@@ -1,8 +1,8 @@
-const pool = require('../config/db')
+import pool from '../config/db.js'
 
 const Profissional = {
 
-  // busca de todos os profissionais
+  // busca de todos os profissionais (do tipo "profissional")
   async buscar_profissionais() {
     const result = await pool.query(
       'SELECT * FROM profissionais ORDER BY nome'
@@ -38,6 +38,7 @@ const Profissional = {
   },
 
   // busca profissionais por tipo (profissional ou estudante)
+  // usado por estudantesServices para listar os estudantes
   async buscar_profissional_tipo(tipo) {
     const result = await pool.query(
       'SELECT * FROM profissionais WHERE tipo = $1 ORDER BY nome',
@@ -46,31 +47,41 @@ const Profissional = {
     return result.rows
   },
 
-  // criar profissional
-  async criar_profissional({ cpf, nome, cro, cro_uf, cbo, cargo, tipo }) {
+  // busca estudantes pela matricula
+  async buscar_estudante_matricula(matricula) {
     const result = await pool.query(
-      `INSERT INTO profissionais (cpf, nome, cro, cro_uf, cbo, cargo, tipo)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING *`,
-      [cpf, nome, cro, cro_uf, cbo, cargo, tipo]
+      'SELECT * FROM profissionais WHERE matricula = $1 AND tipo = $2',
+      [matricula, 'estudante']
     )
     return result.rows[0]
   },
 
-  // atualizar dados do profissional
-  async atualizar_dados_profissional(id, { cpf, nome, cro, cro_uf, cbo, cargo, tipo }) {
+  // criar profissional ou estudante
+  // matricula é obrigatoria para estudantes
+  async criar_profissional({ cpf, nome, cro, cro_uf, cbo, cargo, matricula, tipo }) {
+    const result = await pool.query(
+      `INSERT INTO profissionais (cpf, nome, cro, cro_uf, cbo, cargo, matricula, tipo)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       RETURNING *`,
+      [cpf, nome, cro, cro_uf, cbo, cargo, matricula || null, tipo]
+    )
+    return result.rows[0]
+  },
+
+  // atualizar dados do profissional ou estudante
+  async atualizar_dados_profissional(id, { cpf, nome, cro, cro_uf, cbo, cargo, matricula, tipo }) {
     const result = await pool.query(
       `UPDATE profissionais
        SET cpf = $1, nome = $2, cro = $3, cro_uf = $4,
-           cbo = $5, cargo = $6, tipo = $7
-       WHERE id = $8
+           cbo = $5, cargo = $6, matricula = $7, tipo = $8
+       WHERE id = $9
        RETURNING *`,
-      [cpf, nome, cro, cro_uf, cbo, cargo, tipo, id]
+      [cpf, nome, cro, cro_uf, cbo, cargo, matricula || null, tipo, id]
     )
     return result.rows[0]
   },
 
-  // remover um profissional
+  // remover um profissional ou estudante
   async remover_profissional(id) {
     await pool.query(
       'DELETE FROM profissionais WHERE id = $1',
@@ -80,4 +91,4 @@ const Profissional = {
 
 }
 
-module.exports = Profissional
+export default Profissional

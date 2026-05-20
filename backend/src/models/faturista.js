@@ -1,4 +1,4 @@
-const pool = require ('../config/db')
+import pool from '../config/db.js'
 
 const Faturista={
 
@@ -69,4 +69,4 @@ const Faturista={
     }
 }
 
-module.exports = Faturista
+export default Faturista

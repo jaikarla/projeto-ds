@@ -1,11 +1,16 @@
-const { Pool } = require('pg')
+import pg from 'pg'
+import { readFileSync } from 'fs'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const { Pool } = pg
 
 const pool = new Pool({
   host:     process.env.DB_HOST     || 'localhost',
   database: process.env.DB_NAME     || 'sistema_bpa',
   user:     process.env.DB_USER     || 'postgres',
-  password: process.env.DB_PASSWORD || '',
-  port:     process.env.DB_PORT     || 5432,
+  password: process.env.DB_PASSWORD,
+  port:     parseInt(process.env.DB_PORT) || 5432,
 })
 
 pool.connect((err, client, release) => {
@@ -17,4 +22,4 @@ pool.connect((err, client, release) => {
   console.log('Conectado ao banco de dados.')
 })
 
-module.exports = pool
+export default pool

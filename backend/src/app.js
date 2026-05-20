@@ -1,19 +1,15 @@
-//app.use(logger);
-//app.use('/api', rotasProjeto);
-//app.use(errorHandler);
-//============================================
+import express from "express";
+import rotasProjeto from "./routes/index.js";
+import { logger } from "./middlewares/logMiddleware.js";
+import { errorHandler } from "./middlewares/errorMiddleware.js";
+import './config/db.js'
 
-// apenas para teste de conexao com o banco de dados
-const express = require('express')
-const app = express()
+const app = express();
 
-require('./config/db')
+app.use(express.json()); //p/ ler o jason
+app.use(logger); //middleware para logar as requisições
+app.use('/api', rotasProjeto); //prefixo para as rotas do projeto
+app.use(errorHandler); //middleware para tratamento de erros
 
-app.use(express.json())
+export default app;
 
-
-app.get('/', (req, res) => {
-  res.json({ mensagem: 'BPA funcionando' })
-})
-
-module.exports = app

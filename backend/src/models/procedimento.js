@@ -1,4 +1,4 @@
-const pool = require('../config/db')
+import pool from '../config/db.js'
 
 const Procedimento = {
 
@@ -46,8 +46,41 @@ const Procedimento = {
       [`%${nome}%`]
     )
     return result.rows
-  }
+  },
+
+  // criar procedimento (usado se a clínica quiser adicionar novos)
+async criar_procedimento({ nome, codigo, tipo }) {
+  const result = await pool.query(
+    `INSERT INTO procedimentos (nome, codigo, tipo)
+     VALUES ($1, $2, $3)
+     RETURNING *`,
+    [nome, codigo, tipo]
+  )
+  return result.rows[0]
+},
+
+async remover_procedimento(id) {
+  const result = await pool.query(
+    'DELETE FROM procedimentos WHERE id=$1 RETURNING *',
+    [id]
+  )
+  return result.rows[0]
+},
+
+// atualizar procedimento
+async atualizar_procedimento(id, { nome, codigo, tipo }) {
+  const result = await pool.query(
+    `UPDATE procedimentos
+     SET nome=$1, codigo=$2, tipo=$3
+     WHERE id=$4
+     RETURNING *`,
+    [nome, codigo, tipo, id]
+  )
+  return result.rows[0]
+},
 
 }
 
-module.exports = Procedimento
+
+
+export default Procedimento
