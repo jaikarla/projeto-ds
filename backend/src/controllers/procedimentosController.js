@@ -7,8 +7,8 @@ import {
 } from "../services/procedimentoService.js";
 
 //listar todos os procedimentos
-export const getProcedimentos = (req, res) => {
-  const procedimentos = listarProcedimentos();
+export const getProcedimentos = async (req, res) => {
+  const procedimentos = await listarProcedimentos();
 
   res.status(200).json({
     succes: true,
@@ -17,9 +17,9 @@ export const getProcedimentos = (req, res) => {
 };
 
 //bucar por id
-export const getProcedimentoById = (req, res) => {
+export const getProcedimentoById = async (req, res) => {
   const { id } = req.params;
-  const procedimento = buscarProcedimentoPorId(id);
+  const procedimento =  await buscarProcedimentoPorId(id);
 
   //se não encontrar o procedimento, retorna 404
   if(!procedimento) {
@@ -36,7 +36,7 @@ export const getProcedimentoById = (req, res) => {
 }
 
 //criar novo procedimento
-export const createProcedimento = (req, res) => {
+export const createProcedimento = async (req, res) => {
   const { nome, codigo } = req.body;
 
   //validação simples - pode ser expandida se necessário
@@ -47,7 +47,7 @@ export const createProcedimento = (req, res) => {
     });
   }
 
-  const novo = criarProcedimento(req.body);
+  const novo = await criarProcedimento(req.body);
 
   res.status(201).json({
     success: true,
@@ -57,9 +57,9 @@ export const createProcedimento = (req, res) => {
 };
 
 //atualizar procedimento
-export const updateProcedimento = (req, res) => {
+export const updateProcedimento = async (req, res) => {
   const { id } = req.params;
-  const atualizado = atualizarProcedimento(id, req.body);
+  const atualizado = await atualizarProcedimento(id, req.body);
 
   if(!atualizado) {
     return res.status(404).json({
@@ -76,9 +76,9 @@ export const updateProcedimento = (req, res) => {
 };
 
 //deletar procedimento
-export const deleteProcedimento = (req, res) => {
+export const deleteProcedimento = async (req, res) => {
   const { id } = req.params;
-  const removido = deletarProcedimento(id);
+  const removido = await deletarProcedimento(id);
 
   if (!removido) {
     return res.status(404).json({

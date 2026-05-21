@@ -1,48 +1,26 @@
-//simulação de banco de dados em memória para teste - deve ser retirado quando o banco de dados real for implementado
-let faturistas = [];
-let idAtual = 1; //id auto-incremental para novos faturistas
+import Faturista from '../models/faturista.js'
 
 //listar todos os faturistas
-export const listarFaturistas = () => {
-  return faturistas;
+export const listarFaturistas = async () => {
+  return await Faturistas.buscar_faturistas();
 };
 
 //buscar por id
-export const buscarFaturistaPorId = (id) => {
-  return faturistas.find(f => f.id === Number(id));
+export const buscarFaturistaPorId = async (id) => {
+  return await Faturista.busca_faturista_id(id)
 };
 
 //criar novo faturista
-export const criarFaturista = (dados) => {
-  const novo = {
-    id: idAtual++, //atribui o id atual e depois incrementa para o próximo
-    ...dados
-  };
-
-  faturistas.push(novo); //adiciona o novo faturista à "base de dados" em memória
-  return novo;
+export const criarFaturista = async (dados) => {
+  return await Faturista.criar_faturista(dados)
 };
 
 //atualizar faturista
-export const atualizarFaturista = (id, dados) => {
-  const index = faturistas.findIndex(f => f.id === Number(id));
-
-  if (index === -1) return null;
-
-  faturistas[index] = {
-    ...faturistas[index],
-    ...dados
-  };
-
-  return faturistas[index];
+export const atualizarFaturista = async (id, dados) => {
+  return await Faturista.atualizar_dados_faturista(id, dados)
 };
 
 //deletar faturista
 export const deletarFaturista = (id) => {
-  const index = faturistas.findIndex(f => f.id === Number(id));
-
-  if (index === -1) return false;
-
-  faturistas.splice(index, 1);
-  return true;
+  return await Faturista.remover_faturista(id)
 };

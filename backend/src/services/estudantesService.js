@@ -1,40 +1,47 @@
-//simulação de banco de dados em memória para teste - deve ser retirado quando o banco de dados real for implementado
-let estudantes = [];
-let idAtual = 1; //id auto-incremental para novos estudantes
+// OBS: este service usa o model de Profissionais e filtra por tipo = 'estudante
+// Estudantes não possuem tabel a propria no banco de dados
+
+
+import Profissional from "../models/profissional.js";
 
 //listar todos os estudantes
-export const listarEstudantes = () => {
-  return estudantes;
+export const listarEstudantes = async () => {
+  return await Profissional.buscar_profissional_tipo('estudante')
 };
 
-//buscar por id
-export const buscarEstudantePorId = (id) => {
-  return estudantes.find(e => e.id === Number(id));
+//buscar por id - verifica se o registro encontrado é do tipo estudante
+export const buscarEstudantePorId = async (id) => {
+  const registro = await Profissional.buscar_profissional_tipo('estudante')
+
+  // não retorna um profissional comum pelo id
+  if (!registro || registro.tipo !== 'estudante') return null
+
+  return registro
 };
 
-//criar novo estudante
-export const criarEstudante = (dados) => {
+//criar novo estudante na tabela profissionais
+export const criarEstudante = async (dados) => {
 
   //campos obrigatórios
-  if(!dados.nomeCompleto || !dados.cpf || !dados.cns || !dados.dataNascimento || !dados.matricula) {
+  if(!dados.nome || !dados.cpf || !dados.cns || !dados.dataNascimento || !dados.matricula || !dados.cbo) {
     throw new Error("Todos os campos obrigatórios devem ser preenchidos.");
   }
 
-  //cpf 
+  // validação cpf 
    const cpfRegex = /^\d{11}$/;
 
   if (!cpfRegex.test(dados.cpf)) {
     throw new Error("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
   }
 
-  //cns
+  //validação cns
   const cnsRegex = /^\d{15}$/;
 
   if (!cnsRegex.test(dados.cns)) {
     throw new Error("CNS inválido. Deve conter exatamente 15 dígitos numéricos.");
   }
 
-  //data de nascimento
+  //validação data de nascimento
   const dataNascimento = new Date(dados.dataNascimento);
 
   if (isNaN(dataNascimento.getTime())) {
@@ -47,64 +54,42 @@ export const criarEstudante = (dados) => {
     throw new Error("Data de nascimento não pode ser futura");
   }
 
-  //duplicidades - cpf, cns e matrícula devem ser únicos
-  //cpf
-  const cpfExistente = estudantes.find(
-    e => e.cpf === dados.cpf
-  );
-
-  if (cpfExistente) {
-    throw new Error("CPF já cadastrado.");
+  //duplicidade de matricula
+  const matriculaExistente = await Profissional.buscar_estudante_matricula(dados.matricula)
+  if (matriculaExistente){
+    throw new Error("Matrícula já cadastrada")
   }
 
-  //cns
-  const cnsExistente = estudantes.find(
-    e => e.cns === dados.cns
-  );
-
-  if (cnsExistente) {
-    throw new Error("CNS já cadastrado.");
-  
-  }
-
-  //matrícula
-  const matriculaExistente = estudantes.find(
-    e => e.matricula === dados.matricula
-  );
-
-  if (matriculaExistente) {
-    throw new Error("Matrícula já cadastrada");
-  }
-
-  const novo = {
-    id: idAtual++, //atribui o id atual e depois incrementa para o próximo
-    ...dados
-  };
-
-  estudantes.push(novo); //adiciona o novo estudante à "base de dados" em memória
-  return novo;
+  // força tipo estudantr
+  return await Profissional.criar_profissional({
+    ...dados,
+    cro: null,
+    tipo: 'estudante'
+  })
 };
 
+
 //atualizar estudante
-export const atualizarEstudante = (id, dados) => {
-  const index = estudantes.findIndex(e => e.id === Number(id));
+export const atualizarEstudante = async (id, dados) => {
+  
+  //verifica se o registro existe e é existe
+  const registro = await Profissional.buscar_profissional_id(id)
+  if (!registro || registro.tipo !== 'estudante') return null
 
-  if (index === -1) return null;
-
-  estudantes[index] = {
-    ...estudantes[index],
-    ...dados
-  };
-
-  return estudantes[index];
+  // garantir que o tipo não seja alterado 
+  return await Profissional.atualizar_dados_profissional(id,{
+    ...dados,
+    tipo: 'estudante'
+  })
 };
 
 //deletar estudante
-export const deletarEstudante = (id) => {
-  const index = estudantes.findIndex(e => e.id === Number(id));
+export const deletarEstudante = async (id) => {
+  
+  // verificar se é estudante antes de remover
+  const registro = await Profissional.buscar_profissional_id(id)
+  if (!registro || registro.tipo !== 'estudante') return false
 
-  if (index === -1) return false;
-
-  estudantes.splice(index, 1);
-  return true;
+  await Profissional.remover_profissional(id)
+  return true
 };
