@@ -6,12 +6,16 @@ import { fileURLToPath } from 'url'
 const { Pool } = pg
 
 const pool = new Pool({
-  host:     process.env.DB_HOST     || 'localhost',
-  database: process.env.DB_NAME     || 'sistema_bpa',
-  user:     process.env.DB_USER     || 'postgres',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  port:     parseInt(process.env.DB_PORT) || 5432,
-})
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  // isso faz com que se conecte com o neon:
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 
 pool.connect((err, client, release) => {
   if (err) {
