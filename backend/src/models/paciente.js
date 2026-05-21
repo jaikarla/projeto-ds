@@ -62,7 +62,7 @@ const Paciente = {
 
                 const paciente_result = await client.query(
                     `INSERT INTO pacientes (nome, data_nascimento, cpf, sexo, raca, etnia, nacionalidade, cns)
-                    VALUES($1, $2, $3, $4, $5, $6, $7)
+                    VALUES($1, $2, $3, $4, $5, $6, $7, $8)
                     RETURNING *`,
                     [nome, data_nascimento, cpf, sexo, raca, etnia, nacionalidade, cns]
                 )

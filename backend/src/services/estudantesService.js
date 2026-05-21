@@ -23,7 +23,7 @@ export const buscarEstudantePorId = async (id) => {
 export const criarEstudante = async (dados) => {
 
   //campos obrigatórios
-  if(!dados.nomeCompleto || !dados.cpf || !dados.cns || !dados.dataNascimento || !dados.matricula || dados.cbo) {
+  if(!dados.nome || !dados.cpf || !dados.cns || !dados.dataNascimento || !dados.matricula || !dados.cbo) {
     throw new Error("Todos os campos obrigatórios devem ser preenchidos.");
   }
 

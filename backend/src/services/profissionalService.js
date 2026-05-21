@@ -2,7 +2,7 @@ import Profissional from '../models/profissional.js'
 
 //listar todos os profissionais
 export const listarProfissionais = async () => {
-    return await Profissional.buscar_profissionais(id)
+    return await Profissional.buscar_profissionais()
 };
 
 //buscar por id
@@ -16,8 +16,8 @@ export const criarProfissional = async (dados) => {
 };
 
 //atualizar profissional
-export const atualizarProfissional = (id, dados) => {
-  return Profissional.atualizar_dados_profissional(id, dados)
+export const atualizarProfissional = async (id, dados) => {
+  return await Profissional.atualizar_dados_profissional(id, dados)
 };
 
 // deletar profissional
