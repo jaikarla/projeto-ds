@@ -1,12 +1,11 @@
+// pagina home
 import './App.css'
-// Importa arquivo CadastroFaturista
-import CadastroFaturista from './CadastroFaturista' 
 
 function App() {
   return (
-    
-    <div className="App">
-      <CadastroFaturista />
+    <div className="base-container">
+      <h1>Projeto Zerado</h1>
+      <p>Começar a criar a Home.</p>
     </div>
   )
 }
