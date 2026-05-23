@@ -1,29 +1,23 @@
-export function middlewareValidaCadastro(req, res, next) {
-  const { nome, email, senha, cpf, cns_profissional } = req.body;
-  const erros = {};
+export const middlewareValidaCadastro = (req, res, next) => {
+  const { nome, email, cpf, cns_profissional, senha } = req.body;
 
-  // Validações básicas e diretas
-  if (!nome || nome.trim() === "") erros.nome = "O nome é obrigatório.";
-  if (!email || !email.includes("@")) erros.email = "Insira um e-mail válido.";
-  if (!senha || senha.length < 6) erros.senha = "A senha deve ter no mínimo 6 caracteres.";
-  
-  // O CPF precisa ter exatamente 11 números (removendo pontos e traços)
-  const cpfLimpo = cpf ? cpf.replace(/\D/g, '') : "";
-  if (cpfLimpo.length !== 11) erros.cpf = "O CPF deve conter 11 dígitos numéricos.";
-
-  // O CNS (Cartão Nacional de Saúde) exige 15 dígitos
-  const cnsLimpo = cns_profissional ? cns_profissional.replace(/\D/g, '') : "";
-  if (cnsLimpo.length !== 15) erros.cns_profissional = "O CNS deve conter 15 dígitos.";
-
-  // Se o objeto 'erros' tiver alguma coisa, barra e responde com status 400
-  if (Object.keys(erros).length > 0) {
-    return res.status(400).json({ 
-      status: "error", 
-      message: "Falha na validação dos dados", 
-      errors: erros 
-    });
+  // 1. Verifica se todos os campos existem
+  if (!nome || !email || !cpf || !cns_profissional || !senha) {
+    return res.status(400).json({ status: "error", message: "Todos os campos são obrigatórios!" });
   }
 
-  // Se os dados estiverem perfeitos, a requisição segue adiante
+  // 2. Valida o tamanho do CPF (deve ter 11 números, já que vamos remover os pontos depois)
+  const cpfLimpo = String(cpf).replace(/\D/g, '');
+  if (cpfLimpo.length !== 11) {
+    return res.status(400).json({ status: "error", message: "CPF inválido! Deve conter 11 dígitos." });
+  }
+
+  // 3. Valida o tamanho do CNS (o cartão SUS geralmente tem 15 dígitos)
+  const cnsLimpo = String(cns_profissional).replace(/\D/g, '');
+  if (cnsLimpo.length !== 15) {
+    return res.status(400).json({ status: "error", message: "CNS inválido! Deve conter 15 dígitos." });
+  }
+
+  // Se passou por tudo, libera a passagem para o Controller
   next();
-}
+};
