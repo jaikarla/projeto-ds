@@ -14,11 +14,11 @@ export const buscarFaturistaPorId = async (id) => {
 
 // criar novo faturista
 export const criarFaturista = async (dados) => {
-  const { nome, email, senha, cpf, cns_profissional } = dados;
+  const { nome, email, senha, cpf, telefone} = dados;
 
   // CORREÇÃO: Validação de segurança antes do replace
-  if (!cpf || !cns_profissional || !senha) {
-    throw new Error("Campos obrigatórios (CPF, CNS ou Senha) estão faltando ou vazios.");
+  if (!cpf || !senha) {
+    throw new Error("Campos obrigatórios (CPF ou Senha) estão faltando ou vazios.");
   }
 
   // 1. Criptografa a senha para proteger o acesso do faturista
@@ -31,7 +31,7 @@ export const criarFaturista = async (dados) => {
     email,
     senha: senhaCriptografada,
     cpf: String(cpf).replace(/\D/g, ''),
-    cns_profissional: String(cns_profissional).replace(/\D/g, ''),
+    telefone,
     role: 'FATURISTA' 
   };
 
