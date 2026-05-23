@@ -6,6 +6,6 @@ const router = Router();
 
 // Rota POST para o cadastro
 // A ordem importa muito: primeiro valida, depois controla.
-router.post('/faturistas/cadastro', middlewareValidaCadastro, criarFaturistaController);
+router.post('/cadastro', middlewareValidaCadastro, criarFaturistaController);
 
 export default router;
