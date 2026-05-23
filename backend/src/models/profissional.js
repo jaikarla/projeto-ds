@@ -58,25 +58,25 @@ const Profissional = {
 
   // criar profissional ou estudante
   // matricula é obrigatoria para estudantes
-  async criar_profissional({ cpf, nome, cro, cro_uf, cbo, cargo, matricula, tipo }) {
+  async criar_profissional({ cpf, cns, nome, cro, cro_uf, cbo, matricula, tipo }) {
     const result = await pool.query(
-      `INSERT INTO profissionais (cpf, nome, cro, cro_uf, cbo, cargo, matricula, tipo)
+      `INSERT INTO profissionais (cpf, cns, nome, cro, cro_uf, cbo, matricula, tipo)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [cpf, nome, cro, cro_uf, cbo, cargo, matricula || null, tipo]
+      [cpf, cns, nome, cro, cro_uf, cbo, matricula || null, tipo]
     )
     return result.rows[0]
   },
 
   // atualizar dados do profissional ou estudante
-  async atualizar_dados_profissional(id, { cpf, nome, cro, cro_uf, cbo, cargo, matricula, tipo }) {
+  async atualizar_dados_profissional(id, { cpf, cns, nome, cro, cro_uf, cbo, matricula, tipo }) {
     const result = await pool.query(
       `UPDATE profissionais
-       SET cpf = $1, nome = $2, cro = $3, cro_uf = $4,
-           cbo = $5, cargo = $6, matricula = $7, tipo = $8
+       SET cpf = $1, cns = $2, nome = $3, cro = $4, cro_uf = $5,
+           cbo = $6, matricula = $7, tipo = $8
        WHERE id = $9
        RETURNING *`,
-      [cpf, nome, cro, cro_uf, cbo, cargo, matricula || null, tipo, id]
+      [cpf, cns, nome, cro, cro_uf, cbo, matricula || null, tipo, id]
     )
     return result.rows[0]
   },

@@ -65,11 +65,11 @@ CREATE TABLE enderecos(
 CREATE TABLE profissionais(
     id SERIAL PRIMARY KEY,
     cpf VARCHAR(14) UNIQUE NOT NULL,
+    cns VARCHAR(20) UNIQUE NOT NULL,
     nome VARCHAR(150) NOT NULL,
     cro VARCHAR(20) UNIQUE, --nulo para estudantes
     cro_uf VARCHAR(2),
     cbo VARCHAR(10) NOT NULL, 
-    cargo VARCHAR(100),
     matricula VARCHAR(20) UNIQUE, -- apenas para estudantes
     tipo VARCHAR(30) NOT NULL,
     CONSTRAINT tipo_profissional CHECK (tipo IN('profissional', 'estudante'))
