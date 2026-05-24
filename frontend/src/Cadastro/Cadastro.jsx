@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom' 
 import { UserSearch, FileDown, ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import logoBpa from '../Assets/logo-bpa.png'
 import './Cadastro.css'
 
-// Resumo do site 
 const summaryFeatures = [
   { 
     icon: <UserSearch size={26} strokeWidth={2} />, 
@@ -19,6 +18,7 @@ const summaryFeatures = [
 ];
 
 export default function Cadastro() {
+  const navigate = useNavigate() 
   const [showSenha, setShowSenha] = useState(false)
   const [senha, setSenha] = useState('')
   const [nome, setNome] = useState('')
@@ -30,7 +30,6 @@ export default function Cadastro() {
   const [numero, setNumero] = useState('')
   const [complemento, setComplemento] = useState('')
 
-  // Lógica de validação dos requisitos em tempo real
   const regras = {
     minCaracteres: senha.length >= 6,
     temMaiuscula: /[A-Z]/.test(senha),
@@ -39,8 +38,24 @@ export default function Cadastro() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('Dados do cadastro:', { nome, email, cpf, telefone, senha, cep, numero, complemento })
+    e.preventDefault() // Impede a página de recarregar
+
+    // As senhas precisam ser iguais
+    if (senha !== confirmarSenha) {
+      alert('As senhas não coincidem!')
+      return
+    }
+
+    // Se todas as regras da senha não forem aceitas, não deixa avançar
+    if (!regras.minCaracteres || !regras.temMaiuscula || !regras.temMinuscula || !regras.temSimbolo) {
+      alert('A senha não cumpre todos os requisitos de segurança!')
+      return
+    }
+
+    console.log('Dados do cadastro enviados:', { nome, email, cpf, telefone, senha, cep, numero, complemento })
+    
+    // Redirecionamento só acontece se passar nas validações
+    navigate('/login')
   }
 
   return (
@@ -53,7 +68,7 @@ export default function Cadastro() {
 
       <div className="cadastro-container-layout">
           
-        {/* COLUNA DA ESQUERDA: RESUMO DO SITE */}
+        {/* COLUNA DA ESQUERDA */}
         <div className="cadastro-left-side">
           <div className="cadastro-logo-area">
             <img src={logoBpa} alt="BPA Logo" className="cadastro-logo-img" />
@@ -74,12 +89,11 @@ export default function Cadastro() {
           </div>
         </div>
 
-        {/* COLUNA DA DIREITA: CARD DO FORMULÁRIO COM SCROLL */}
+        {/* COLUNA DA DIREITA */}
         <div className="cadastro-right-side">
           <div className="cadastro-box">
             <h2 className="cadastro-box-title">Cadastre-se</h2>
               
-            {/* FORMULÁRIO COM CONTROLE DE ROLAGEM INTERNA */}
             <form onSubmit={handleSubmit} className="cadastro-form-scrollable">
               
               <div className="cadastro-input-group">
@@ -144,7 +158,6 @@ export default function Cadastro() {
                 </div>
               </div>
 
-              {/* REQUISITOS DA SENHA DINÂMICOS */}
               <ul className="cadastro-password-requirements">
                 <li className={regras.minCaracteres ? 'valido' : 'invalido'}>
                   {regras.minCaracteres ? '✓' : '✕'} Mínimo de 6 caracteres
@@ -170,7 +183,6 @@ export default function Cadastro() {
                 />
               </div>
 
-              {/* SEÇÃO ENDEREÇO */}
               <div className="cadastro-address-section">
                 <h4 className="cadastro-address-title">Endereço (Opcional)</h4>
                 <div className="cadastro-address-row">
@@ -189,11 +201,8 @@ export default function Cadastro() {
                 </div>
               </div>
 
-              {/* ENVIAR CADASTRO */}
               <div className="cadastro-submit-area">
-                <Link to="/login" style={{ width: '100%', maxWidth: '240px', display: 'flex', justifyContent: 'center', textDecoration: 'none' }}>
-                  <button type="button" className="cadastro-submit-btn">Cadastrar</button>
-                </Link>
+                <button type="submit" className="cadastro-submit-btn">Cadastrar</button>
               </div>
 
               <div className="cadastro-card-footer">

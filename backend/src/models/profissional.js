@@ -37,6 +37,16 @@ const Profissional = {
     return result.rows[0]
   },
 
+  //buscar profissional pelo CNS
+async buscar_profissional_cns(cns) {
+  const result = await pool.query(
+    'SELECT * FROM profissionais WHERE cns = $1',
+    [cns]
+  )
+
+  return result.rows[0]
+},
+
   // busca profissionais por tipo (profissional ou estudante)
   // usado por estudantesServices para listar os estudantes
   async buscar_profissional_tipo(tipo) {
@@ -83,10 +93,13 @@ const Profissional = {
 
   // remover um profissional ou estudante
   async remover_profissional(id) {
-    await pool.query(
-      'DELETE FROM profissionais WHERE id = $1',
-      [id]
-    )
+    const result = await pool.query(
+    `DELETE FROM profissionais WHERE id = $1
+     RETURNING *`,
+    [id]
+  );
+
+  return result.rows[0];
   }
 
 }
