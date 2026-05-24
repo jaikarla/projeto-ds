@@ -1,6 +1,7 @@
 // src/App.jsx
+import { Link } from 'react-router-dom'
 import { FileCheck, UserSearch, TrendingUp, FileDown } from 'lucide-react'
-import logoBpa from './Assents/logo-bpa.png'
+import logoBpa from '../Assents/logo-bpa.png'
 import './App.css'
 
 // Conteúdo do card
@@ -58,8 +59,23 @@ function App() {
 
         {/* 3. BOTÕES INFERIORES */}
         <div className="home-action-buttons">
-          <button className="home-btn home-btn-login">Login</button>
-          <button className="home-btn home-btn-cadastro">Cadastro</button>
+          {/* Link para a página de Login */}
+          <Link 
+            to="/login" 
+            className="home-btn home-btn-login" 
+            style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          >
+            Login
+          </Link>
+          
+          {/* Link para a página de Cadastro */}
+          <Link 
+            to="/cadastro" 
+            className="home-btn home-btn-cadastro" 
+            style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          >
+            Cadastro
+          </Link>
         </div>
 
       </div>
