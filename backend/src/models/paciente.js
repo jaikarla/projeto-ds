@@ -115,13 +115,6 @@ const Paciente = {
 
             //remover apciente
             async remover_paciente(id){
-                /*await pool.query(
-                    'DELETE FROM pacientes WHERE id=$1',
-                    [id]
-                )
-            }*/
-                
-                //implementado para resolver o bug de não retornar o paciente deletado
                 const result = await pool.query(
                     `DELETE FROM pacientes WHERE id=$1
                     RETURNING *`,
