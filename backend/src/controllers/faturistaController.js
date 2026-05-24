@@ -1,25 +1,23 @@
-import { criarFaturista } from '../services/faturistaService.js';
+Ôªøimport authService from '../services/authService.js';
 
 export async function criarFaturistaController(req, res) {
   try {
-    // Chama o service enviando os dados limpos que vieram do req.body
-    const novoFaturista = await criarFaturista(req.body);
+    const resultado = await authService.register(req.body);
 
-    // Se deu certo, retorna HTTP 201 (Created)
     return res.status(201).json({
-      status: "success",
-      message: "Faturista cadastrado com sucesso e pronto para gerar o BPA!",
-      data: novoFaturista
+      status: 'success',
+      message: 'Faturista cadastrado com sucesso e pronto para gerar o BPA!',
+      data: resultado
     });
 
   } catch (error) {
-    // CORRE«√O: Printa o erro real no terminal do VS Code para n„o ficarmos no escuro
-    console.error("?? ERRO DETECTADO NO CONTROLLER:", error);
+    console.error('Erro detectado no controller:', error);
 
-    // CORRE«√O: Garante que a mensagem ser· lida, mesmo que o erro n„o tenha o atributo .message
-    return res.status(400).json({
-      status: "error",
-      message: error.message || error || "Erro interno ao processar a criaÁ„o do faturista."
+    const statusCode = error.message === 'E-mail j√° cadastrado' || error.message === 'CPF j√° cadastrado' ? 409 : 400;
+
+    return res.status(statusCode).json({
+      status: 'error',
+      message: error.message || 'Erro interno ao processar a cria√ß√£o do faturista.'
     });
   }
 }

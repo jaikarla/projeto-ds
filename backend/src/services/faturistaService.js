@@ -1,9 +1,10 @@
 import Faturista from '../models/faturista.js';
-import bcrypt from 'bcryptjs';
+// Bcrypt usado para hash seguro de senha no cadastro de faturista.
+import bcrypt from 'bcrypt';
 
 // listar todos os faturistas
 export const listarFaturistas = async () => {
-  // CORREÇÃO: Removido o "s" de Faturistas.
+  // CORREï¿½ï¿½O: Removido o "s" de Faturistas.
   return await Faturista.buscar_faturistas();
 };
 
@@ -16,16 +17,16 @@ export const buscarFaturistaPorId = async (id) => {
 export const criarFaturista = async (dados) => {
   const { nome, email, senha, cpf, telefone} = dados;
 
-  // CORREÇÃO: Validação de segurança antes do replace
+  // CORREï¿½ï¿½O: Validaï¿½ï¿½o de seguranï¿½a antes do replace
   if (!cpf || !senha) {
-    throw new Error("Campos obrigatórios (CPF ou Senha) estão faltando ou vazios.");
+    throw new Error("Campos obrigatï¿½rios (CPF ou Senha) estï¿½o faltando ou vazios.");
   }
 
-  // 1. Criptografa a senha para proteger o acesso do faturista
+  // 1. Criptografa a senha antes de salvar no banco de dados.
   const saltRounds = 10;
   const senhaCriptografada = await bcrypt.hash(senha, saltRounds);
 
-  // 2. Prepara os dados limpos convertendo para String com segurança
+  // 2. Prepara os dados limpos convertendo o CPF e mantendo a senha segura.
   const dadosFormatados = {
     nome,
     email,
