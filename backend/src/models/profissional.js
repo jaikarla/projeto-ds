@@ -93,10 +93,19 @@ async buscar_profissional_cns(cns) {
 
   // remover um profissional ou estudante
   async remover_profissional(id) {
-    await pool.query(
+    /*await pool.query(
       'DELETE FROM profissionais WHERE id = $1',
       [id]
-    )
+    )*/
+
+    //implementado para resolver o bug de não retornar o profissional deletado
+    const result = await pool.query(
+    `DELETE FROM profissionais WHERE id = $1
+     RETURNING *`,
+    [id]
+  );
+
+  return result.rows[0];
   }
 
 }

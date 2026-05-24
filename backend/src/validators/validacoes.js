@@ -1,5 +1,7 @@
 //este arquivo é para add validações genéricas de profissionais/estudantes e pacientes
-//isso evita que tenhamos Duplicação de código e facilita a manutenção
+//isso evita que tenhamos duplicação de código e facilita a manutenção
+
+//----------PROFISSIONAL/ESTUDANTE & PACIENTE ----------
 
 //validar CPF
 export const validarCPF = (cpf) => {
@@ -64,6 +66,51 @@ export const validarCamposObrigatorios = (campos) => {
 
 };
 
+//---------- APENAS PACIENTE ----------
 
+//validar o sexo do paciente
+export const validarSexo = (sexo) => {
 
+  const sexosValidos = [
+    "MASCULINO",
+    "FEMININO"
+  ];
 
+  if (!sexo || !sexosValidos.includes(sexo.toUpperCase())) {
+    throw new Error("Sexo deve ser Masculino ou Feminino.");
+  }
+
+};
+
+//validar data de nascimento
+export const validarDataNascimento = (data) => {
+
+  const dataConvertida =
+    new Date(data);
+
+  if (isNaN(dataConvertida.getTime())) {
+    throw new Error("Data de nascimento inválida.");
+  }
+
+  const hoje = new Date();
+
+  if (dataConvertida > hoje) {
+    throw new Error("Data de nascimento não pode ser futura.");
+  }
+
+};
+
+//validar o endereço
+export const validarEndereco = (endereco) => {
+
+  if (!endereco) {
+    throw new Error("Endereço é obrigatório.");
+  }
+
+  const { cep, logradouro, numero, bairro, cidade, uf } = endereco;
+
+  if (!cep || !logradouro || !numero || !bairro || !cidade || !uf) {
+    throw new Error("Todos os campos do endereço devem ser preenchidos.");
+  }
+
+};
