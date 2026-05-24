@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "lucide-react": "^1.16.0"
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.3"
   }
 }
