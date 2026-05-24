@@ -28,7 +28,7 @@ export const validarCNS = (cns) => {
 //validar CRO
 export const validarCRO = (cro) => {
 
-  const croRegex = /^[A-Z]{3}-\d{5}$/i;
+  const croRegex = /^[A-Z]{2}-\d{5}$/i;
 
   if (!croRegex.test(cro)) {
     throw new Error("CRO inválido. Use XXX-12345.");
