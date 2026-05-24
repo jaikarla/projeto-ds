@@ -1,0 +1,231 @@
+/* REAPROVEITAMENTO DO FUNDO IGUAL A HOME */
+.login-screen-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(at 5% 20%, rgba(100, 135, 170, 0.8) 0px, transparent 55%),
+    radial-gradient(at 45% 30%, rgba(105, 200, 185, 0.75) 0px, transparent 60%),
+    radial-gradient(at 95% 65%, rgba(185, 160, 225, 0.8) 0px, transparent 50%);
+    
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* BOTÃO DE VOLTAR NO CANTO SUPERIOR ESQUERDO */
+.login-back-button {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  background: transparent;
+  border: none;
+  color: #003366;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.login-back-button:hover {
+  transform: scale(1.15);
+}
+
+/* DISPOSIÇÃO EM DUAS COLUNAS */
+.login-container-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1100px;
+  width: 100%;
+  gap: 60px;
+  align-items: center;
+}
+
+/* --- COLUNA DA ESQUERDA (TEXTOS) --- */
+.login-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.login-logo-area {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.login-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+/* --- COLUNA DA DIREITA (CARD DE LOGIN) --- */
+.login-right-column {
+  display: flex;
+  justify-content: center;
+}
+
+.login-glass-card {
+  background: rgba(255, 255, 255, 0.4); 
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 28px; 
+  width: 100%;
+  max-width: 460px;
+  padding: 50px 45px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.login-glass-card h2 {
+  color: #003366;
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 35px 0;
+}
+
+/* FORMULÁRIO */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 8px;
+}
+
+.login-input-group label {
+  color: #003366;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding-left: 4px;
+}
+
+.login-input-group input {
+  width: 100%;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 24px;
+  padding: 0 20px;
+  font-size: 15px;
+  color: #333;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.login-input-group input:focus {
+  border-color: #1A827E;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* WRAPPER PARA O INPUT DE SENHA + ÍCONE */
+.login-password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.login-password-wrapper input {
+  padding-right: 50px; /* Espaço para o botão do olho */
+}
+
+.login-toggle-password {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #6487aa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.login-toggle-password:hover {
+  color: #003366;
+}
+
+/* ÁREA DE LINKS */
+.login-forgot-password-area {
+  text-align: right;
+  margin-top: -5px;
+}
+
+.login-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #003366;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.login-link:hover {
+  color: #1A827E;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* BOTÃO ENVIAR (Mantendo o estilo idêntico) */
+.login-submit-area {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.login-btn-submit {
+  width: 100%;
+  max-width: 240px;
+}
+
+/* CARD FOOTER */
+.login-card-footer {
+  margin-top: 30px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #4a5966;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+  .login-container-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .login-left-column {
+    align-items: center;
+    text-align: center;
+  }
+
+  .login-logo-area {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-glass-card {
+    padding: 40px 25px;
+  }
+  .login-back-button {
+    top: 20px;
+    left: 20px;
+  }
+}

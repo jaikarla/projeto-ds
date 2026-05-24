@@ -4,5 +4,7 @@ import authController from '../controllers/authController.js';
 const authRoutes = Router();
 
 authRoutes.post('/login', authController.login);
+authRoutes.post('/register', authController.register);
+authRoutes.post('/cadastro', authController.register);
 
 export default authRoutes;
