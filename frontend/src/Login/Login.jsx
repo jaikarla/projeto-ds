@@ -1,9 +1,11 @@
 //jsx Login
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FileCheck, TrendingUp, ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import logoBpa from '../Assents/logo-bpa.png'
 import './Login.css'
+
+const SESSION_STORAGE_KEY = 'bpaAuthSession'
 
 // Resumo do site (Apenas os dois itens que aparecem na imagem da esquerda)
 const summaryFeatures = [
@@ -20,13 +22,24 @@ const summaryFeatures = [
 ];
 
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Dados de login:', { email, senha });
+
+    const authSession = {
+      email,
+      nome: email.split('@')[0] || 'Usuario BPA',
+      autenticacao: 'mock',
+      loggedAt: new Date().toISOString(),
+    }
+
+    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(authSession))
+
+    navigate('/dashboard')
   };
 
   return (
