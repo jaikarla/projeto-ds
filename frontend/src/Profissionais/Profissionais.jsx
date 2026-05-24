@@ -1,5 +1,7 @@
+import { ProfessionalsPage } from './ProfessionalsPage'
+
 function Profissionais() {
-  return null
+  return <ProfessionalsPage />
 }
 
 export default Profissionais
