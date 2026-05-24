@@ -29,6 +29,14 @@ const Faturista={
         return result.rows[0]
     },
 
+    async busca_faturista_cpf(cpf){
+        const result = await pool.query(
+            'SELECT * FROM faturistas WHERE cpf = $1',
+            [cpf]
+        )
+        return result.rows[0]
+    },
+
     //criar novo faturista
     async criar_faturista({nome, email, cpf, telefone, senha}) {
         const result = await pool.query(
