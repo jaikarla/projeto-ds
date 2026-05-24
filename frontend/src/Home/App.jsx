@@ -1,7 +1,7 @@
 // src/App.jsx
 import { Link } from 'react-router-dom'
 import { FileCheck, UserSearch, TrendingUp, FileDown } from 'lucide-react'
-import logoBpa from '../Assents/logo-bpa.png'
+import logoBpa from '../Assets/logo-bpa.png'
 import './App.css'
 
 // Conteúdo do card
