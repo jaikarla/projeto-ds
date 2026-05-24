@@ -115,11 +115,12 @@ const Paciente = {
 
             //remover apciente
             async remover_paciente(id){
-                await pool.query(
-                    'DELETE FROM pacientes WHERE id=$1',
+                const result = await pool.query(
+                    `DELETE FROM pacientes WHERE id=$1
+                    RETURNING *`,
                     [id]
                 )
-            }
+                return result.rows[0]
     }
-
+}
 export default Paciente

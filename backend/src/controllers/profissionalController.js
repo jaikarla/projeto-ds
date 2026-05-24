@@ -58,8 +58,8 @@ export const updateProfissional = async (req, res) => {
 export const deleteProfissional = async (req, res) => {
   try{
     const { id } = req.params
-    const removido = await deletarProfissional(id)
-    if (!removido) {
+    const profissional = await deletarProfissional(id)
+    if (!profissional) {
       return res.status(404).json({ success: false, message: "Profissional não encontrado." })
     }
     res.status(200).json({ success: true, message: "Profissional removido com sucesso." })

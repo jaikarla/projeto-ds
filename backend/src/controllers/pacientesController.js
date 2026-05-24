@@ -61,8 +61,8 @@ export const updatePaciente = async (req, res) => {
 export const deletePaciente = async (req, res) => {
   try{
     const { id } = req.params
-    const removido = await deletarPaciente(id)
-    if (!removido) {
+    const paciente = await deletarPaciente(id)
+    if (!paciente) {
       return res.status(404).json({ success: false, message: "Paciente não encontrado" })
     }
     res.status(200).json({ success: true, message: "Paciente removido com sucesso" })
