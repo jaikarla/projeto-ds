@@ -35,6 +35,13 @@ class AuthService {
       throw new Error('Todos os campos obrigatórios devem ser preenchidos.');
     }
 
+    const senhaRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{6,}$/;
+    if (!senhaRegex.test(senha)) {
+      throw new Error(
+        'Senha inválida. Deve ter no mínimo 6 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 símbolo.'
+      );
+    }
+
     const cpfLimpo = String(cpf).replace(/\D/g, '');
     if (cpfLimpo.length !== 11) {
       throw new Error('CPF inválido. Deve conter 11 dígitos.');
