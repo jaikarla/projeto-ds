@@ -1,29 +1,22 @@
-// Importamos o Service que contém as regras pesadas de inserção
-const atendimentoService = require('../services/atendimentoService');
+import * as atendimentoService from '../services/atendimentoService.js';
 
-const criarAtendimentoController = async (req, res) => {
+// Criar Atendimento
+export const criarAtendimentoController = async (req, res) => {
   try {
-    // Pegamos todos os dados que vieram do formulário do aplicativo
     const dadosCorpo = req.body;
-    
-    // Recuperamos o procedimento que o nosso Middleware validou e guardou no 'req'
     const procedimentoDaRequisicao = req.procedimento; 
 
-    // Mandamos os dados para o Service criar os registros nas tabelas do banco
     const resultado = await atendimentoService.criarNovoAtendimento(dadosCorpo, procedimentoDaRequisicao);
 
-    // Se chegou aqui, as inserções deram certo. Retornamos o status 201 (Created)
     return res.status(201).json({
       status: "success",
       message: "Procedimento registrado com sucesso!",
       data: {
-        atendimento_id: resultado.id,               // ID para o front-end saber o código gerado
-        tipo_faturamento: procedimentoDaRequisicao.tipo // Retorna se foi BPA-C ou BPA-I
+        atendimento_id: resultado ? resultado.id : null, 
+        tipo_faturamento: procedimentoDaRequisicao.tipo
       }
     });
-
   } catch (error) {
-    // Qualquer erro no Service (ex: falha de constraint no banco) cai neste catch
     console.error("Falha no Controller de Atendimento:", error);
     return res.status(500).json({ 
       status: "error", 
@@ -32,4 +25,54 @@ const criarAtendimentoController = async (req, res) => {
   }
 };
 
-module.exports = { criarAtendimentoController };
+// Listar Atendimentos
+export const getAtendimentos = async (req, res) => {
+  try {
+    const atendimentos = await atendimentoService.listarAtendimentos();
+    return res.status(200).json({ status: "success", data: atendimentos });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ status: "error", message: "Erro ao listar atendimentos." });
+  }
+};
+
+// Buscar por ID
+export const getAtendimentoById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const atendimento = await atendimentoService.buscarAtendimentoPorId(id);
+    if (!atendimento) {
+      return res.status(404).json({ status: "error", message: "Atendimento não encontrado." });
+    }
+    return res.status(200).json({ status: "success", data: atendimento });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ status: "error", message: "Erro ao buscar atendimento." });
+  }
+};
+
+// Atualizar Atendimento
+export const updateAtendimento = async (req, res) => {
+  try {
+    const { id } = req.params;
+    return res.status(200).json({ 
+      status: "success", 
+      message: `Atendimento ${id} atualizado com sucesso (Mock/Banco mantido).` 
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ status: "error", message: "Erro ao atualizar atendimento." });
+  }
+};
+
+// Deletar Atendimento
+export const deleteAtendimento = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await atendimentoService.deletarAtendimentoExistente(id);
+    return res.status(200).json({ status: "success", message: "Atendimento removido com sucesso." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ status: "error", message: "Erro ao apagar atendimento." });
+  }
+};

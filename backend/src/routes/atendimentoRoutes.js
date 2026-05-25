@@ -1,16 +1,23 @@
-// Importamos o roteador do Express
-const { Router } = require('express');
-
-// Importamos nossas funções de Middleware e Controller
-const { validaProcedimentoSus } = require('../middlewares/validaProcedimentoSus');
-const { criarAtendimentoController } = require('../controllers/atendimentoController');
+import { Router } from 'express';
+import express from 'express';
+import { validaProcedimentoSus } from '../middlewares/validaProcedimentoSus.js';
+import { 
+  criarAtendimentoController, 
+  getAtendimentos, 
+  getAtendimentoById, 
+  updateAtendimento, 
+  deleteAtendimento 
+} from '../controllers/atendimentoController.js';
 
 const router = Router();
 
-// ROTA FINAL DO ENDPOINT
-// Quando o front-end fizer um POST em '/atendimentos', o sistema:
-// 1º Chama o validaProcedimentoSus (o segurança)
-// 2º Se o segurança der o comando 'next()', chama o criarAtendimentoController (o gerente)
-router.post('/', validaProcedimentoSus, criarAtendimentoController);
+router.use(express.json());
 
-module.exports = router;
+// CRUD completo mapeado na raiz do recurso (/atendimentos)
+router.post('/', validaProcedimentoSus, criarAtendimentoController);
+router.get('/', getAtendimentos);
+router.get('/:id', getAtendimentoById);
+router.put('/:id', updateAtendimento);
+router.delete('/:id', deleteAtendimento);
+
+export default router;

@@ -1,32 +1,20 @@
 import express from "express";
 const router = express.Router();
 
-import { validaProcedimentoSus } from "../middlewares/validaProcedimentoSus.js";
-
 import {
   getBpas,
   getBpaById,
   createBpa,
-  deleteBpa,
-  calcularBpa,
-  gerarRelatorio,
-  exportarBpa
+  deleteBpa
 } from "../controllers/bpaController.js";
 
-router.post("/", validaProcedimentoSus, createBpa);
-
-//rotas para o BPA
-router.post("/calcular", calcularBpa);
-router.get("/relatorio", gerarRelatorio);
-router.get("/exportar", exportarBpa);
-
+// CRUD Essencial do BPA
 router.get("/", getBpas);
 router.get("/:id", getBpaById);
 router.post("/", createBpa);
 router.delete("/:id", deleteBpa);
 
 export default router;
-
 //-------------- ROTAS PARA TESTES --------------
 //essas rotas são apenas para fins de teste e devem ser removidas ou substituídas por implementações reais posteriormente
 //mantenhas como comentário. Use-as apenas p/ verificar as rotas quando necessário. lembre-se de comentar as de cima para realizar os teste com as de baixo, e vice-versa.

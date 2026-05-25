@@ -7,6 +7,7 @@ import pacientesRoutes from "./pacientes.routes.js";
 import procedimentosRoutes from "./procedimentos.routes.js";
 import bpaRoutes from "./bpa.routes.js";
 import faturistaRoutes from "./faturistaRoutes.js";
+import atendimentoRoutes from "./atendimentoRoutes.js"; 
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use("/pacientes", pacientesRoutes);
 router.use("/procedimentos", procedimentosRoutes);
 router.use("/bpa", bpaRoutes);
 router.use("/faturistas", faturistaRoutes);
+router.use("/atendimentos", atendimentoRoutes);
 
 export default router;
