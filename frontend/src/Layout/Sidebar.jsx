@@ -7,7 +7,7 @@ import {
   UserPlus,
   Users,
 } from 'lucide-react'
-import logoBpa from '../Assents/logo-bpa.png'
+import logoBpa from '../Assets/logo-bpa.png'
 
 const menuItems = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },

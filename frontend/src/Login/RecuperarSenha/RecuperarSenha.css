@@ -1,0 +1,184 @@
+/* FUNDO PADRÃO___________________________________________*/
+.recuperar-screen-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(at 5% 20%, rgba(100, 135, 170, 0.8) 0px, transparent 55%),
+    radial-gradient(at 45% 30%, rgba(105, 200, 185, 0.75) 0px, transparent 60%),
+    radial-gradient(at 95% 65%, rgba(185, 160, 225, 0.8) 0px, transparent 50%);
+    
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* BOTÃO DE VOLTAR NO CANTO SUPERIOR ESQUERDO_____________________________*/
+.recuperar-back-button {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  background: transparent;
+  border: none;
+  color: #003366;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.recuperar-back-button:hover {
+  transform: scale(1.15);
+}
+
+/* CARD (GLASSMORPHISM)________________________________________ */
+.recuperar-glass-card {
+  background: rgba(255, 255, 255, 0.4); 
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 28px; 
+  width: 100%;
+  max-width: 480px;
+  padding: 50px 45px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* LOGO CENTRALIZADA ____________________________________________*/
+.recuperar-logo-area {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.recuperar-logo-img {
+  height: 55px; 
+  width: auto;
+  object-fit: contain;
+}
+
+.recuperar-glass-card h2 {
+  color: #003366;
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 35px 0;
+}
+
+/* FORMULÁRIO _____________________________________________*/
+.recuperar-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.recuperar-input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 8px;
+}
+
+.recuperar-input-group label {
+  color: #003366;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding-left: 4px;
+}
+
+.recuperar-input-group input {
+  width: 100%;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 24px;
+  padding: 0 20px;
+  font-size: 15px;
+  color: #333;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.recuperar-input-group input:focus {
+  border-color: #1A827E;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* ÁREA DO BOTÃO COM GRADIENTE __________________________________*/
+.recuperar-submit-area {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.recuperar-btn-submit {
+  width: 100%;
+  max-width: 240px;
+  height: 48px;
+  background: linear-gradient(90deg, #043E6E 0%, #1A827E 50%, #8574C0 100%);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(26, 130, 126, 0.2);
+  transition: all 0.2s ease;
+}
+
+.recuperar-btn-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(26, 130, 126, 0.3);
+}
+
+/* CARD FOOTER ___________________________________________*/
+.recuperar-card-footer {
+  margin-top: 35px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #4a5966;
+}
+
+.recuperar-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #003366;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.recuperar-link:hover {
+  color: #1A827E;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/*__________________________________________________________
+
+ RESPONSIVIDADE  
+ ____________________________________________________________'*/
+@media (max-width: 480px) {
+  .recuperar-glass-card {
+    padding: 40px 25px;
+  }
+  .recuperar-back-button {
+    top: 20px;
+    left: 20px;
+  }
+}
