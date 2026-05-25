@@ -1,6 +1,8 @@
 import express from "express";
 const router = express.Router();
 
+import { validaProcedimentoSus } from "../middlewares/validaProcedimentoSus.js";
+
 import {
   getBpas,
   getBpaById,
@@ -10,6 +12,8 @@ import {
   gerarRelatorio,
   exportarBpa
 } from "../controllers/bpaController.js";
+
+router.post("/", validaProcedimentoSus, createBpa);
 
 //rotas para o BPA
 router.post("/calcular", calcularBpa);
