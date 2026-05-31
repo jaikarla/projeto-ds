@@ -17,7 +17,7 @@ router.use(express.json());
 router.post('/', validaProcedimentoSus, criarAtendimentoController);
 router.get('/', getAtendimentos);
 router.get('/:id', getAtendimentoById);
-router.put('/:id', updateAtendimento);
+router.put('/:id', validaProcedimentoSus, updateAtendimento);
 router.delete('/:id', deleteAtendimento);
 
 export default router;
