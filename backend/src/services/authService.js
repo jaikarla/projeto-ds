@@ -30,6 +30,20 @@ class AuthService {
     };
   }
 
+  async recuperarSenha(email) {
+    const emailFormatado = String(email).trim().toLowerCase();
+    const faturista = await Faturista.busca_faturista_email(emailFormatado);
+
+    if (!faturista) {
+      throw new Error('E-mail não encontrado');
+    }
+
+    return {
+      email: faturista.email,
+      nome: faturista.nome
+    };
+  }
+
   async register({ nome, email, senha, cpf, telefone }) {
     if (!nome || !email || !senha || !cpf) {
       throw new Error('Todos os campos obrigatórios devem ser preenchidos.');
