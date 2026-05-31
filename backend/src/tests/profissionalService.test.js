@@ -1,44 +1,65 @@
 //testes do services de profissional
 
 //IMPORTS -----------
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, beforeEach, vi } from "vitest";
 //describe - utilizada para agrupar testes relacionados;
 //test - define um caso de teste específico;
 //expect - é usada para fazer asserções, ou seja, verificar se os resultados dos testes estão de acordo com o esperado.
+//beforeEach - é uma função que é executada antes de cada teste, permitindo configurar um ambiente de teste consistente.
 
 //importando a função CRIAR de profissional para testar
 import { criarProfissional } from "../services/profissionalService";
 import { listarProfissionais } from "../services/profissionalService"; //função listar
 import { buscarProfissionalPorId } from "../services/profissionalService"; //função buscar por id
 import { atualizarProfissional } from "../services/profissionalService"; //função atualizar
-import { deletarProfissional } from "../services/profissionalService"; //função deletar 
+import { deletarProfissional } from "../services/profissionalService"; //função deletar
+
+import Profissional from '../models/profissional.js'; //importando o modelo de profissional para mockar os dados e evitar interações reais com o banco de dados durante os testes
+
+//MOCKS -----------
+vi.mock('../models/profissional.js', () => ({
+  default: {
+    buscar_profissional_cpf: vi.fn(),
+    buscar_profissional_cro: vi.fn(),
+    buscar_profissional_cns: vi.fn(),
+    criar_profissional: vi.fn()
+  }
+}));
 
 //TESTES CRIAR PROFISSIONAL -----------
 describe("Testes para criar profissional", () => {
-    //atenção: os testes estão com a função "skip" para não serem executados todos de uma vez, já que alguns deles dependem de um estado específico do "banco de dados" (array de profissionais) para testar as duplicidades. Para testar cada um, basta retirar o "skip" do teste correspondente.
 
     //Teste 1
-    test("Deve criar um profissional com dados válidos", () => {
-        const profissional = criarProfissional({
-            nomeCompleto: "Ana Clara Bizarria",
-            cpf: "12345678901",
-            cro: "CRO-12345",
-            ufConselho: "PE",
-            cns: "123456789012345",
-            especialidade: "Cirurgiã Dentista",
-            status: "Ativo"
+    test("Deve criar um profissional válido",
+    async () => {
+        //mockando as funções de busca
+        Profissional.buscar_profissional_cpf.mockResolvedValue(null);
+        Profissional.buscar_profissional_cro.mockResolvedValue(null);
+        Profissional.buscar_profissional_cns.mockResolvedValue(null);
+        Profissional.criar_profissional.mockResolvedValue({
+            id: 1,
+            nome: "João Silva"
         });
-    
-    //como o id é gerado automaticamente, não podemos prever seu valor exato;
-    expect(profissional).toHaveProperty("id");
-    expect(profissional.nomeCompleto).toBe("Ana Clara Bizarria");
-    expect(profissional.cpf).toBe("12345678901");
-    expect(profissional.cro).toBe("CRO-12345");
-    expect(profissional.ufConselho).toBe("PE");
-    expect(profissional.cns).toBe("123456789012345");
-    expect(profissional.especialidade).toBe("Cirurgiã Dentista");
 
-    });
+    const profissional =
+      await criarProfissional({
+
+        cpf: "12345678901",
+        nome: "João Silva",
+        cro: "PE-12345",
+        cro_uf: "PE",
+        cbo: "Dentista",
+        matricula: null,
+        tipo: "profissional",
+        cns: "123456789012345"
+
+      });
+    
+    //espera-se que o profissional criado tenha o nome seja "João Silva"
+    expect(profissional.nome).toBe("João Silva");
+
+  }
+);
 
     //Teste 2
     test.skip("Deve exibir erro para cpf inválido.", () => {
@@ -85,36 +106,41 @@ describe("Testes para criar profissional", () => {
         }).toThrow("CNS inválido. Deve conter exatamente 15 dígitos numéricos.")
     })
 
-    //Teste 5 
-    test.skip("Deve exibir erro por duplicidade - cpf já cadastrado.", () => {
+    //Teste 5
+    test("Deve exibir erro por duplicidade - cpf já cadastrado.",
+    async () => {
 
-        //primeiro, criamos um profissional com um cpf específico
-        criarProfissional({
-            nomeCompleto: "Carla Souza",
-            cpf: "11122233344", //cpf específico para o teste de duplicidade
-            cro: "CRO-54321",
-            ufConselho: "PE",
-            cns: "543210987654329",
-            especialidade: "Cirurgiã Dentista",
-        });
+    //mockando a função de busca por cpf para simular que já existe um profissional com o cpf fornecido
+    Profissional.buscar_profissional_cpf.mockResolvedValue({
+        id: 1
+      });
 
-        expect(() => {
-            //criamos outro profissional com o mesmo cpf
-            criarProfissional({
-                nomeCompleto: "Mariana Lima",
-                cpf: "11122233344",
-                cro: "CRO-54321",
-                ufConselho: "PE",
-                cns: "543210987654329",
-                especialidade: "Cirurgiã Dentista",
+        await expect(criarProfissional({
+                cpf: "12345678901",
+                nome: "João Silva",
+                cro: "PE-12345",
+                cro_uf: "PE",
+                cbo: "Dentista",
+                cargo: "Dentista",
+                tipo: "profissional",
+                cns: "123456789012345"
+
             })
-        }).toThrow("CPF já cadastrado.");
+
+        ).rejects.toThrow("CPF já cadastrado.");
+
     });
 
     //Teste 6
-    test.skip("Deve exibir erro por duplicidade - cro já cadastrado.", () => {
-        //primeiro, criamos um profissional com um cro específico
-        criarProfissional({
+    test("Deve exibir erro por duplicidade - cro já cadastrado.", 
+    async () => {
+
+    //mockando a função de busca por cpf para simular que já existe um profissional com o cpf fornecido
+    Profissional.buscar_profissional_cpf.mockResolvedValue({
+        id: 1
+      });
+
+        await criarProfissional({
             nomeCompleto: "Carla Souza",
             cpf: "11122233324",
             cro: "CRO-56038", //cro específico para o teste de duplicidade
