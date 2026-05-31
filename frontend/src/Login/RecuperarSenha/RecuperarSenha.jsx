@@ -2,19 +2,30 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { recoverPassword } from '../../auth/authService.js';
 import logoBpa from '../../Assets/logo-bpa.png';
 import './RecuperarSenha.css';
 
 export default function RecuperarSenha() {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Solicitação de recuperação para:', email);
-    
-    // Simula o envio do link e redireciona de volta para a tela de login
-    navigate('/login');
+    setError('');
+    setLoading(true);
+
+    try {
+      await recoverPassword(email);
+      alert('Verifique seu e-mail. Enviamos as instruções de recuperação.');
+      navigate('/login');
+    } catch (err) {
+      setError(err.message || 'Erro ao enviar o link de recuperação.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -52,10 +63,12 @@ export default function RecuperarSenha() {
 
           {/* BOTÃO ENVIAR LINK */}
           <div className="recuperar-submit-area">
-            <button type="submit" className="recuperar-btn-submit">
-              Enviar link
+            <button type="submit" className="recuperar-btn-submit" disabled={loading}>
+              {loading ? 'Enviando...' : 'Enviar link'}
             </button>
           </div>
+
+          {error && <p className="recuperar-error-message">{error}</p>}
         </form>
 
         {/* FOOTER DO CARD */}

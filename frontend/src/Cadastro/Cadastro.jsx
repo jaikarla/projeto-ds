@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom' 
 import { UserSearch, FileDown, ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { register } from '../auth/authService.js'
 import logoBpa from '../Assets/logo-bpa.png'
 import './Cadastro.css'
+
+const SESSION_STORAGE_KEY = 'bpaAuthSession'
 
 const summaryFeatures = [
   { 
@@ -29,6 +32,8 @@ export default function Cadastro() {
   const [cep, setCep] = useState('')
   const [numero, setNumero] = useState('')
   const [complemento, setComplemento] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const regras = {
     minCaracteres: senha.length >= 6,
@@ -37,25 +42,38 @@ export default function Cadastro() {
     temSimbolo: /[^A-Za-z0-9]/.test(senha)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault() // Impede a página de recarregar
+    setError('')
 
-    // As senhas precisam ser iguais
     if (senha !== confirmarSenha) {
-      alert('As senhas não coincidem!')
+      setError('As senhas não coincidem!')
       return
     }
 
-    // Se todas as regras da senha não forem aceitas, não deixa avançar
     if (!regras.minCaracteres || !regras.temMaiuscula || !regras.temMinuscula || !regras.temSimbolo) {
-      alert('A senha não cumpre todos os requisitos de segurança!')
+      setError('A senha não cumpre todos os requisitos de segurança!')
       return
     }
 
-    console.log('Dados do cadastro enviados:', { nome, email, cpf, telefone, senha, cep, numero, complemento })
-    
-    // Redirecionamento só acontece se passar nas validações
-    navigate('/login')
+    setLoading(true)
+
+    try {
+      const resultado = await register({ nome, email, cpf, telefone, senha })
+      const authSession = {
+        token: resultado.token,
+        email: resultado.faturista.email,
+        nome: resultado.faturista.nome,
+        loggedAt: new Date().toISOString(),
+      }
+
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(authSession))
+      navigate('/dashboard')
+    } catch (err) {
+      setError(err.message || 'Erro ao cadastrar. Verifique os dados e tente novamente.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -202,8 +220,12 @@ export default function Cadastro() {
               </div>
 
               <div className="cadastro-submit-area">
-                <button type="submit" className="cadastro-submit-btn">Cadastrar</button>
+                <button type="submit" className="cadastro-submit-btn" disabled={loading}>
+                  {loading ? 'Cadastrando...' : 'Cadastrar'}
+                </button>
               </div>
+
+              {error && <p className="cadastro-error-message">{error}</p>}
 
               <div className="cadastro-card-footer">
                 <span>Já tem conta? </span>

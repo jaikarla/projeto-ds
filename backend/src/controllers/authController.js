@@ -56,5 +56,32 @@ class AuthController {
       return res.status(400).json({ erro: error.message || 'Erro interno no servidor.' });
     }
   }
+
+  async recuperarSenha(req, res) {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        return res.status(400).json({ erro: 'E-mail é obrigatório.' });
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ erro: 'Formato de e-mail inválido.' });
+      }
+
+      const resultado = await authService.recuperarSenha(email);
+
+      return res.status(200).json({
+        mensagem: 'Instruções de recuperação enviadas com sucesso.',
+        dados: resultado
+      });
+    } catch (error) {
+      if (error.message === 'E-mail não encontrado') {
+        return res.status(404).json({ erro: error.message });
+      }
+      return res.status(500).json({ erro: 'Erro interno no servidor.' });
+    }
+  }
 }
 export default new AuthController();

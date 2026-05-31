@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FileCheck, TrendingUp, ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { login } from '../auth/authService.js'
 import logoBpa from "../Assets/logo-bpa.png";
 import './Login.css'
 
@@ -26,22 +27,31 @@ function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Dados de login:', { email, senha });
+        setError('');
+        setLoading(true);
 
-        
-        const authSession = {
-            email,
-            nome: email.split('@')[0] || 'Usuario BPA',
-            autenticacao: 'mock',
-            loggedAt: new Date().toISOString(),
+        try {
+            const resultado = await login({ email, senha });
+
+            const authSession = {
+                token: resultado.token,
+                email: resultado.faturista.email,
+                nome: resultado.faturista.nome,
+                loggedAt: new Date().toISOString(),
+            }
+
+            localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(authSession))
+            navigate('/dashboard');
+        } catch (err) {
+            setError(err.message || 'Erro ao autenticar. Verifique suas credenciais.');
+        } finally {
+            setLoading(false);
         }
-        localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(authSession))
-
-        // Redireciona o usuário para a Dashboard
-        navigate('/dashboard');
     };
 
     return (
@@ -122,10 +132,12 @@ function Login() {
 
                             {/* BOTÃO LOGIN */}
                             <div className="login-submit-area">
-                                <Link to="/dashboard" className="home-btn login-btn-submit">
-                                    Login
-                                </Link>
+                                <button type="submit" className="home-btn login-btn-submit" disabled={loading}>
+                                    {loading ? 'Entrando...' : 'Login'}
+                                </button>
                             </div>
+
+                            {error && <p className="login-error-message">{error}</p>}
                         </form>
 
                         {/* FOOTER DO CARD */}
