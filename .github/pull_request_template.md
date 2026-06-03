@@ -8,7 +8,7 @@
 
 # Testes realizados
 
-<!-- Quais os testes que foram realizados? -->
+<!-- Se houve -> Quais os testes que foram realizados? -->
 
 ---
 
@@ -18,6 +18,5 @@
 - [ ] Sem conflitos com a branch principal
 - [ ] Documentação atualizada (se necessário)
 - [ ] Testes adicionados/atualizados
-- [ ] Não existem erros de lint
 
 ---
