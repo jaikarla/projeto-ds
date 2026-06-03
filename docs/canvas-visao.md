@@ -1,8 +1,6 @@
 # Canvas de Visão de Projeto
 
-> Este arquivo é apenas o exemplo do que deve estar no repositório do projeto.
->
-> Ou seja, o canvas preenchido deve ser versionado no repositório da equipe em `docs/canvas-visao.md` e atualizado se o escopo mudar significativamente após qualquer Sprint Review.
+> Sujeito a atualizações.
 
 ---
 
