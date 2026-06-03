@@ -1,4 +1,4 @@
-# Descrição
+# 📄Descrição
 
 ## O que foi feito?
 
@@ -6,13 +6,15 @@
 
 ---
 
-# Testes realizados
+## Testes realizados
 
 <!-- Se houve -> Quais os testes que foram realizados? -->
 
 ---
 
-# Checklist
+## Checklist
+
+<!-- Apagar o que não for usado -->
 
 - [ ] Código testado localmente
 - [ ] Sem conflitos com a branch principal
