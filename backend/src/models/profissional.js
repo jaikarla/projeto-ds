@@ -17,6 +17,14 @@ let nextFallbackId = 2
 
 const useFallback = () => !dbConfigured
 
+const isDatabaseError = (error) => {
+  return (
+    error &&
+    error.message &&
+    /database|connect|not configured|not accessible/i.test(error.message)
+  )
+}
+
 const Profissional = {
 
   // busca de todos os profissionais (do tipo "profissional")
@@ -105,11 +113,20 @@ const Profissional = {
       )
     }
 
-    const result = await pool.query(
-      'SELECT * FROM profissionais WHERE matricula = $1 AND tipo = $2',
-      [matricula, 'estudante']
-    )
-    return result.rows[0]
+    try {
+      const result = await pool.query(
+        'SELECT * FROM profissionais WHERE matricula = $1 AND tipo = $2',
+        [matricula, 'estudante']
+      )
+      return result.rows[0]
+    } catch (error) {
+      if (isDatabaseError(error)) {
+        return fallbackProfissionais.find(
+          (profissional) => profissional.matricula === matricula && profissional.tipo === 'estudante'
+        )
+      }
+      throw error
+    }
   },
 
   // criar profissional ou estudante
@@ -131,13 +148,32 @@ const Profissional = {
       return novoProfissional
     }
 
-    const result = await pool.query(
-      `INSERT INTO profissionais (cpf, cns, nome, cro, cro_uf, cbo, matricula, tipo)
+    try {
+      const result = await pool.query(
+        `INSERT INTO profissionais (cpf, cns, nome, cro, cro_uf, cbo, matricula, tipo)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [cpf, cns, nome, cro, cro_uf, cbo, matricula || null, tipo]
-    )
-    return result.rows[0]
+        [cpf, cns, nome, cro, cro_uf, cbo, matricula || null, tipo]
+      )
+      return result.rows[0]
+    } catch (error) {
+      if (isDatabaseError(error)) {
+        const novoProfissional = {
+          id: nextFallbackId++,
+          cpf,
+          cns,
+          nome,
+          cro,
+          cro_uf,
+          cbo,
+          matricula: matricula || null,
+          tipo
+        }
+        fallbackProfissionais.push(novoProfissional)
+        return novoProfissional
+      }
+      throw error
+    }
   },
 
   // atualizar dados do profissional ou estudante
