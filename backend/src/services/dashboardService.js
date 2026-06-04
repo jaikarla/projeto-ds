@@ -1,15 +1,9 @@
 import pool from '../config/db.js'
 
 class DashboardService {
-  /**
-   * Busca o resumo do dashboard com opção de filtro por período
-   * @param {string} dataInicio - Data no formato YYYY-MM-DD (opcional)
-   * @param {string} dataFim - Data no formato YYYY-MM-DD (opcional)
-   * @returns {Object} Dados do dashboard
-   */
+
   async getResumo(dataInicio, dataFim) {
     try {
-      // Constrói a cláusula WHERE dinamicamente
       let whereClause = ''
       let queryParams = []
 
@@ -18,24 +12,18 @@ class DashboardService {
         queryParams = [dataInicio, dataFim]
       }
 
-      // Executa todas as queries em paralelo
       const results = await Promise.all([
-        // Total de profissionais (todos que têm tipo = 'profissional')
         pool.query('SELECT COUNT(*) as total FROM profissionais WHERE tipo = \'profissional\''),
         
-        // Total de estudantes
         pool.query('SELECT COUNT(*) as total FROM profissionais WHERE tipo = \'estudante\''),
         
-        // Total de atendimentos (com filtro de data opcional)
         pool.query(`
           SELECT COUNT(*) as total FROM atendimentos a
           ${whereClause}
         `, queryParams),
         
-        // Total de procedimentos disponíveis (todos os cadastrados no sistema)
         pool.query('SELECT COUNT(*) as total FROM procedimentos'),
         
-        // Total de atendimentos com tipo BPA-I (com filtro de data opcional)
         pool.query(`
           SELECT COUNT(DISTINCT a.id) as total 
           FROM atendimentos a
@@ -45,7 +33,6 @@ class DashboardService {
           ${dataInicio && dataFim ? 'AND a.data_atendimento >= $' + (queryParams.length + 1) + ' AND a.data_atendimento <= $' + (queryParams.length + 2) : ''}
         `, dataInicio && dataFim ? [...queryParams, dataInicio, dataFim] : []),
         
-        // Total de atendimentos com tipo BPA-C (com filtro de data opcional)
         pool.query(`
           SELECT COUNT(DISTINCT a.id) as total 
           FROM atendimentos a
@@ -55,7 +42,6 @@ class DashboardService {
           ${dataInicio && dataFim ? 'AND a.data_atendimento >= $' + (queryParams.length + 1) + ' AND a.data_atendimento <= $' + (queryParams.length + 2) : ''}
         `, dataInicio && dataFim ? [...queryParams, dataInicio, dataFim] : []),
         
-        // Últimos atendimentos realizados no período (ou hoje se sem filtro)
         pool.query(`
           SELECT 
             a.id,
@@ -78,7 +64,6 @@ class DashboardService {
         `, whereClause ? queryParams : [])
       ])
 
-      // Estrutura limpa para enviar ao frontend
       const dadosDashboard = {
         periodo: dataInicio && dataFim ? { dataInicio, dataFim } : { dataInicio: null, dataFim: null },
         cadastros: {
@@ -103,12 +88,6 @@ class DashboardService {
     }
   }
 
-  /**
-   * Busca estatísticas detalhadas por data
-   * @param {string} dataInicio - Data no formato YYYY-MM-DD
-   * @param {string} dataFim - Data no formato YYYY-MM-DD
-   * @returns {Object} Estatísticas detalhadas
-   */
   async getEstatisticasPorData(dataInicio, dataFim) {
     try {
       const result = await pool.query(`
@@ -132,12 +111,6 @@ class DashboardService {
     }
   }
 
-  /**
-   * Valida se as datas estão no formato correto
-   * @param {string} dataInicio
-   * @param {string} dataFim
-   * @returns {boolean}
-   */
   validarDatas(dataInicio, dataFim) {
     const regexData = /^\d{4}-\d{2}-\d{2}$/
     if (!regexData.test(dataInicio) || !regexData.test(dataFim)) {

@@ -1,15 +1,11 @@
 import DashboardService from '../services/dashboardService.js'
 
 class DashboardController {
-  /**
-   * Get dashboard resume com filtro opcional de datas
-   * Query params: dataInicio, dataFim (formato YYYY-MM-DD)
-   */
+
   async getResumo(req, res) {
     try {
       const { dataInicio, dataFim } = req.query
 
-      // Se ambas as datas forem fornecidas, valida
       if ((dataInicio && !dataFim) || (!dataInicio && dataFim)) {
         return res.status(400).json({
           erro: 'Ambas as datas (dataInicio e dataFim) devem ser fornecidas juntas'
@@ -31,11 +27,7 @@ class DashboardController {
       })
     }
   }
-
-  /**
-   * Get estatísticas detalhadas por data
-   * Query params: dataInicio, dataFim (obrigatórios, formato YYYY-MM-DD)
-   */
+  
   async getEstatisticasPorData(req, res) {
     try {
       const { dataInicio, dataFim } = req.query
