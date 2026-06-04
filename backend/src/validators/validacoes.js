@@ -9,7 +9,7 @@ export const validarCPF = (cpf) => {
   const cpfRegex = /^\d{11}$/;
 
   if (!cpfRegex.test(cpf)) {
-    throw new Error("CPF deve conter 11 dígitos numéricos.");
+    throw new Error("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
   }
 
 };
@@ -71,13 +71,19 @@ export const validarCamposObrigatorios = (campos) => {
 //validar o sexo do paciente
 export const validarSexo = (sexo) => {
 
+  if (!sexo) {
+    throw new Error("Sexo inválido. Deve ser 'M' ou 'F'.");
+  }
+
   const sexosValidos = [
+    "M",
+    "F",
     "MASCULINO",
     "FEMININO"
   ];
 
-  if (!sexo || !sexosValidos.includes(sexo.toUpperCase())) {
-    throw new Error("Sexo deve ser Masculino ou Feminino.");
+  if (!sexosValidos.includes(sexo.toUpperCase())) {
+    throw new Error("Sexo inválido. Deve ser 'M' ou 'F'.");
   }
 
 };
@@ -89,7 +95,7 @@ export const validarDataNascimento = (data) => {
     new Date(data);
 
   if (isNaN(dataConvertida.getTime())) {
-    throw new Error("Data de nascimento inválida.");
+    throw new Error("Data de nascimento inválida. Deve ser uma data válida.");
   }
 
   const hoje = new Date();

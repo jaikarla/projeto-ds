@@ -1,47 +1,59 @@
-const db = require('../config/db');
+import DashboardService from '../services/dashboardService.js'
 
 class DashboardController {
+
   async getResumo(req, res) {
     try {
-      // executa múltiplas queries em paralelo 
-      const [
-        pacientesResult, 
-        profissionaisResult, 
-        atendimentosResult,
-        procedimentosBpaC,
-        procedimentosBpaI
-      ] = await Promise.all([
-        db.query('SELECT COUNT(*) FROM pacientes'),
-        db.query('SELECT COUNT(*) FROM profissionais'),
-        db.query('SELECT COUNT(*) FROM atendimentos'),
-        db.query("SELECT COUNT(*) FROM procedimentos WHERE tipo = 'BPA-C'"),
-        db.query("SELECT COUNT(*) FROM procedimentos WHERE tipo = 'BPA-I'")
-      ]);
+      const { dataInicio, dataFim } = req.query
 
-      // Estrutura limpa para enviar pro frontend
-      const dadosDashboard = {
-        cadastros: {
-          pacientes: parseInt(pacientesResult.rows[0].count),
-          profissionais: parseInt(profissionaisResult.rows[0].count)
-        },
-        producao: {
-          totalAtendimentos: parseInt(atendimentosResult.rows[0].count),
-          procedimentosDisponiveis: {
-            bpaC: parseInt(procedimentosBpaC.rows[0].count),
-            bpaI: parseInt(procedimentosBpaI.rows[0].count)
-          }
-        },
-        // Pega o nome do faturista injetado pelo authMiddleware
-        usuarioLogado: req.usuario.nome 
-      };
+      if ((dataInicio && !dataFim) || (!dataInicio && dataFim)) {
+        return res.status(400).json({
+          erro: 'Ambas as datas (dataInicio e dataFim) devem ser fornecidas juntas'
+        })
+      }
 
-      return res.status(200).json(dadosDashboard);
+      if (dataInicio && dataFim) {
+        DashboardService.validarDatas(dataInicio, dataFim)
+      }
 
+      const dadosDashboard = await DashboardService.getResumo(dataInicio, dataFim)
+
+      return res.status(200).json(dadosDashboard)
     } catch (error) {
-      console.error('Erro ao buscar dados do dashboard:', error);
-      return res.status(500).json({ erro: 'Erro interno ao carregar o dashboard.' });
+      console.error('Erro ao buscar dados do dashboard:', error)
+      return res.status(500).json({
+        erro: 'Erro interno ao carregar o dashboard.',
+        mensagem: error.message
+      })
+    }
+  }
+  
+  async getEstatisticasPorData(req, res) {
+    try {
+      const { dataInicio, dataFim } = req.query
+
+      if (!dataInicio || !dataFim) {
+        return res.status(400).json({
+          erro: 'dataInicio e dataFim são obrigatórios'
+        })
+      }
+
+      DashboardService.validarDatas(dataInicio, dataFim)
+
+      const estatisticas = await DashboardService.getEstatisticasPorData(dataInicio, dataFim)
+
+      return res.status(200).json({
+        periodo: { dataInicio, dataFim },
+        estatisticas
+      })
+    } catch (error) {
+      console.error('Erro ao buscar estatísticas por data:', error)
+      return res.status(500).json({
+        erro: 'Erro ao buscar estatísticas',
+        mensagem: error.message
+      })
     }
   }
 }
 
-module.exports = new DashboardController();
+export default new DashboardController()

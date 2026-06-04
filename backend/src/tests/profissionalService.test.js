@@ -79,7 +79,7 @@ describe("Testes para criar profissional", () => {
             cro: '',
             cro_uf: ''
         
-        })).rejects.toThrow("CPF deve conter 11 dígitos numéricos.");
+        })).rejects.toThrow("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
     });
 
     //Teste 4
