@@ -78,11 +78,15 @@ export default function Cadastro() {
 
       if (
         textoDoErro.includes("faturistas_cpf_key") || 
-        textoDoErro.includes("duplicate key") || 
-        textoDoErro.includes("violates unique constraint") ||
-        textoDoErro.includes("já existe")
+        textoDoErro.includes("duplicate key value violates unique constraint \"faturistas_cpf_key\"")
       ) {
         setErroApi("Este CPF já foi cadastrado.");
+      } else if (
+        textoDoErro.includes("faturistas_email_key") || 
+        textoDoErro.includes("duplicate key value violates unique constraint \"faturistas_email_key\"")
+      ) {
+        // NOVO: Trata o erro do e-mail repetido bonitinho!
+        setErroApi("Este e-mail já foi cadastrado.");
       } else if (textoDoErro.includes("11 dígitos") || textoDoErro.includes("CPF inválido")) {
         setErroApi("CPF inválido. Deve conter 11 dígitos.");
       } else {
@@ -144,7 +148,10 @@ export default function Cadastro() {
                 <input 
                   type="email" 
                   value={email} 
-                  onChange={(e) => setEmail(e.target.value)} 
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setErroApi('');
+                  }} 
                   required 
                 />
               </div>
