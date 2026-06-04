@@ -50,38 +50,9 @@ export const criarProfissional = async (dados) => {
     throw new Error("Matrícula é obrigatória para estudante.");
   }
 
-<<<<<<< HEAD
-  //cpf
-  const cpfRegex = /^\d{11}$/;
-  
-  if (!cpfRegex.test(dados.cpf)) {
-    throw new Error("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
-  }
-
-  //cro
-  const croRegex = /^[A-Z]{3}-\d{5}$/;
-
-  if (!croRegex.test(dados.cro)){
-    throw new Error("CRO inválido.");
-  }
-
-  //cns 
-  const cnsRegex = /^\d{15}$/;
-
-  if (dados.cns && !cnsRegex.test(dados.cns)) {
-    throw new Error("CNS inválido. Deve conter exatamente 15 dígitos numéricos.");
-  }
-
-  //duplicidades - cpf, cro e cns devem ser únicos
-  //cpf 
-  const cpfExistente = profissionais.find(
-    p => p.cpf === dados.cpf
-  );
-=======
   //duplicidade - CPF
   const cpfExistente =
     await Profissional.buscar_profissional_cpf(dados.cpf);
->>>>>>> d72b6eb7fdef195683e3feb2978b81265468ff6c
 
   if (cpfExistente) {
     throw new Error("CPF já cadastrado.");
@@ -97,18 +68,11 @@ export const criarProfissional = async (dados) => {
     throw new Error("CRO já cadastrado.");
   }
 
-<<<<<<< HEAD
-  //cns
-  const cnsExistente = dados.cns && profissionais.find(
-    p => p.cns === dados.cns
-  );
-=======
 }
 
   //duplicidade - CNS
   const cnsExistente =
   await Profissional.buscar_profissional_cns(dados.cns);
->>>>>>> d72b6eb7fdef195683e3feb2978b81265468ff6c
 
   if (cnsExistente) {
     throw new Error("CNS já cadastrado.");
@@ -181,17 +145,6 @@ export const atualizarProfissional = async (id, dados) => {
 };
 
 //deletar profissional
-<<<<<<< HEAD
-export const deletarProfissional = (id) => {
-  const index = profissionais.findIndex(p => p.id === Number(id));
-
-  if (index === -1) return false;
-
-  profissionais.splice(index, 1);
-  return true;
-};
-=======
 export const deletarProfissional = async (id) => {
   return await Profissional.remover_profissional(id)
 };
->>>>>>> d72b6eb7fdef195683e3feb2978b81265468ff6c
