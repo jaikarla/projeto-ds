@@ -85,12 +85,22 @@ export default function Cadastro() {
         textoDoErro.includes("faturistas_email_key") || 
         textoDoErro.includes("duplicate key value violates unique constraint \"faturistas_email_key\"")
       ) {
-        // NOVO: Trata o erro do e-mail repetido bonitinho!
         setErroApi("Este e-mail já foi cadastrado.");
+      } else if (
+        textoDoErro.toLowerCase().includes("email inválido") || 
+        textoDoErro.toLowerCase().includes("invalid email") ||
+        textoDoErro.toLowerCase().includes("format")
+      ) {
+        setErroApi("O e-mail adicionado não é válido. Verifique o formato correto: seuemail@email.com");
       } else if (textoDoErro.includes("11 dígitos") || textoDoErro.includes("CPF inválido")) {
         setErroApi("CPF inválido. Deve conter 11 dígitos.");
       } else {
-        setErroApi("Ocorreu um erro ao realizar o cadastro. Tente novamente.");
+
+        if (!email.includes(".") || email.split("@")[1]?.length < 3) {
+          setErroApi("O e-mail adicionado não é válido. Verifique o formato correto: seuemail@email.com");
+        } else {
+          setErroApi("Ocorreu um erro ao realizar o cadastro. Tente novamente.");
+        }
       }
     }
   }
