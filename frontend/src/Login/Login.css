@@ -1,4 +1,4 @@
-/* REAPROVEITAMENTO DO FUNDO IGUAL A HOME */
+/* FUNDO PADRÃO ________________________________________________________*/
 .login-screen-wrapper {
   min-height: 100vh;
   width: 100%;
@@ -17,7 +17,7 @@
   box-sizing: border-box;
 }
 
-/* BOTÃO DE VOLTAR NO CANTO SUPERIOR ESQUERDO */
+/* BOTÃO DE VOLTAR NO CANTO SUPERIOR ESQUERDO ___________________________________*/
 .login-back-button {
   position: absolute;
   top: 30px;
@@ -32,6 +32,10 @@
 .login-back-button:hover {
   transform: scale(1.15);
 }
+/* _________________________________________________
+
+CONTEÚDOS RESUMO SITE
+___________________________________________________*/
 
 /* DISPOSIÇÃO EM DUAS COLUNAS */
 .login-container-layout {
@@ -43,7 +47,7 @@
   align-items: center;
 }
 
-/* --- COLUNA DA ESQUERDA (TEXTOS) --- */
+/*  COLUNA DA ESQUERDA (TEXTOS)  */
 .login-left-column {
   display: flex;
   flex-direction: column;
@@ -55,13 +59,19 @@
   justify-content: flex-start;
 }
 
+.logo-bpa-img {
+  height: 150px;  
+  width: auto;   
+  object-fit: contain;
+}
+
 .login-summary-list {
   display: flex;
   flex-direction: column;
   gap: 35px;
 }
 
-/* --- COLUNA DA DIREITA (CARD DE LOGIN) --- */
+/* COLUNA DA DIREITA (CARD DE LOGIN)  */
 .login-right-column {
   display: flex;
   justify-content: center;
@@ -89,7 +99,7 @@
   margin: 0 0 35px 0;
 }
 
-/* FORMULÁRIO */
+/* FORMULÁRIO_______________________________________________ */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -131,14 +141,14 @@
   background: rgba(255, 255, 255, 0.9);
 }
 
-/* WRAPPER PARA O INPUT DE SENHA + ÍCONE */
+/* WRAPPER PARA O INPUT DE SENHA E ÍCONE */
 .login-password-wrapper {
   position: relative;
   width: 100%;
 }
 
 .login-password-wrapper input {
-  padding-right: 50px; /* Espaço para o botão do olho */
+  padding-right: 50px; 
 }
 
 .login-toggle-password {
@@ -160,7 +170,7 @@
   color: #003366;
 }
 
-/* ÁREA DE LINKS */
+/* ÁREA DE LINKS ______________________________________________*/
 .login-forgot-password-area {
   text-align: right;
   margin-top: -5px;
@@ -183,7 +193,7 @@
   font-weight: 700;
 }
 
-/* BOTÃO ENVIAR (Mantendo o estilo idêntico) */
+/* BOTÃO ENVIAR */
 .login-submit-area {
   margin-top: 15px;
   display: flex;
@@ -203,7 +213,10 @@
   color: #4a5966;
 }
 
-/* RESPONSIVIDADE */
+/* ___________________________________________________________
+
+RESPONSIVIDADE 
+_____________________________________________________________*/
 @media (max-width: 900px) {
   .login-container-layout {
     grid-template-columns: 1fr;
