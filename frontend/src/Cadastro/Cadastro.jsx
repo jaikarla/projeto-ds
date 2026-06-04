@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom' 
 import { UserSearch, FileDown, ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { register } from '../auth/authService.js'
 import logoBpa from '../Assets/logo-bpa.png'
 import './Cadastro.css'
 import axios from 'axios'
+
+const SESSION_STORAGE_KEY = 'bpaAuthSession'
 
 const summaryFeatures = [
   { 
@@ -31,6 +34,8 @@ export default function Cadastro() {
   const [cep, setCep] = useState('')
   const [numero, setNumero] = useState('')
   const [complemento, setComplemento] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const regras = {
     minCaracteres: senha.length >= 6,
@@ -44,12 +49,12 @@ export default function Cadastro() {
     setErroApi('') 
 
     if (senha !== confirmarSenha) {
-      alert('As senhas não coincidem!')
+      setError('As senhas não coincidem!')
       return
     }
 
     if (!regras.minCaracteres || !regras.temMaiuscula || !regras.temMinuscula || !regras.temSimbolo) {
-      alert('A senha não cumpre todos os requisitos de segurança!')
+      setError('A senha não cumpre todos os requisitos de segurança!')
       return
     }
 
@@ -233,11 +238,12 @@ export default function Cadastro() {
               </div>
 
               <div className="cadastro-submit-area">
-                <button type="submit" className="cadastro-submit-btn">Cadastrar</button>
+                <button type="submit" className="cadastro-submit-btn" disabled={loading}>
+                  {loading ? 'Cadastrando...' : 'Cadastrar'}
+                </button>
               </div>
 
               {erroApi && <p className="cadastro-error-message">{erroApi}</p>}
-
               <div className="cadastro-card-footer">
                 <span>Já tem conta? </span>
                 <Link to="/login" className="cadastro-link font-bold">Entrar</Link>
