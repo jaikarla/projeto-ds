@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { UserSearch, FileDown, ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import logoBpa from '../Assets/logo-bpa.png'
 import './Cadastro.css'
+import axios from 'axios'
 
 const summaryFeatures = [
   { 
@@ -18,7 +19,8 @@ const summaryFeatures = [
 ];
 
 export default function Cadastro() {
-  const navigate = useNavigate() 
+  const navigate = useNavigate()
+  const [erroApi, setErroApi] = useState('')
   const [showSenha, setShowSenha] = useState(false)
   const [senha, setSenha] = useState('')
   const [nome, setNome] = useState('')
@@ -37,25 +39,51 @@ export default function Cadastro() {
     temSimbolo: /[^A-Za-z0-9]/.test(senha)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault() // Impede a página de recarregar
+  const handleSubmit = async (e) => {
+    e.preventDefault() 
+    setErroApi('') 
 
-    // As senhas precisam ser iguais
     if (senha !== confirmarSenha) {
       alert('As senhas não coincidem!')
       return
     }
 
-    // Se todas as regras da senha não forem aceitas, não deixa avançar
     if (!regras.minCaracteres || !regras.temMaiuscula || !regras.temMinuscula || !regras.temSimbolo) {
       alert('A senha não cumpre todos os requisitos de segurança!')
       return
     }
 
-    console.log('Dados do cadastro enviados:', { nome, email, cpf, telefone, senha, cep, numero, complemento })
-    
-    // Redirecionamento só acontece se passar nas validações
-    navigate('/login')
+    try {
+      await axios.post('http://localhost:3000/api/auth/register', { 
+        nome, 
+        email, 
+        cpf, 
+        telefone, 
+        senha, 
+        cep, 
+        numero, 
+        complemento 
+      })
+      
+      navigate('/login')
+
+    } catch (error) {
+      const mensagemErro = error.response?.data?.message || error.response?.data || error.message || "";
+      const textoDoErro = typeof mensagemErro === 'object' ? JSON.stringify(mensagemErro) : String(mensagemErro);
+
+      if (
+        textoDoErro.includes("faturistas_cpf_key") || 
+        textoDoErro.includes("duplicate key") || 
+        textoDoErro.includes("violates unique constraint") ||
+        textoDoErro.includes("já existe")
+      ) {
+        setErroApi("Este CPF já foi cadastrado.");
+      } else if (textoDoErro.includes("11 dígitos") || textoDoErro.includes("CPF inválido")) {
+        setErroApi("CPF inválido. Deve conter 11 dígitos.");
+      } else {
+        setErroApi("Ocorreu um erro ao realizar o cadastro. Tente novamente.");
+      }
+    }
   }
 
   return (
@@ -123,7 +151,10 @@ export default function Cadastro() {
                     type="text" 
                     placeholder="000.000.000-00" 
                     value={cpf} 
-                    onChange={(e) => setCpf(e.target.value)} 
+                    onChange={(e) => {
+                      setCpf(e.target.value);
+                      setErroApi('');
+                    }}
                     required 
                   />
                 </div>
@@ -204,6 +235,8 @@ export default function Cadastro() {
               <div className="cadastro-submit-area">
                 <button type="submit" className="cadastro-submit-btn">Cadastrar</button>
               </div>
+
+              {erroApi && <p className="cadastro-error-message">{erroApi}</p>}
 
               <div className="cadastro-card-footer">
                 <span>Já tem conta? </span>

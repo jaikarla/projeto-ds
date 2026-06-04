@@ -351,6 +351,18 @@ ___________________________________________________*/
   font-weight: 700;
 }
 
+/* TRATAMENTO DE ERROS_____________________________*/
+/* Alinhamento centralizado da mensagem de erro */
+.cadastro-error-message {
+  width: 100%;
+  text-align: center;      
+  color: #d32f2f;          
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 15px;        
+}
+
 /* RESPONSIVIDADE __________________________________*/
 @media (max-width: 900px) {
   .cadastro-container {
