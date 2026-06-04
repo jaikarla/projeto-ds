@@ -1,48 +1,41 @@
-//simulaÃ§Ã£o de banco de dados em memÃ³ria para teste - deve ser retirado quando o banco de dados real for implementado
-let procedimentos = [];
-let idAtual = 1; //id auto-incremental para novos procedimentos
+import Procedimento from '../models/procedimento.js'
 
-//listar todos os procedimentos
-export const listarProcedimentos = () => {
-  return procedimentos;
-};
+// listar todos os procedimentos
+export const listarProcedimentos = async () => {
+  return await Procedimento.buscar_procedimentos()
+}
 
-//buscar por id
-export const buscarProcedimentoPorId = (id) => {
-  return procedimentos.find(p => p.id === Number(id));
-};
+// buscar por id
+export const buscarProcedimentoPorId = async (id) => {
+  return await Procedimento.buscar_procedimento_id(id)
+}
 
-//criar novo procedimento
-export const criarProcedimento  = (dados) => {
-  const novo = {
-    id: idAtual++, //atribui o id atual e depois incrementa para o prÃ³ximo
-    ...dados
-  };
+// criar novo procedimento com trava de código único
+export const criarProcedimento = async (dados) => {
+  const existente = await Procedimento.buscar_procedimento_codigo(dados.codigo);
+  
+  if (existente) {
+    throw new Error("Já existe um procedimento cadastrado com este código único.");
+  }
 
-  procedimentos.push(novo); //adiciona o novo procedimento Ã  "base de dados" em memÃ³ria
-  return novo;
-};
+  return await Procedimento.criar_procedimento(dados)
+}
 
-//atualizar procedimento
-export const atualizarProcedimento = (id, dados) => {
-  const index = procedimentos.findIndex(p => p.id === Number(id));
+// atualizar procedimento com trava de código único
+export const atualizarProcedimento = async (id, dados) => {
+  if (dados.codigo) {
+    const existente = await Procedimento.buscar_procedimento_codigo(dados.codigo);
+    
+    // Se achar o código em uso por OUTRO id, barra a duplicação
+    if (existente && existente.id !== Number(id)) {
+      throw new Error("Este código já está em uso por outro procedimento.");
+    }
+  }
 
-  if (index === -1) return null;
+  return await Procedimento.atualizar_procedimento(id, dados)
+}
 
-  procedimentos[index] = {
-    ...procedimentos[index],
-    ...dados
-  };
-
-  return procedimentos[index];
-};
-
-//deletar procedimento
-export const deletarProcedimento = (id) => {
-  const index = procedimentos.findIndex(p => p.id === Number(id));
-
-  if (index === -1) return false;
-
-  procedimentos.splice(index, 1);
-  return true;
-};
+// deletar procedimento
+export const deletarProcedimento = async (id) => {
+  return await Procedimento.remover_procedimento(id)
+}

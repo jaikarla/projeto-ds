@@ -1,7 +1,10 @@
 import express from "express";
 const router = express.Router();
 
-//importando controller de procedimentos
+// Importando o novo middleware de validação
+import { validaProcedimento } from "../middlewares/validaProcedimento.js";
+
+// Importando o controller de procedimentos
 import {
   getProcedimentos,
   getProcedimentoById,
@@ -12,8 +15,11 @@ import {
 
 router.get("/", getProcedimentos);
 router.get("/:id", getProcedimentoById);
-router.post("/", createProcedimento);
-router.put("/:id", updateProcedimento);
+
+// Aplicando o middleware no POST e no PUT
+router.post("/", validaProcedimento, createProcedimento);
+router.put("/:id", validaProcedimento, updateProcedimento);
+
 router.delete("/:id", deleteProcedimento);
 
 export default router;

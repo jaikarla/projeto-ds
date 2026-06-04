@@ -1,48 +1,53 @@
-//simulação de banco de dados em memória para teste - deve ser retirado quando o banco de dados real for implementado
-let faturistas = [];
-let idAtual = 1; //id auto-incremental para novos faturistas
+import Faturista from '../models/faturista.js';
+// Bcrypt usado para hash seguro de senha no cadastro de faturista.
+import bcrypt from 'bcrypt';
 
-//listar todos os faturistas
-export const listarFaturistas = () => {
-  return faturistas;
+// listar todos os faturistas
+export const listarFaturistas = async () => {
+  // CORRE��O: Removido o "s" de Faturistas.
+  return await Faturista.buscar_faturistas();
 };
 
-//buscar por id
-export const buscarFaturistaPorId = (id) => {
-  return faturistas.find(f => f.id === Number(id));
+// buscar por id
+export const buscarFaturistaPorId = async (id) => {
+  return await Faturista.busca_faturista_id(id);
 };
 
-//criar novo faturista
-export const criarFaturista = (dados) => {
-  const novo = {
-    id: idAtual++, //atribui o id atual e depois incrementa para o próximo
-    ...dados
+// criar novo faturista
+export const criarFaturista = async (dados) => {
+  const { nome, email, senha, cpf, telefone} = dados;
+
+  // CORRE��O: Valida��o de seguran�a antes do replace
+  if (!cpf || !senha) {
+    throw new Error("Campos obrigat�rios (CPF ou Senha) est�o faltando ou vazios.");
+  }
+
+  // 1. Criptografa a senha antes de salvar no banco de dados.
+  const saltRounds = 10;
+  const senhaCriptografada = await bcrypt.hash(senha, saltRounds);
+
+  // 2. Prepara os dados limpos convertendo o CPF e mantendo a senha segura.
+  const dadosFormatados = {
+    nome,
+    email,
+    senha: senhaCriptografada,
+    cpf: String(cpf).replace(/\D/g, ''),
+    telefone,
+    role: 'FATURISTA' 
   };
 
-  faturistas.push(novo); //adiciona o novo faturista à "base de dados" em memória
-  return novo;
+  // 3. Manda para o model salvar no banco de dados
+  const novoFaturista = await Faturista.criar_faturista(dadosFormatados);
+
+  return novoFaturista;
 };
 
-//atualizar faturista
-export const atualizarFaturista = (id, dados) => {
-  const index = faturistas.findIndex(f => f.id === Number(id));
-
-  if (index === -1) return null;
-
-  faturistas[index] = {
-    ...faturistas[index],
-    ...dados
-  };
-
-  return faturistas[index];
+// atualizar faturista
+export const atualizarFaturista = async (id, dados) => {
+  return await Faturista.atualizar_dados_faturista(id, dados);
 };
 
-//deletar faturista
-export const deletarFaturista = (id) => {
-  const index = faturistas.findIndex(f => f.id === Number(id));
-
-  if (index === -1) return false;
-
-  faturistas.splice(index, 1);
-  return true;
+// deletar faturista
+export const deletarFaturista = async (id) => {
+  return await Faturista.remover_faturista(id);
 };

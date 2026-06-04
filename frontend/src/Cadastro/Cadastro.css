@@ -1,0 +1,397 @@
+/* FUNDO PADRÃO ________________________________________________________*/
+.cadastro-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 40px 20px;
+  box-sizing: border-box;
+
+  /* O FUNDO */
+  background-color: #ffffff;
+  background-image: 
+    /* Mancha Azul-Escuro gigante no canto esquerdo */
+    radial-gradient(at 5% 20%, rgba(100, 135, 170, 0.8) 0px, transparent 55%),
+    /* Mancha Verde-Água cobrindo o meio/topo */
+    radial-gradient(at 45% 30%, rgba(105, 200, 185, 0.75) 0px, transparent 60%),
+    /* Mancha Lilás no canto direito inferior */
+    radial-gradient(at 95% 65%, rgba(185, 160, 225, 0.8) 0px, transparent 50%);
+}
+
+/* DISPOSIÇÃO EM DUAS COLUNAS __________________________________________________*/
+.cadastro-container-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1100px;
+  width: 100%;
+  gap: 60px;
+  align-items: center;
+  margin: auto;
+}
+
+/* BOTÃO DE VOLTAR NO CANTO SUPERIOR ESQUERDO ___________________________________*/
+.cadastro-back-button {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  background: transparent;
+  border: none;
+  color: #003366;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 10;
+}
+
+.cadastro-back-button:hover {
+  transform: scale(1.15);
+}
+
+/* _________________________________________________
+
+CONTEÚDOS RESUMO SITE (LADO ESQUERDO)
+___________________________________________________*/
+
+.cadastro-left-side {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.cadastro-logo-area {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cadastro-logo-img {
+  height: 150px;  
+  width: auto;   
+  object-fit: contain;
+}
+
+.cadastro-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+/* ITENS DO RESUMO ____________________________________________________*/
+.home-feature-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.home-icon-circle {
+  background-color: #1A827E;
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(26, 130, 126, 0.2);
+}
+
+.home-feature-text h3 {
+  color: #003366;
+  font-size: 18px;
+  margin: 0 0 6px 0;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+}
+
+.home-feature-text p {
+  color: #4a5966;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+}
+
+/* _________________________________________________
+
+CARD DO FORMULÁRIO COM GLASSMORPHISM (LADO DIREITO)
+___________________________________________________*/
+
+.cadastro-right-side {
+  display: flex;
+  justify-content: center;
+}
+
+.cadastro-box {
+  background: rgba(255, 255, 255, 0.4); 
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 28px; 
+  width: 100%;
+  max-width: 480px;
+  height: 82vh; 
+  padding: 45px 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.cadastro-box-title {
+  color: #003366;
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 25px 0;
+}
+
+/* FORMULÁRIO COM ROLAGEM INTERNA */
+.cadastro-form-scrollable {
+  flex: 1;
+  overflow-y: auto; 
+  padding-right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Customização sutil da barra de rolagem */
+.cadastro-form-scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cadastro-form-scrollable::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.cadastro-form-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(0, 51, 102, 0.2);
+  border-radius: 10px;
+}
+
+/* INPUTS E LINHAS_____________________________________________ */
+.cadastro-input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 8px;
+}
+
+.cadastro-input-group label {
+  color: #003366;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding-left: 4px;
+}
+
+.cadastro-input-group input {
+  width: 100%;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 24px;
+  padding: 0 20px;
+  font-size: 15px;
+  color: #333;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.cadastro-input-group input:focus {
+  border-color: #1A827E;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.cadastro-row {
+  display: flex;
+  gap: 16px;
+}
+
+.cadastro-row .cadastro-input-group {
+  flex: 1;
+}
+
+/* CAMPO DE SENHA E OLHO*/
+.cadastro-password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.cadastro-password-wrapper input {
+  padding-right: 50px;
+}
+
+.cadastro-toggle-eye {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #6487aa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.cadastro-toggle-eye:hover {
+  color: #003366;
+}
+
+/* REQUISITOS DA SENHA (DINÂMICOS) ___________________________*/
+.cadastro-password-requirements {
+  list-style: none;
+  padding: 0;
+  margin: -8px 0 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.cadastro-password-requirements li {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+
+.cadastro-password-requirements li.invalido {
+  color: #4a5966; /* Volta para o cinza padrão enquanto não cumpre o requisito */
+}
+
+.cadastro-password-requirements li.valido {
+  color: #1A827E; /* Fica verde-água quando aceito */
+  font-weight: 700;
+}
+
+/* SEÇÃO ENDEREÇO ____________________________________*/
+.cadastro-address-section {
+  margin-top: 5px;
+  border-top: 1px dashed rgba(0, 51, 102, 0.2);
+  padding-top: 15px;
+}
+
+.cadastro-address-title {
+  color: #003366;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  text-align: left;
+}
+
+.cadastro-address-row {
+  display: flex;
+  gap: 12px;
+}
+
+.cadastro-address-row .cadastro-input-group:nth-child(1) { flex: 2; }
+.cadastro-address-row .cadastro-input-group:nth-child(2) { flex: 1; }
+.cadastro-address-row .cadastro-input-group:nth-child(3) { flex: 2; }
+
+/* BOTÃO CADASTRAR CENTRALIZADO ______________________*/
+.cadastro-submit-area {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.cadastro-submit-btn {
+  width: 100%;
+  max-width: 240px;
+  height: 48px;
+  background: linear-gradient(90deg, #043E6E 0%, #1A827E 50%, #8574C0 100%);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(26, 130, 126, 0.2);
+  transition: all 0.2s ease;
+}
+
+.cadastro-submit-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(26, 130, 126, 0.3);
+}
+
+/* LINK INFERIOR (CARD FOOTER) _________________________________*/
+.cadastro-card-footer {
+  margin-top: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #4a5966;
+  text-align: center;
+}
+
+.cadastro-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #003366;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.cadastro-link:hover {
+  color: #1A827E;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* TRATAMENTO DE ERROS_____________________________*/
+/* Alinhamento centralizado da mensagem de erro */
+.cadastro-error-message {
+  width: 100%;
+  text-align: center;      
+  color: #A41515;          
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 15px;        
+}
+
+/* RESPONSIVIDADE __________________________________*/
+@media (max-width: 900px) {
+  .cadastro-container {
+    height: auto;
+    overflow-y: auto;
+  }
+  
+  .cadastro-container-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .cadastro-left-side {
+    align-items: center;
+    text-align: center;
+    padding: 0;
+  }
+
+  .cadastro-logo-area {
+    justify-content: center;
+  }
+
+  .cadastro-box {
+    height: auto;
+    max-height: none;
+    padding: 40px 25px;
+  }
+  
+  .cadastro-form-scrollable {
+    overflow-y: visible;
+  }
+}

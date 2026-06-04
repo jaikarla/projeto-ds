@@ -1,114 +1,113 @@
-//simulação de banco de dados em memória para teste - deve ser retirado quando o banco de dados real for implementado
-let pacientes = [];
-let idAtual = 1; //id auto-incremental para novos pacientes
+import Paciente from '../models/paciente.js'
+
+import {
+  validarCPF,
+  validarCNS,
+  validarSexo,
+  validarDataNascimento,
+  validarEndereco,
+  validarCamposObrigatorios
+} from '../validators/validacoes.js';
 
 //listar todos os pacientes
-export const listarPacientes = () => {
-  return pacientes;
+export const listarPacientes = async () => {
+  return await Paciente.buscar_pacientes();
 };
 
 //buscar por id
-export const buscarPacientePorId = (id) => {
-  return pacientes.find(p => p.id === Number(id));
+export const buscarPacientePorId = async (id) => {
+  return await Paciente.buscar_paciente_id(id)
 };
 
 //criar novo paciente
-export const criarPaciente = (dados) => {
+export const criarPaciente = async (dados) => {
 
-  //campos obrigatórios
-  if (!dados.nomeCompleto || !dados.dataNascimento || !dados.cpf || !dados.sexo || !dados.raca || !dados.nacionalidade || !dados.cns || !dados.endereco){
-    throw new Error('Todos os campos são obrigatórios.');
-  }
+  validarCamposObrigatorios([
+  dados.nome,
+  dados.data_nascimento,
+  dados.cpf,
+  dados.sexo,
+  dados.raca,
+  dados.etnia,
+  dados.nacionalidade,
+  dados.cns
+  ]);
 
-  //endereco deve conter rua, número, bairro, cidade e estado
-  const { rua, numero, bairro, cidade, estado } = dados.endereco;
+  validarCPF(dados.cpf);
 
-  if (!rua || !numero || !bairro || !cidade || !estado) {
-    throw new Error("O endereço deve conter rua, número, bairro, cidade e estado preenchidos.");
-  }
+  validarCNS(dados.cns);
 
-  //cpf
-  const cpfRegex = /^\d{11}$/;
+  validarSexo(dados.sexo);
 
-  if (!cpfRegex.test(dados.cpf)) {
-    throw new Error("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
-  }
+  validarDataNascimento(dados.data_nascimento);
 
-  //cns
-  const cnsRegex = /^\d{15}$/;
+  validarEndereco(dados.endereco);
 
-  if (!cnsRegex.test(dados.cns)) {
-    throw new Error("CNS inválido. Deve conter exatamente 15 dígitos numéricos.");
-  }
-
-  //data de nascimento
-  const dataNascimento = new Date(dados.dataNascimento);
-
-  if (isNaN(dataNascimento.getTime())) {
-    throw new Error("Data de nascimento inválida. Deve ser uma data válida.");
-  }
-
-  const hoje = new Date(); //para não ter data futura
-
-  if (dataNascimento > hoje) {
-    throw new Error("Data de nascimento não pode ser futura");
-  }
-
-  //sexo
-  const sexosValidos = ["M", "F"];
-
-  if (!sexosValidos.includes(dados.sexo)) {
-    throw new Error("Sexo inválido. Deve ser 'M' ou 'F'.");
-  }
-
-  //duplicidade - cpf, cns
-  //cpf
-  const cpfExistente = pacientes.find(
-    p => p.cpf === dados.cpf
-  );
+  //duplicidade de CPF
+  const cpfExistente =
+  await Paciente.buscar_paciente_cpf(dados.cpf);
 
   if (cpfExistente) {
     throw new Error("CPF já cadastrado.");
   }
 
-  //cns
-  const cnsExistente = pacientes.find(
-    p => p.cns === dados.cns
-  );
+  //duplicidade de CNS
+  const cnsExistente =
+  await Paciente.buscar_paciente_cns(dados.cns);
 
   if (cnsExistente) {
     throw new Error("CNS já cadastrado.");
   }
 
-  const novo = {
-    id: idAtual++, //atribui o id atual e depois incrementa para o próximo
-    ...dados
-  };
-
-  pacientes.push(novo); //adiciona o novo paciente à "base de dados" em memória
-  return novo;
+  return await Paciente.criar_paciente(dados)
 };
 
 //atualizar paciente
-export const atualizarPaciente = (id, dados) => {
-  const index = pacientes.findIndex(p => p.id === Number(id));
+export const atualizarPaciente = async (id, dados) => {
 
-  if (index === -1) return null;
+  validarCamposObrigatorios([
+  dados.nome,
+  dados.data_nascimento,
+  dados.cpf,
+  dados.sexo,
+  dados.raca,
+  dados.etnia,
+  dados.nacionalidade,
+  dados.cns
+  ]);
 
-  pacientes[index] = {
-    ...pacientes[index],
-    ...dados
-  };
+  validarCPF(dados.cpf);
 
-  return pacientes[index];
+  validarCNS(dados.cns);
+
+  validarSexo(dados.sexo);
+
+  validarDataNascimento(dados.data_nascimento);
+
+  validarEndereco(dados.endereco);
+
+  //duplicidade de CPF
+  const cpfExistente =
+    await Paciente.buscar_paciente_cpf(dados.cpf
+  );
+
+  if ( cpfExistente && cpfExistente.id !== Number(id)) {
+    throw new Error("CPF já cadastrado.");
+  }
+
+  //duplicidade de CNS
+  const cnsExistente =
+    await Paciente.buscar_paciente_cns(dados.cns);
+
+  if (cnsExistente && cnsExistente.id !== Number(id)) {
+    throw new Error("CNS já cadastrado.");
+  }
+
+  return await Paciente.atualizar_dados_pacientes(id, dados)
 };
 
+
 //deletar paciente
-export const deletarPaciente = (id) => {
-  const index = pacientes.findIndex(p => p.id === Number(id));
-
-  if (index === -1) return false;
-
-  pacientes.splice(index, 1);
-  return true;
+export const deletarPaciente = async (id) => {
+  return await Paciente.remover_paciente(id)
 };
