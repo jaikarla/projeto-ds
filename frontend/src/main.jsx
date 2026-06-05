@@ -10,7 +10,7 @@ import Dashboard from './Dashboard/Dashboard.jsx'
 import Atendimentos from './Atendimentos/Atendimentos.jsx'
 import Pacientes from './Pacientes/Pacientes.jsx'
 import Profissionais from './Profissionais/Profissionais.jsx'
-import Relatorios from './Relatorios/Relatorios.jsx'
+import Relatorios from "./Relatorios/RelatoriosPage.jsx";
 import './Global.css'
 
 createRoot(document.getElementById('root')).render(
