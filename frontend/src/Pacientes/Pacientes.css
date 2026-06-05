@@ -1,0 +1,503 @@
+/* ___________________________________________________________________________
+
+   CONFIGURAÇÕES GERAIS DA PÁGINA
+   ___________________________________________________________________________ */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.pacientes-container {
+  padding: 44px 44px 56px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.pacientes-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.pacientes-header h1 {
+  margin: 0;
+  color: #001f3f;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.pacientes-header p {
+  margin: 4px 0 0;
+  color: #617184;
+  font-size: 16px;
+}
+
+/* __________________________________________________________________________
+
+   BOTÕES GERAIS (primary-button / secondary-button)
+   __________________________________________________________________________ */
+.btn-novo-paciente,
+.btn-salvar {
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 0 22px;
+  border-radius: 9px;
+  background: #064779;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
+  font-size: 16px;
+}
+
+.btn-novo-paciente:hover,
+.btn-salvar:hover {
+  background: #003b69;
+}
+
+
+.btn-novo-paciente svg {
+  display: none; 
+}
+.btn-novo-paciente::before {
+  content: "+";
+  font-size: 28px;
+  line-height: 1;
+  transform: translateY(-1px);
+  font-weight: 700;
+}
+
+.btn-cancelar {
+  border: 0;
+  cursor: pointer;
+  min-width: 110px;
+  min-height: 50px;
+  border: 1px solid #d8e0e8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #001f3f;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.btn-cancelar:hover {
+  background: #f4f7fa;
+}
+
+/* ___________________________________________________________________________
+
+   BARRA DE BUSCA (search-field)
+   ___________________________________________________________________________ */
+.pacientes-search-bar {
+  margin-bottom: 29px;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  width: min(480px, 100%);
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid #d8e0e8;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #64758a;
+  box-sizing: border-box;
+}
+
+.search-icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  height: 100%;
+  margin-left: 12px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #182b3e;
+  font-size: 16px;
+}
+
+.search-input-wrapper input::placeholder {
+  color: #607086;
+}
+
+/* __________________________________________________________________________
+
+   CONTAINER DA LISTA / TABELA (professionals-list)
+   __________________________________________________________________________ */
+.pacientes-table-wrapper {
+  width: 100%;
+  min-height: 107px;
+  overflow: hidden;
+  border: 1px solid #d8e0e8;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 34, 54, 0.06);
+}
+
+.pacientes-empty-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 104px;
+  margin: 0;
+  color: #53667d;
+  font-size: 16px;
+  text-align: center;
+}
+
+.pacientes-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pacientes-table tr {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.3fr 1.8fr 1.5fr 100px;
+  align-items: center;
+  gap: 16px;
+  min-height: 62px;
+  padding: 16px 22px;
+  border-top: 1px solid #edf1f5;
+  color: #26394c;
+  box-sizing: border-box;
+}
+
+.pacientes-table tr:first-child {
+  border-top: 0;
+}
+
+.pacientes-table thead {
+  display: table-header-group;
+}
+
+.pacientes-table thead tr.table-header-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.3fr 1.8fr 1.5fr 100px;
+  align-items: center;
+  gap: 16px;
+  background: #f9fbfd;
+  padding: 0 22px;
+  border-bottom: 1px solid #edf1f5;
+  min-height: 62px;
+}
+
+.pacientes-table th {
+  display: flex;
+  align-items: center;
+  color: #526479;
+  font-size: 16px;
+  font-weight: 700;
+  border: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.pacientes-table td {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  font-size: 16px;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  width: 100%;
+}
+
+.table-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #102235;
+  cursor: pointer;
+}
+
+.table-actions button:hover {
+  background: #eef3f8;
+}
+
+.table-actions button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-action-delete {
+  color: #ff1f2d !important;
+}
+
+.btn-action-delete:hover {
+  background: #fff0f1 !important;
+}
+
+/* _________________________________________________________________________
+
+   MODAL BACKDROP E BOX (professional-modal)
+   _________________________________________________________________________*/
+.paciente-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.78);
+  z-index: 1000;
+}
+
+.paciente-modal-box {
+  width: min(640px, calc(100vw - 36px));
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.32);
+  display: flex;
+  flex-direction: column;
+}
+
+.paciente-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px 8px 30px;
+  border-bottom: 0;
+}
+
+.paciente-modal-header h2 {
+  margin: 0;
+  color: #172b3e;
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.paciente-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  color: #4f6072;
+  font-size: 30px;
+  line-height: 1;
+  border: 0;
+  cursor: pointer;
+}
+
+.paciente-modal-close:hover {
+  background: #eef3f8;
+}
+
+.paciente-modal-form {
+  display: grid;
+  gap: 20px;
+  padding: 13px 30px 30px;
+  overflow-y: visible;
+}
+
+.paciente-modal-form label {
+  display: grid;
+  gap: 5px;
+  color: #172b3e;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.paciente-modal-form input,
+.paciente-modal-form select {
+  width: 100%;
+  height: 51px;
+  border: 1px solid #d8e0e8;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1b2d40;
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  padding: 0 16px;
+  box-sizing: border-box;
+  transition: none;
+}
+
+.paciente-modal-form input::placeholder {
+  color: #6a798d;
+}
+
+.paciente-modal-form input:focus,
+.paciente-modal-form select:focus {
+  border-color: #0078e8;
+  box-shadow:
+    0 0 0 1px #0078e8,
+    0 0 0 4px rgba(0, 120, 232, 0.14);
+}
+
+.paciente-modal-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #8795a7 50%),
+    linear-gradient(135deg, #8795a7 50%, transparent 50%);
+  background-position:
+    calc(100% - 24px) 22px,
+    calc(100% - 18px) 22px;
+  background-size:
+    7px 7px,
+    7px 7px;
+  background-repeat: no-repeat;
+}
+
+.input-disabled {
+  background: #f4f7fa !important;
+  color: #6a798d;
+  cursor: not-allowed;
+}
+
+.section-title {
+  margin: 10px 0 0;
+  color: #172b3e;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.paciente-modal-form hr {
+  border: 0;
+  border-top: 1px solid #edf1f5;
+  margin: -5px 0 5px;
+}
+
+.form-row.full { display: grid; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.paciente-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.paciente-modal-footer .btn-salvar {
+  min-width: 116px;
+}
+
+/* ___________________________________________________________________________
+
+   FEEDBACK DE ALERTAS (toast-message)
+   __________________________________________________________________________ */
+.paciente-alert {
+  position: fixed;
+  right: 26px;
+  bottom: 38px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(445px, calc(100vw - 32px));
+  min-height: 66px;
+  padding: 16px 18px;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172b3e;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 14px 30px rgba(15, 34, 54, 0.14);
+  box-sizing: border-box;
+}
+
+.paciente-alert::before {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #153047;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.paciente-alert.error {
+  border-color: #fecaca;
+  background: #fff1f2;
+  color: #b91c1c;
+}
+
+.paciente-alert.error::before {
+  content: "✕";
+  background: #dc2626;
+}
+
+@media (max-width: 720px) {
+  .pacientes-container { padding: 30px 18px 42px; }
+  .pacientes-header { align-items: stretch; flex-direction: column; margin-bottom: 26px; }
+  .pacientes-header h1 { font-size: 27px; }
+  .btn-novo-paciente { width: 100%; }
+  .pacientes-table tr, .pacientes-table thead tr.table-header-row { grid-template-columns: 1fr auto; }
+  .pacientes-table th { display: none; }
+  .table-actions { grid-column: 2; grid-row: 1 / span 4; }
+  .form-grid-3, .form-grid-2 { grid-template-columns: 1fr; }
+  .paciente-modal-footer { flex-direction: column-reverse; }
+  .btn-cancelar, .paciente-modal-footer .btn-salvar { width: 100%; }
+}
+
+/*____________________________________________________________________________
+
+   ESTILOS DE VALIDAÇÃO E ERRO
+   ___________________________________________________________________________*/
+
+.paciente-modal-form input[aria-invalid="true"],
+.paciente-modal-form select[aria-invalid="true"] {
+  border-color: #ef4444 !important;
+}
+
+
+.paciente-modal-form input[aria-invalid="true"]:focus,
+.paciente-modal-form select[aria-invalid="true"]:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 
+    0 0 0 1px #ef4444, 
+    0 0 0 4px rgba(239, 68, 68, 0.14) !important;
+}
+
+/* Texto descritivo do erro abaixo do input*/
+.field-error {
+  color: #ff1f2d;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.35;
+  margin-top: 4px; 
+}
