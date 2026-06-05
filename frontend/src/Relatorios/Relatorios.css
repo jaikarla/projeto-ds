@@ -1,0 +1,198 @@
+/*____________________________________________________
+
+HEADER
+______________________________________________________*/
+.relatorios-page-container {
+  padding: 24px;
+  font-family: 'Inter', sans-serif;
+  color: #2c3e50;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+.relatorios-header-title h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.relatorios-header-title p {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+/* Base dos cartões brancos ____________________________________*/
+.relatorios-card-base {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.card-section-sub {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+/* Inputs e Grades ___________________________________________*/
+.relatorios-date-row {
+  display: flex;
+  gap: 16px;
+}
+
+.relatorios-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.relatorios-input-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.relatorios-input-group input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #334155;
+  background-color: #f8fafc;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.relatorios-input-group input:focus {
+  border-color: #0284c7;
+}
+
+/* Grid de contadores rápidos ____________________________________*/
+.relatorios-counters-grid {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.counter-square-card {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.counter-label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.counter-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Abas de Navegação (Tabs) _______________________________________*/
+.relatorios-tabs-navigation {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 8px;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.tab-nav-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.tab-nav-btn.active {
+  background: #ffffff;
+  color: #0284c7;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Grade de inputs dinâmicos _________________________________________*/
+.dynamic-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 15fr));
+  gap: 16px;
+}
+
+/* Botões de Ação ____________________________________________*/
+.relatorios-export-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.btn-export {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #ffffff;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.btn-export:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #334155;
+}
+
+/* Box de tabela vazia */
+.relatorios-empty-state-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+}
+
+.relatorios-empty-state-box p {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.text-blue-bpa {
+  color: #0284c7;
+}
