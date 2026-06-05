@@ -1,6 +1,8 @@
 export const initialProfessionalForm = {
   nome: '',
   cpf: '',
+  tipo: 'profissional',
+  matricula: '',
   registro: '',
   uf: '',
   cbo: '',

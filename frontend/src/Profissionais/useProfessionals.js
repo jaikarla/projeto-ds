@@ -66,7 +66,23 @@ export function useProfessionals() {
 
   function handleInputChange(event) {
     const { name, value } = event.target
-    setForm((currentForm) => ({ ...currentForm, [name]: value }))
+    
+    setForm((currentForm) => {
+      const updatedForm = { ...currentForm, [name]: value }
+      
+      if (name === 'tipo') {
+        if (value === 'estudante') {
+          updatedForm.registro = ''
+          updatedForm.uf = ''
+          updatedForm.cbo = ''
+        } else if (value === 'profissional') {
+          updatedForm.matricula = ''
+        }
+      }
+      
+      return updatedForm
+    })
+    
     setFieldErrors((currentErrors) => ({ ...currentErrors, [name]: '' }))
   }
 
