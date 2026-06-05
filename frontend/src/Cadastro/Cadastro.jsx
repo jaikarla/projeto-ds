@@ -206,10 +206,11 @@ export default function Cadastro() {
                     className="cadastro-toggle-eye"
                     onClick={() => setShowSenha(!showSenha)}
                   >
-                    {showSenha ? <EyeOff size={20} /> : <Eye size={20} />}
+                    {/* LÓGICA CORRIGIDA: Olho aberto mostra a senha, olho fechado esconde */}
+                    {showSenha ? <Eye size={20} /> : <EyeOff size={20} />}
                   </button>
                 </div>
-              </div>
+            </div>
 
               <ul className="cadastro-password-requirements">
                 <li className={regras.minCaracteres ? 'valido' : 'invalido'}>
