@@ -12,14 +12,13 @@ Foi decidido utilizar CSS Modules para a estilização do front-end.
 
 Desta forma, cada componente terá o seu próprio arquivo de estilo e as classes serão transformadas automaticamente em nomes únicos, evitando que um estilo interfira noutro. A comunicação entre o estilo e o componente será feita através da importação de objetos no JavaScript.
 
-## 3. Consequências
 
-### 3.1 Positivas
+## 3. Consequências Positivas
 - Isolamento de estilos: Garante que as classes não se sobreponham.
 - Desenvolvimento intuitivo: Permite o uso de CSS padrão.
 - Manutenibilidade: Facilita a localização e alteração de estilos específicos de um componente.
 
-### 3.2 Negativas
+## 4. Consequências Negativas
 - Quantidade de arquivos: Gera um arquivo .module.css para cada componente.
 - Configuração inicial: Exige suporte do ambiente de build (Vite/Webpack).
 - Estilos Globais: Requer cuidado extra para gerir estilos que devem ser partilhados por toda a aplicação.
