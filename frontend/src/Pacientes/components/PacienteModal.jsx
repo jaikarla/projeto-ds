@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { calcularIdade } from '../pacientesMappers.js';
 
 export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresIniciais }) {
   const [values, setValues] = useState(valoresIniciais);
-  
-
   const [erros, setErros] = useState({});
+  const [dropdownAberto, setDropdownAberto] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const ufs = [
+    "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", 
+    "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
+  ];
 
   useEffect(() => {
     if (paciente) {
@@ -13,10 +18,9 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
     } else {
       setValues(valoresIniciais);
     }
-
     setErros({});
+    setDropdownAberto(false);
   }, [paciente, aberto, valoresIniciais]);
-
 
   useEffect(() => {
     if (values.dataNascimento) {
@@ -25,11 +29,21 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
     }
   }, [values.dataNascimento]);
 
+  // Fecha o dropdown de UF se clicar fora dele
+  useEffect(() => {
+    function clicarFora(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownAberto(false);
+      }
+    }
+    document.addEventListener("mousedown", clicarFora);
+    return () => document.removeEventListener("mousedown", clicarFora);
+  }, []);
+
   if (!aberto) return null;
 
   const handleChange = (campo, valor) => {
     setValues(prev => ({ ...prev, [campo]: valor }));
-    
 
     if (erros[campo]) {
       setErros(prev => {
@@ -40,11 +54,9 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
     }
   };
 
-
   const validarFormulario = () => {
     const novosErros = {};
     
-    // Lista de campos obrigatórios
     const camposObrigatorios = {
       nomeCompleto: 'O nome completo é obrigatório',
       dataNascimento: 'A data de nascimento é obrigatória',
@@ -55,7 +67,9 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
       cep: 'O CEP é obrigatório',
       logradouro: 'O logradouro é obrigatório',
       numero: 'O número é obrigatório',
-      bairro: 'O bairro é obrigatório'
+      bairro: 'O bairro é obrigatório',
+      cidade: 'A cidade é obrigatória',
+      uf: 'O estado (UF) é obrigatório'
     };
 
     Object.keys(camposObrigatorios).forEach(campo => {
@@ -65,13 +79,11 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
     });
 
     setErros(novosErros);
-    
     return Object.keys(novosErros).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     if (validarFormulario()) {
       aoSalvar(values);
     }
@@ -124,7 +136,7 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
             </div>
           </div>
 
-          <div className="form-grid-2">
+          <div className="form-grid-3">
             <div>
               <label>Raça/Cor *</label>
               <select value={values.racaCor || ''} onChange={e => handleChange('racaCor', e.target.value)} aria-invalid={erros.racaCor ? "true" : "false"}>
@@ -137,6 +149,15 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
                 <option value="Sem informação">Sem informação</option>
               </select>
               {erros.racaCor && <span className="field-error">{erros.racaCor}</span>}
+            </div>
+            <div>
+              <label>Etnia</label>
+              <input 
+                type="text" 
+                placeholder="Digite a etnia" 
+                value={values.etnia || ''} 
+                onChange={e => handleChange('etnia', e.target.value)} 
+              />
             </div>
             <div>
               <label>Nacionalidade *</label>
@@ -175,10 +196,13 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
             </div>
           </div>
 
-          <h3 className="section-title">Endereço</h3>
-          <hr />
+        
+          <div className="form-section-divisor">
+            <hr className="section-hr" />
+            <h3 className="section-title">Endereço</h3>
+          </div>
 
-          <div className="form-grid-2 font-end">
+          <div className="form-grid-2">
             <div>
               <label>CEP *</label>
               <input 
@@ -203,7 +227,7 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
             </div>
           </div>
 
-          <div className="form-grid-3">
+          <div className="form-grid-4">
             <div>
               <label>Número *</label>
               <input 
@@ -225,17 +249,50 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
               {erros.bairro && <span className="field-error">{erros.bairro}</span>}
             </div>
             <div>
-              <label>Complemento</label>
+              <label>Cidade *</label>
               <input 
                 type="text" 
-                value={values.complemento || ''} 
-                onChange={e => handleChange('complemento', e.target.value)} 
+                placeholder="Cidade"
+                value={values.cidade || ''} 
+                onChange={e => handleChange('cidade', e.target.value)} 
+                aria-invalid={erros.cidade ? "true" : "false"}
               />
+              {erros.cidade && <span className="field-error">{erros.cidade}</span>}
+            </div>
+            
+            <div ref={dropdownRef} className="custom-uf-wrapper">
+              <label>UF *</label>
+              <div 
+                className={`custom-uf-select ${dropdownAberto ? 'ativo' : ''}`}
+                onClick={() => setDropdownAberto(!dropdownAberto)}
+                aria-invalid={erros.uf ? "true" : "false"}
+              >
+                {values.uf || '--'}
+              </div>
+              
+              {dropdownAberto && (
+                <div className="custom-uf-options">
+                  <div className="custom-uf-option" onClick={() => { handleChange('uf', ''); setDropdownAberto(false); }}>--</div>
+                  {ufs.map(uf => (
+                    <div 
+                      key={uf} 
+                      className={`custom-uf-option ${values.uf === uf ? 'selecionado' : ''}`}
+                      onClick={() => {
+                        handleChange('uf', uf);
+                        setDropdownAberto(false);
+                      }}
+                    >
+                      {uf}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {erros.uf && <span className="field-error">{erros.uf}</span>}
             </div>
           </div>
 
           <div className="paciente-modal-footer">
-            <button type="button" className="btn-cancelar" onClick={fechar}>Cancel</button>
+            <button type="button" className="btn-cancelar" onClick={fechar}>Cancelar</button>
             <button type="submit" className="btn-salvar">
               {paciente ? 'Salvar' : 'Cadastrar'}
             </button>

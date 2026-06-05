@@ -8,6 +8,7 @@ const initialFormValues = {
   idade: '',
   sexo: '',
   racaCor: '',
+  etnia: '', // Adicionado
   nacionalidade: '',
   cns: '',
   cpf: '',
@@ -15,7 +16,8 @@ const initialFormValues = {
   logradouro: '',
   numero: '',
   bairro: '',
-  complemento: ''
+  cidade: '', 
+  uf: '' 
 };
 
 export function usePacientes() {
@@ -25,7 +27,7 @@ export function usePacientes() {
   const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
   const [loading, setLoading] = useState(false);
   
-  // Feedback Visual { tipo: 'success' | 'error', mensagem: '' }
+
   const [alert, setAlert] = useState(null);
 
   const carregarPacientes = async (termoBusca = '') => {
@@ -67,11 +69,9 @@ export function usePacientes() {
       const dadosTratados = prepararPacienteParaEnvio(formValues);
       
       if (pacienteSelecionado?.id) {
-        
         await atualizarPacienteApi(pacienteSelecionado.id, dadosTratados);
         mostrarFeedback('success', 'Paciente atualizado com sucesso!');
       } else {
-        
         await cadastrarPacienteApi(dadosTratados);
         mostrarFeedback('success', 'Paciente cadastrado com sucesso!');
       }

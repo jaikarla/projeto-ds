@@ -1,5 +1,4 @@
-const API_URL = "http://localhost:5000/api/pacientes"; // Ajuste conforme a porta do backend
-
+const API_URL = "http://localhost:5000/api/pacientes"; // Ajustar conforme a porta do backend
 
 export async function fetchPacientesApi(busca = '') {
   const url = busca ? `${API_URL}?search=${encodeURIComponent(busca)}` : API_URL;
@@ -7,7 +6,6 @@ export async function fetchPacientesApi(busca = '') {
   if (!response.ok) throw new Error('Erro ao buscar pacientes.');
   return response.json();
 }
-
 
 export async function cadastrarPacienteApi(pacienteData) {
   const response = await fetch(API_URL, {
@@ -22,7 +20,6 @@ export async function cadastrarPacienteApi(pacienteData) {
   return response.json();
 }
 
-
 export async function atualizarPacienteApi(id, pacienteData) {
   const response = await fetch(`${API_URL}/${id}`, {
     method: 'PUT',
@@ -35,7 +32,6 @@ export async function atualizarPacienteApi(id, pacienteData) {
   }
   return response.json();
 }
-
 
 export async function deletarPacienteApi(id) {
   const response = await fetch(`${API_URL}/${id}`, {
