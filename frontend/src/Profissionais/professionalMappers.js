@@ -48,7 +48,7 @@ export function apiToProfessional(professional) {
 export function formToApi(form) {
   
   const dadosBase = {
-    nomeCompleto: form.nome ? form.nome.trim() : '',
+    nome: form.nome ? form.nome.trim() : '',
     cpf: onlyDigits(form.cpf || ''),
     cns: onlyDigits(form.cns || ''),
     tipo: form.tipo || 'profissional',
@@ -60,8 +60,8 @@ export function formToApi(form) {
       ...dadosBase,
       matricula: form.matricula ? form.matricula.trim() : '',
       cro: '',
-      ufConselho: '',
-      especialidade: '',
+      cro_uf: '',
+      cbo: '',
     }
   }
 
@@ -70,8 +70,8 @@ export function formToApi(form) {
     ...dadosBase,
     matricula: '',
     cro: form.registro ? normalizeRegistro(form.registro) : '',
-    ufConselho: form.uf || '',
+    cro_uf: form.uf || '',
   
-    especialidade: form.cbo ? form.cbo.trim() : '', 
+    cbo: form.cbo ? form.cbo.trim() : '', 
   }
 }

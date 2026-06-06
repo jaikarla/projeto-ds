@@ -153,7 +153,16 @@ const Profissional = {
         `INSERT INTO profissionais (cpf, cns, nome, cro, cro_uf, cbo, matricula, tipo)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-        [cpf, cns, nome, cro, cro_uf, cbo, matricula || null, tipo]
+        [
+        cpf,
+        cns,
+        nome,
+        cro || null,
+        cro_uf || null,
+        cbo || null,
+        matricula || null,
+        tipo
+      ]
       )
       return result.rows[0]
     } catch (error) {
@@ -203,8 +212,19 @@ const Profissional = {
        SET cpf = $1, cns = $2, nome = $3, cro = $4, cro_uf = $5,
            cbo = $6, matricula = $7, tipo = $8
        WHERE id = $9
+
        RETURNING *`,
-      [cpf, cns, nome, cro, cro_uf, cbo, matricula || null, tipo, id]
+      [
+        cpf,
+        cns,
+        nome,
+        cro || null,
+        cro_uf || null,
+        cbo || null,
+        matricula || null,
+        tipo,
+        id
+      ]
     )
     return result.rows[0]
   },

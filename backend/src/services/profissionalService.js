@@ -24,7 +24,6 @@ export const criarProfissional = async (dados) => {
   validarCamposObrigatorios([
     dados.cpf,
     dados.nome,
-    dados.cbo,
     dados.tipo,
     dados.cns
   ]);
@@ -34,6 +33,11 @@ export const criarProfissional = async (dados) => {
   validarCNS(dados.cns);
 
   validarTipo(dados.tipo);
+
+  // CBO obrigatório apenas para profissional
+  if (dados.tipo === 'profissional') {
+    validarCamposObrigatorios([dados.cbo])
+  }
 
   //cro e cro_uf é obrigatório para profissionais, mas não para estudantes
   if (dados.tipo.toLowerCase() === "profissional") {
@@ -87,7 +91,6 @@ export const atualizarProfissional = async (id, dados) => {
   validarCamposObrigatorios([
     dados.cpf,
     dados.nome,
-    dados.cbo,
     dados.tipo,
     dados.cns
   ]);
@@ -97,6 +100,11 @@ export const atualizarProfissional = async (id, dados) => {
   validarCNS(dados.cns);
 
   validarTipo(dados.tipo);
+
+  // CBO obrigatório apenas para profissional
+  if (dados.tipo === 'profissional') {
+    validarCamposObrigatorios([dados.cbo])
+  }
 
   //cro e cro_uf é obrigatório para profissionais, mas não para estudantes
   if (dados.tipo.toLowerCase() === "profissional") {

@@ -98,6 +98,8 @@ export function useProfessionals() {
     setForm({
       nome: professional.nome,
       cpf: professional.cpf,
+      tipo: professional.tipo ?? 'profissional',  
+      matricula: professional.matricula ?? '',
       registro: professional.registro,
       uf: professional.uf,
       cbo: professional.cbo,
