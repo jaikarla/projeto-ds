@@ -87,6 +87,13 @@ export const criarProfissional = async (dados) => {
     throw new Error("CNS já cadastrado.");
 }
 
+  if (dados.tipo?.toLowerCase() === 'estudante' && dados.matricula) {
+    const matriculaExistente = await Profissional.buscar_estudante_matricula(dados.matricula)
+    if (matriculaExistente) {
+      throw new Error("Matrícula já cadastrada.")
+    }
+}
+
   return await Profissional.criar_profissional(dados)
 };
 
@@ -156,6 +163,15 @@ export const atualizarProfissional = async (id, dados) => {
 
   if (cnsExistente && cnsExistente.id !== Number(id)) {
     throw new Error("CNS já cadastrado.");
+}
+
+
+  // matricula
+  if (dados.tipo?.toLowerCase() === 'estudante' && dados.matricula) {
+  const matriculaExistente = await Profissional.buscar_estudante_matricula(dados.matricula)
+  if (matriculaExistente && matriculaExistente.id !== Number(id)) {
+    throw new Error("Matrícula já cadastrada.")
+  }
 }
 
   return await Profissional.atualizar_dados_profissional(id, dados)

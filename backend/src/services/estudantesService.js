@@ -60,15 +60,21 @@ export const criarEstudante = async (dados) => {
     throw new Error("Matrícula já cadastrada")
   }
 
-  // força tipo estudantr
+  try {
   return await Profissional.criar_profissional({
     ...dados,
     cro: null,
     cbo: 'Estudante',
     tipo: 'estudante'
   })
-};
+} catch (error) {
+  if (error.code === '23505' || error.message.includes('matricula')) {
+    throw new Error("Matrícula já cadastrada")
+  }
 
+  throw error
+}
+}
 
 //atualizar estudante
 export const atualizarEstudante = async (id, dados) => {
