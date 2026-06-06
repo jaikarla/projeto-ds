@@ -28,7 +28,7 @@ describe("Testes para criar estudante", () => {
         expect(estudante.cpf).toBe("98765432100");
         expect(estudante.cns).toBe("543210987654321");
         expect(estudante.matricula).toBe("20230001");
-        expect(estudante.cbo).toBe("123456");
+        expect(estudante.cbo).toBe("Estudante");
     });
 
     //Teste 2
