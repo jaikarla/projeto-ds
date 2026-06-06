@@ -49,6 +49,11 @@ export const criarProfissional = async (dados) => {
   validarCRO(dados.cro);
 }
 
+  // CBO fixo
+  if (dados.tipo?.toLowerCase() === 'estudante') {
+    dados.cbo = 'Estudante'
+  }
+
   //matrícula obrigatória para estudante
   if (dados.tipo.toLowerCase() === "estudante" && !dados.matricula) {
     throw new Error("Matrícula é obrigatória para estudante.");
@@ -115,6 +120,10 @@ export const atualizarProfissional = async (id, dados) => {
 
   validarCRO(dados.cro);
 }
+  // CBO fixo
+  if (dados.tipo?.toLowerCase() === 'estudante') {
+    dados.cbo = 'Estudante'
+  }
 
   //matrícula obrigatória para estudante
   if (dados.tipo.toLowerCase() === "estudante" && !dados.matricula) {
