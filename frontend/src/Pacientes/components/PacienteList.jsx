@@ -26,9 +26,16 @@ export function PacientesList({ pacientes, aoEditar, aoDeletar }) {
                 <td>{paciente.nomeCompleto}</td>
                 <td>{paciente.sexo}</td>
                 <td>
-                  {paciente.dataNascimento 
-                    ? new Date(paciente.dataNascimento + 'T00:00:00').toLocaleDateString('pt-BR') 
-                    : ''}
+                  {paciente.dataNascimento ? (() => {
+                    const apenasData = paciente.dataNascimento.split('T')[0];
+                    const partes = apenasData.split('-');
+                    
+                    if (partes.length === 3) {
+                      const [ano, mes, dia] = partes;
+                      return `${dia}/${mes}/${ano}`;
+                    }
+                    return仅data; // fallback caso já esteja formatada
+                  })() : ''}
                 </td>
                 <td>{paciente.cns}</td>
                 <td>{paciente.racaCor}</td>
