@@ -1,5 +1,7 @@
+import { AtendimentosPage } from './AtendimentosPage'
+
 function Atendimentos() {
-  return null
+  return <AtendimentosPage />
 }
 
 export default Atendimentos
