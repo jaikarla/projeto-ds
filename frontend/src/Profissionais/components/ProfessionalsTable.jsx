@@ -29,7 +29,10 @@ export function ProfessionalsTable({
           <span role="cell">{professional.nome}</span>
           <span role="cell">{professional.cpf}</span>
           <span role="cell">
-            {displayRegistro(professional.registro)} ({professional.uf})
+            {professional.registro && professional.registro.trim() !== ''
+              ? `${displayRegistro(professional.registro)} (${professional.uf || ''})` 
+              : ''
+            }
           </span>
           <span role="cell">{professional.cbo}</span>
           <span className="row-actions" role="cell">

@@ -14,127 +14,140 @@ import { deletarPaciente } from "../services/pacienteService";
 describe("Testes para criar paciente", () => {
 
     //Teste 1
-    test("Deve criar um paciente com dados válidos", () => {
-        const paciente = criarPaciente({
-            nomeCompleto: "João Silva",
-            dataNascimento: "1990-01-01",
-            cpf: "12345678901",
+    test("Deve criar um paciente com dados válidos", async () => {
+        const paciente = await criarPaciente({
+            nome: "João Silva",
+            data_nascimento: "1990-01-01",
+            cpf: "12345678909",
             sexo: "M",
             raca: "Branca",
+            etnia: "Não informado",
             nacionalidade: "Brasileiro",
-            cns: "123456789012345",
+            cns: "123456789012346",
             endereco: {
-                rua: "Rua A",
+                cep: "12345-678",
+                logradouro: "Rua A",
                 numero: "123",
                 bairro: "Centro",
                 cidade: "Recife",
-                estado: "PE"
+                uf: "PE"
             }
         });
 
         expect(paciente).toHaveProperty("id");
-        expect(paciente.nomeCompleto).toBe("João Silva");
-        expect(paciente.dataNascimento).toBe("1990-01-01");
-        expect(paciente.cpf).toBe("12345678901");
+        expect(paciente.nome).toBe("João Silva");
+        expect(paciente.data_nascimento).toBe("1990-01-01");
+        expect(paciente.cpf).toBe("12345678909");
         expect(paciente.sexo).toBe("M");
         expect(paciente.raca).toBe("Branca");
+        expect(paciente.etnia).toBe("Não informado");
         expect(paciente.nacionalidade).toBe("Brasileiro");
-        expect(paciente.cns).toBe("123456789012345");
-        expect(paciente.endereco.rua).toBe("Rua A");
-        expect(paciente.endereco.numero).toBe("123");
-        expect(paciente.endereco.bairro).toBe("Centro");
-        expect(paciente.endereco.cidade).toBe("Recife");
-        expect(paciente.endereco.estado).toBe("PE");
+        expect(paciente.cns).toBe("123456789012346");
+        expect(paciente.cep).toBe("12345-678");
+        expect(paciente.logradouro).toBe("Rua A");
+        expect(paciente.numero).toBe("123");
+        expect(paciente.bairro).toBe("Centro");
+        expect(paciente.cidade).toBe("Recife");
+        expect(paciente.uf).toBe("PE");
     });
 
     //Teste 2
-    test("Não deve criar um paciente com data de nascimento inválida", () => {
-        expect(() => {
+    test("Não deve criar um paciente com data de nascimento inválida", async () => {
+        await expect(
             criarPaciente({
-                nomeCompleto: "João Silva",
-                dataNascimento: "invalid-date",
+                nome: "João Silva",
+                data_nascimento: "invalid-date",
                 cpf: "12345678902",
                 sexo: "M",
                 raca: "Branca",
+                etnia: "Não informado",
                 nacionalidade: "Brasileiro",
                 cns: "123456789012346",
                 endereco: {
-                    rua: "Rua A",
+                    cep: "12345-678",
+                    logradouro: "Rua A",
                     numero: "123",
                     bairro: "Centro",
                     cidade: "Recife",
-                    estado: "PE"
+                    uf: "PE"
                 }
-            });
-        }).toThrow("Data de nascimento inválida. Deve ser uma data válida.");
+            })
+        ).rejects.toThrow("Data de nascimento inválida. Deve ser uma data válida.");
     });
 
     //Teste 3
-    test("Não deve criar um paciente com data de nascimento futura", () => {
+    test("Não deve criar um paciente com data de nascimento futura", async () => {
         const dataFutura = new Date();
         dataFutura.setDate(dataFutura.getDate() + 1); //data de amanhã
-        expect(() => {
+
+        await expect(
             criarPaciente({
-                nomeCompleto: "João Silva",
-                dataNascimento: dataFutura.toISOString().split("T")[0],
+                nome: "João Silva",
+                data_nascimento: dataFutura.toISOString().split("T")[0],
                 cpf: "12345678903",
                 sexo: "M",
                 raca: "Branca",
+                etnia: "Não informado",
                 nacionalidade: "Brasileiro",
                 cns: "123456789012347",
                 endereco: {
-                    rua: "Rua A",
+                    cep: "12345-678",
+                    logradouro: "Rua A",
                     numero: "123",
                     bairro: "Centro",
                     cidade: "Recife",
-                    estado: "PE"
+                    uf: "PE"
                 }
-            });
-        }).toThrow("Data de nascimento não pode ser futura.");
+            })
+        ).rejects.toThrow("Data de nascimento não pode ser futura.");
     });
 
     //Teste 4
-    test("Não deve criar um paciente com sexo inválido", () => {
-        expect(() => {
+    test("Não deve criar um paciente com sexo inválido", async () => {
+        await expect(
             criarPaciente({
-                nomeCompleto: "João Silva",
-                dataNascimento: "1990-01-01",
+                nome: "João Silva",
+                data_nascimento: "1990-01-01",
                 cpf: "12345678904",
                 sexo: "X", //sexo inválido
                 raca: "Branca",
+                etnia: "Não informado",
                 nacionalidade: "Brasileiro",
                 cns: "123456789012348",
                 endereco: {
-                    rua: "Rua A",
+                    cep: "12345-678",
+                    logradouro: "Rua A",
                     numero: "123",
                     bairro: "Centro",
                     cidade: "Recife",
-                    estado: "PE"
+                    uf: "PE"
                 }
-            });
-        }).toThrow("Sexo inválido. Deve ser 'M' ou 'F'.");
+            })
+        ).rejects.toThrow("Sexo inválido. Deve ser 'M' ou 'F'.");
     });
 
     //Teste 5
-    test("Não deve criar um paciente com cpf inválido", () => {
-        expect(() => {
+    test("Não deve criar um paciente com cpf inválido", async () => {
+        await expect(
             criarPaciente({
-                nomeCompleto: "João Silva",
-                dataNascimento: "1990-01-01",
+                nome: "João Silva",
+                data_nascimento: "1990-01-01",
                 cpf: "12345", //cpf inválido pela quantidade de dígitos
                 sexo: "M",
                 raca: "Branca",
+                etnia: "Não informado",
                 nacionalidade: "Brasileiro",
                 cns: "123456789012349",
                 endereco: {
-                    rua: "Rua A",
+                    cep: "12345-678",
+                    logradouro: "Rua A",
                     numero: "123",
                     bairro: "Centro",
                     cidade: "Recife",
-                    estado: "PE"
+                    uf: "PE"
                 }
-            });
-        }).toThrow("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
+            })
+        ).rejects.toThrow("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
     });
 
     //Teste 6 -- add outros testes p/ todas as regras de validação, como campos obrigatórios, formato do endereço, etc.

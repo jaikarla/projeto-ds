@@ -29,6 +29,8 @@ export function apiToForm(professional) {
   return {
     nome: professional.nomeCompleto ?? professional.nome ?? '',
     cpf: professional.cpf ?? '',
+    tipo: professional.tipo ?? 'profissional',
+    matricula: professional.matricula ?? '',
     registro: professional.cro ?? professional.registro ?? '',
     uf: professional.ufConselho ?? professional.uf ?? '',
     cbo: professional.especialidade ?? professional.cbo ?? '',
@@ -44,12 +46,32 @@ export function apiToProfessional(professional) {
 }
 
 export function formToApi(form) {
+  
+  const dadosBase = {
+    nome: form.nome ? form.nome.trim() : '',
+    cpf: onlyDigits(form.cpf || ''),
+    cns: onlyDigits(form.cns || ''),
+    tipo: form.tipo || 'profissional',
+  }
+
+  // Se for ESTUDANTE, ignora completamente CBO, Registro e UF
+  if (form.tipo === 'estudante') {
+    return {
+      ...dadosBase,
+      matricula: form.matricula ? form.matricula.trim() : '',
+      cro: '',
+      cro_uf: '',
+      cbo: '',
+    }
+  }
+
+  // Se for PROFISSIONAL, ignora completamente a matrícula
   return {
-    nomeCompleto: form.nome.trim(),
-    cpf: onlyDigits(form.cpf),
-    cro: normalizeRegistro(form.registro),
-    ufConselho: form.uf,
-    especialidade: form.cbo.trim(),
-    cns: onlyDigits(form.cns),
+    ...dadosBase,
+    matricula: '',
+    cro: form.registro ? normalizeRegistro(form.registro) : '',
+    cro_uf: form.uf || '',
+  
+    cbo: form.cbo ? form.cbo.trim() : '', 
   }
 }

@@ -11,6 +11,7 @@ vi.mock('../models/profissional.js', () => ({
     buscar_profissional_cpf: vi.fn(),
     buscar_profissional_cro: vi.fn(),
     buscar_profissional_cns: vi.fn(),
+    buscar_estudante_matricula: vi.fn(),
     criar_profissional: vi.fn(),
     atualizar_dados_profissional: vi.fn()
   }
@@ -79,7 +80,7 @@ describe("Testes para criar profissional", () => {
             cro: '',
             cro_uf: ''
         
-        })).rejects.toThrow("CPF deve conter 11 dígitos numéricos.");
+        })).rejects.toThrow("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
     });
 
     //Teste 4

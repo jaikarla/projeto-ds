@@ -120,7 +120,8 @@ function Login() {
                                         className="login-toggle-password"
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
-                                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+    
+                                        {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                                     </button>
                                 </div>
                             </div>

@@ -3,6 +3,7 @@ import {
   ClipboardList,
   FileBarChart,
   LayoutDashboard,
+  ListChecks,
   LogOut,
   UserPlus,
   Users,
@@ -14,6 +15,7 @@ const menuItems = [
   { label: 'Profissionais', icon: Users, path: '/profissionais' },
   { label: 'Pacientes', icon: UserPlus, path: '/pacientes' },
   { label: 'Atendimentos', icon: ClipboardList, path: '/atendimentos' },
+  { label: 'Procedimentos', icon: ListChecks, path: '/procedimentos' },
   { label: 'Relatórios', icon: FileBarChart, path: '/relatorios' },
 ]
 
