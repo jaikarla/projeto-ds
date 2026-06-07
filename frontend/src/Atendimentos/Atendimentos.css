@@ -1,0 +1,589 @@
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.atendimentos-page {
+  padding: 44px 44px 56px;
+}
+
+.atendimentos-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.atendimentos-header h1 {
+  margin: 0;
+  color: #001f3f;
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.atendimentos-header p {
+  margin: 4px 0 0;
+  color: #617184;
+  font-size: 16px;
+}
+
+.atendimento-primary-button,
+.atendimento-secondary-button,
+.atendimento-close-button,
+.atendimento-icon-button {
+  border: 0;
+  cursor: pointer;
+}
+
+.atendimento-primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 45px;
+  padding: 0 20px;
+  border-radius: 8px;
+  background: #064779;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
+}
+
+.atendimento-primary-button:hover {
+  background: #003b69;
+}
+
+.atendimento-search-field {
+  display: flex;
+  align-items: center;
+  width: min(432px, 100%);
+  height: 46px;
+  margin-bottom: 27px;
+  padding: 0 14px;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #64758a;
+}
+
+.atendimento-search-field input {
+  width: 100%;
+  height: 100%;
+  margin-left: 10px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #182b3e;
+  font-size: 15px;
+}
+
+.atendimento-search-field input::placeholder {
+  color: #607086;
+}
+
+.atendimento-feedback {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.atendimento-form .atendimento-feedback {
+  margin-bottom: 0;
+}
+
+.atendimentos-list {
+  width: 100%;
+  min-height: 96px;
+  overflow: hidden;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 34, 54, 0.06);
+}
+
+.atendimento-empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 94px;
+  margin: 0;
+  color: #53667d;
+  font-size: 16px;
+  text-align: center;
+}
+
+.atendimento-table {
+  width: 100%;
+}
+
+.atendimento-row {
+  display: grid;
+  grid-template-columns: 0.8fr 1.25fr 1.25fr 2fr 0.6fr 0.45fr 94px;
+  align-items: center;
+  gap: 16px;
+  min-height: 64px;
+  padding: 14px 20px;
+  border-top: 1px solid #edf1f5;
+  color: #26394c;
+}
+
+.atendimento-row:first-child {
+  border-top: 0;
+}
+
+.atendimento-row--heading {
+  min-height: 56px;
+  background: #f9fbfd;
+  color: #526479;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.atendimento-procedimento-cell {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.atendimento-procedimento-cell strong,
+.atendimento-procedimento-cell small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.atendimento-procedimento-cell strong {
+  color: #153047;
+  font-size: 14px;
+}
+
+.atendimento-procedimento-cell small {
+  color: #5d6d80;
+  font-size: 13px;
+}
+
+.atendimento-badge,
+.atendimento-procedimento-summary mark,
+.atendimento-procedimento-options mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 25px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #e8f7f4;
+  color: #087466;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.atendimento-badge--BPA-I {
+  background: #eef4ff;
+  color: #24549d;
+}
+
+.atendimento-badge--BPA-C {
+  background: #e8f7f4;
+  color: #087466;
+}
+
+.atendimento-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.atendimento-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #102235;
+}
+
+.atendimento-icon-button:hover {
+  background: #eef3f8;
+}
+
+.atendimento-icon-button svg {
+  width: 19px;
+  height: 19px;
+}
+
+.atendimento-icon-button--danger {
+  color: #ff1f2d;
+}
+
+.atendimento-icon-button--danger:hover {
+  background: #fff0f1;
+}
+
+.atendimento-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.atendimento-modal {
+  width: min(756px, calc(100vw - 36px));
+  max-height: calc(100vh - 24px);
+  overflow: visible;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.32);
+}
+
+.atendimento-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 10px 28px;
+}
+
+.atendimento-modal-header h2 {
+  margin: 0;
+  color: #172b3e;
+  font-size: 21px;
+  line-height: 1.25;
+}
+
+.atendimento-close-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  color: #4f6072;
+}
+
+.atendimento-close-button:hover {
+  background: #eef3f8;
+}
+
+.atendimento-form {
+  display: grid;
+  gap: 20px;
+  padding: 10px 28px 28px;
+}
+
+.atendimento-form label {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  color: #172b3e;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.atendimento-form input,
+.atendimento-form select {
+  width: 100%;
+  height: 45px;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1b2d40;
+  font-size: 15px;
+  font-weight: 400;
+  outline: none;
+  padding: 0 14px;
+}
+
+.atendimento-form input::placeholder {
+  color: #6a798d;
+}
+
+.atendimento-form input:focus,
+.atendimento-form select:focus {
+  border-color: #0078e8;
+  box-shadow:
+    0 0 0 1px #0078e8,
+    0 0 0 4px rgba(0, 120, 232, 0.14);
+}
+
+.atendimento-form input[aria-invalid="true"],
+.atendimento-form select[aria-invalid="true"] {
+  border-color: #ef4444;
+}
+
+.atendimento-form select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #8795a7 50%),
+    linear-gradient(135deg, #8795a7 50%, transparent 50%);
+  background-position:
+    calc(100% - 23px) 19px,
+    calc(100% - 17px) 19px;
+  background-size:
+    7px 7px,
+    7px 7px;
+  background-repeat: no-repeat;
+}
+
+.atendimento-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.atendimento-form-grid--compact {
+  grid-template-columns: 0.45fr 1fr;
+}
+
+.atendimento-procedimento-field {
+  z-index: 2;
+}
+
+.atendimento-procedimento-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 4;
+  display: grid;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 16px 32px rgba(15, 34, 54, 0.16);
+}
+
+.atendimento-procedimento-options button {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 0;
+  border-top: 1px solid #edf1f5;
+  background: #ffffff;
+  color: #26394c;
+  text-align: left;
+  cursor: pointer;
+}
+
+.atendimento-procedimento-options button:first-child {
+  border-top: 0;
+}
+
+.atendimento-procedimento-options button:hover {
+  background: #f4f8fb;
+}
+
+.atendimento-procedimento-options span {
+  color: #526479;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.atendimento-procedimento-options strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.atendimento-procedimento-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #f9fbfd;
+  color: #33485d;
+  font-size: 13px;
+}
+
+.atendimento-field-error {
+  color: #ff1f2d;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.atendimento-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.atendimento-secondary-button {
+  min-width: 100px;
+  min-height: 45px;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #001f3f;
+  font-weight: 700;
+}
+
+.atendimento-secondary-button:hover {
+  background: #f4f7fa;
+}
+
+.atendimento-toast {
+  position: fixed;
+  right: 26px;
+  bottom: 38px;
+  z-index: 1020;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(445px, calc(100vw - 32px));
+  min-height: 66px;
+  padding: 16px 18px;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172b3e;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 14px 30px rgba(15, 34, 54, 0.14);
+}
+
+.atendimento-toast--danger {
+  border-color: #fecaca;
+  background: #fff1f2;
+  color: #b91c1c;
+}
+
+.atendimento-toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #153047;
+  color: #ffffff;
+}
+
+.atendimento-toast--danger .atendimento-toast-icon {
+  background: #dc2626;
+}
+
+.atendimento-toast-icon svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 3;
+}
+
+@media (max-width: 940px) {
+  .atendimento-row {
+    grid-template-columns: 0.9fr 1.2fr 1.2fr 1.5fr 0.6fr 88px;
+  }
+
+  .atendimento-row span:nth-child(6) {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .atendimentos-page {
+    padding: 30px 18px 42px;
+  }
+
+  .atendimentos-header {
+    align-items: stretch;
+    flex-direction: column;
+    margin-bottom: 26px;
+  }
+
+  .atendimentos-header h1 {
+    font-size: 27px;
+  }
+
+  .atendimento-primary-button {
+    width: 100%;
+  }
+
+  .atendimento-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .atendimento-row--heading {
+    display: none;
+  }
+
+  .atendimento-row span:not(.atendimento-row-actions) {
+    grid-column: 1 / 2;
+  }
+
+  .atendimento-row-actions {
+    grid-column: 2 / 3;
+    grid-row: 1 / span 5;
+  }
+
+  .atendimento-modal-backdrop {
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .atendimento-modal {
+    width: 100%;
+    overflow-y: auto;
+  }
+
+  .atendimento-modal-header {
+    padding-left: 22px;
+  }
+
+  .atendimento-form {
+    padding: 12px 22px 24px;
+  }
+
+  .atendimento-form-grid,
+  .atendimento-form-grid--compact {
+    grid-template-columns: 1fr;
+  }
+
+  .atendimento-procedimento-options button {
+    grid-template-columns: 1fr auto;
+  }
+
+  .atendimento-procedimento-options strong {
+    grid-column: 1 / -1;
+  }
+
+  .atendimento-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .atendimento-secondary-button,
+  .atendimento-modal-actions .atendimento-primary-button {
+    width: 100%;
+  }
+
+  .atendimento-toast {
+    right: 16px;
+    bottom: 18px;
+  }
+}
