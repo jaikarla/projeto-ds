@@ -72,6 +72,7 @@ CREATE TABLE profissionais(
     cbo VARCHAR(10) NOT NULL, 
     matricula VARCHAR(20) UNIQUE, -- apenas para estudantes
     tipo VARCHAR(30) NOT NULL,
+    data_cadastro DATE DEFAULT CURRENT_DATE,
     CONSTRAINT tipo_profissional CHECK (tipo IN('profissional', 'estudante'))
 );
 
@@ -86,6 +87,7 @@ CREATE TABLE procedimentos(
     nome VARCHAR(250) NOT NULL,
     codigo VARCHAR(10) UNIQUE NOT NULL, -- não é do tipo INT porque os zeros à esquerda são importantes
     tipo VARCHAR(10) NOT NULL,
+    data_cadastro DATE DEFAULT CURRENT_DATE,
     CONSTRAINT tipo_procedimento CHECK (tipo IN('BPA-C', 'BPA-I'))
 );
 
