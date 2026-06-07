@@ -10,6 +10,7 @@ import Dashboard from './Dashboard/Dashboard.jsx'
 import Atendimentos from './Atendimentos/Atendimentos.jsx'
 import PacientesPage from './Pacientes/PacientesPage.jsx';
 import Profissionais from './Profissionais/Profissionais.jsx'
+import Procedimentos from './Procedimentos/Procedimentos.jsx'
 import Relatorios from "./Relatorios/RelatoriosPage.jsx";
 import './Global.css'
 
@@ -35,6 +36,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/profissionais" element={<Profissionais />} />
           <Route path="/pacientes" element={<PacientesPage />} />
           <Route path="/atendimentos" element={<Atendimentos />} />
+          <Route path="/procedimentos" element={<Procedimentos />} />
           <Route path="/relatorios" element={<Relatorios />} />
         </Route>
       </Routes>
