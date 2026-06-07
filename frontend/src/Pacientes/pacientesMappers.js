@@ -13,9 +13,45 @@ export function calcularIdade(dataNascimento) {
 
 export function prepararPacienteParaEnvio(values) {
   return {
-    ...values,
+    nome: values.nomeCompleto || '',
+    data_nascimento: values.dataNascimento || '',
     cpf: values.cpf ? values.cpf.replace(/\D/g, '') : '',
+    sexo: values.sexo || '',
+    raca: values.racaCor || '',
+    etnia: values.etnia || '',
+    nacionalidade: values.nacionalidade || '',
     cns: values.cns ? values.cns.replace(/\D/g, '') : '',
-    cep: values.cep ? values.cep.replace(/\D/g, '') : '',
+    endereco: {
+      cep: values.cep ? values.cep.replace(/\D/g, '') : '',
+      logradouro: values.logradouro || '',
+      numero: values.numero || '',
+      bairro: values.bairro || '',
+      cidade: values.cidade || '',
+      uf: values.uf || ''
+    }
+  };
+}
+
+
+export function transformarPacienteDoBackend(paciente) {
+  if (!paciente) return null;
+  
+  return {
+    id: paciente.id,
+    nomeCompleto: paciente.nome || '',
+    dataNascimento: paciente.data_nascimento || '',
+    idade: calcularIdade(paciente.data_nascimento),
+    cpf: paciente.cpf || '',
+    sexo: paciente.sexo || '',
+    racaCor: paciente.raca || '',
+    etnia: paciente.etnia || '',
+    nacionalidade: paciente.nacionalidade || '',
+    cns: paciente.cns || '',
+    cep: paciente.cep || '',
+    logradouro: paciente.logradouro || '',
+    numero: paciente.numero || '',
+    bairro: paciente.bairro || '',
+    cidade: paciente.cidade || '',
+    uf: paciente.uf || ''
   };
 }

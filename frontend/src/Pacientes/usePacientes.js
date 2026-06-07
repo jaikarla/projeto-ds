@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchPacientesApi, cadastrarPacienteApi, atualizarPacienteApi, deletarPacienteApi } from './pacientesService.js';
-import { prepararPacienteParaEnvio } from './pacientesMappers.js';
+import { prepararPacienteParaEnvio, transformarPacienteDoBackend } from './pacientesMappers.js';
 
 const initialFormValues = {
   nomeCompleto: '',
@@ -34,9 +34,14 @@ export function usePacientes() {
     try {
       setLoading(true);
       const dados = await fetchPacientesApi(termoBusca);
-      setPacientes(dados);
+      
+      const pacientesTransformados = Array.isArray(dados) 
+        ? dados.map(transformarPacienteDoBackend)
+        : [];
+      setPacientes(pacientesTransformados);
     } catch (err) {
       mostrarFeedback('error', 'Não foi possível carregar a lista de pacientes.');
+      console.error('Erro ao carregar pacientes:', err);
     } finally {
       setLoading(false);
     }
