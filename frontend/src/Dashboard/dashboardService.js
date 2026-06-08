@@ -47,22 +47,52 @@ function normalizeDashboard(payload = {}) {
 }
 
 export async function fetchDashboardResumo(filters = {}) {
-  const params = new URLSearchParams()
+  try {
+    const params = new URLSearchParams()
 
-  if (filters.dataInicio && filters.dataFim) {
-    params.set('dataInicio', filters.dataInicio)
-    params.set('dataFim', filters.dataFim)
+    if (filters.dataInicio && filters.dataFim) {
+      params.set('dataInicio', filters.dataInicio)
+      params.set('dataFim', filters.dataFim)
+    }
+
+    const url = params.toString() ? `${API_URL}?${params.toString()}` : API_URL
+    const response = await fetch(url)
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      const mensagem = errorData.mensagem || errorData.erro || 'Erro ao carregar os dados do dashboard.'
+      throw new Error(mensagem)
+    }
+    
+    const payload = await response.json()
+    return normalizeDashboard(payload)
+  } catch (error) {
+    console.error('Erro ao buscar resumo do dashboard:', error)
+    throw new Error(error.message || 'Erro ao carregar os dados do dashboard.')
   }
+}
 
-  const url = params.toString() ? `${API_URL}?${params.toString()}` : API_URL
-  const response = await fetch(url)
-  const payload = await response.json().catch(() => ({}))
+export async function fetchDashboardEstatisticas(dataInicio, dataFim) {
+  try {
+    const params = new URLSearchParams()
+    params.set('dataInicio', dataInicio)
+    params.set('dataFim', dataFim)
 
-  if (!response.ok) {
-    throw new Error(payload.mensagem || payload.erro || 'Erro ao carregar os dados do dashboard.')
+    const url = `${API_URL}/estatisticas?${params.toString()}`
+    const response = await fetch(url)
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      const mensagem = errorData.mensagem || errorData.erro || 'Erro ao carregar as estatísticas.'
+      throw new Error(mensagem)
+    }
+    
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Erro ao buscar estatísticas do dashboard:', error)
+    throw new Error(error.message || 'Erro ao carregar as estatísticas.')
   }
-
-  return normalizeDashboard(payload)
 }
 
 export { emptyDashboard }

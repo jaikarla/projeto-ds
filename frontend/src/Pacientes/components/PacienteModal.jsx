@@ -14,7 +14,15 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
 
   useEffect(() => {
     if (paciente) {
-      setValues(paciente);
+      // Isola o YYYY-MM-DD para o <input type="date"> aceitar perfeitamente na edição
+      const dataFormatada = paciente.dataNascimento 
+        ? paciente.dataNascimento.split('T')[0] 
+        : '';
+
+      setValues({
+        ...paciente,
+        dataNascimento: dataFormatada
+      });
     } else {
       setValues(valoresIniciais);
     }
@@ -62,6 +70,7 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
       dataNascimento: 'A data de nascimento é obrigatória',
       sexo: 'O sexo é obrigatório',
       racaCor: 'A raça/cor é obrigatória',
+      cpf: 'O CPF é obrigatório',
       nacionalidade: 'A nacionalidade é obrigatória',
       cns: 'O cartão CNS é obrigatório',
       cep: 'O CEP é obrigatório',
@@ -185,14 +194,16 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
               {erros.cns && <span className="field-error">{erros.cns}</span>}
             </div>
             <div>
-              <label>CPF</label>
+              <label>CPF *</label>
               <input 
                 type="text" 
                 maxLength="14" 
                 placeholder="000.000.000-00" 
                 value={values.cpf || ''} 
                 onChange={e => handleChange('cpf', e.target.value)} 
+                aria-invalid={erros.cpf ? "true" : "false"}
               />
+              {erros.cpf && <span className="field-error">{erros.cpf}</span>}
             </div>
           </div>
 
