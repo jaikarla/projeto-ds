@@ -10,25 +10,25 @@ export const buscarProcedimentoPorId = async (id) => {
   return await Procedimento.buscar_procedimento_id(id)
 }
 
-// criar novo procedimento com trava de código único
+// criar novo procedimento com trava de cï¿½digo ï¿½nico
 export const criarProcedimento = async (dados) => {
   const existente = await Procedimento.buscar_procedimento_codigo(dados.codigo);
   
   if (existente) {
-    throw new Error("Já existe um procedimento cadastrado com este código único.");
+    throw new Error("Jï¿½ existe um procedimento cadastrado com este cï¿½digo ï¿½nico.");
   }
 
   return await Procedimento.criar_procedimento(dados)
 }
 
-// atualizar procedimento com trava de código único
+// atualizar procedimento com trava de cï¿½digo ï¿½nico
 export const atualizarProcedimento = async (id, dados) => {
   if (dados.codigo) {
     const existente = await Procedimento.buscar_procedimento_codigo(dados.codigo);
     
-    // Se achar o código em uso por OUTRO id, barra a duplicação
+    // Se achar o cï¿½digo em uso por OUTRO id, barra a duplicaï¿½ï¿½o
     if (existente && existente.id !== Number(id)) {
-      throw new Error("Este código já está em uso por outro procedimento.");
+      throw new Error("Este cï¿½digo jï¿½ estï¿½ em uso por outro procedimento.");
     }
   }
 
