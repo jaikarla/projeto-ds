@@ -1,0 +1,423 @@
+/* ___________________________________________________________________________
+   ESTILO
+   ___________________________________________________________________________ */
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.pacientes-container {
+  padding: 44px 44px 56px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.pacientes-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.pacientes-header h1 {
+  margin: 0;
+  color: #071b31; /* Tom de azul nas especificações */
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+.pacientes-header p {
+  margin: 4px 0 0;
+  color: #617184;
+  font-size: 16px;
+}
+
+/* __________________________________________________________________________
+   BOTÕES DO SISTEMA
+   __________________________________________________________________________ */
+.btn-salvar {
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 0 22px;
+  border-radius: 9px;
+  background: #064779;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
+  font-size: 16px;
+}
+
+.btn-salvar:hover {
+  background: #003b69;
+}
+
+.btn-cancelar {
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 110px;
+  min-height: 50px;
+  border: 1px solid #d8e0e8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #001f3f;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.btn-cancelar:hover {
+  background: #f4f7fa;
+}
+
+.btn-logout {
+  min-height: 44px !important;
+  padding: 0 16px;
+}
+
+.perfil-btn-edit-top {
+  display: flex;
+  align-items: center;
+  background: #8470ff; 
+  border: none;
+  border-radius: 9px;
+  padding: 0 20px;
+  min-height: 46px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s;
+}
+
+.perfil-btn-edit-top:hover {
+  background: #6f5ae0;
+}
+
+/* Botão Excluir Conta */
+.btn-action-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid #ff1f2d;
+  padding: 0 16px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  background: transparent;
+  color: #ff1f2d;
+  transition: background 0.2s;
+}
+
+.btn-action-delete:hover {
+  background: #fff0f1 !important;
+}
+
+/* ___________________________________________________________________________
+   ESTRUTURA DOS CARDS DO FORMULÁRIO
+   ___________________________________________________________________________ */
+.pacientes-table-wrapper {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #d8e0e8;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 34, 54, 0.06);
+  box-sizing: border-box;
+}
+
+.paciente-modal-form {
+  display: grid;
+  gap: 24px;
+}
+
+.paciente-modal-form div label {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+  color: #071b31; /* Alinhado ao azul */
+  font-size: 16px;
+  font-weight: 600;
+  height: 40px; 
+  box-sizing: border-box;
+}
+
+.paciente-modal-form input,
+.paciente-modal-form select {
+  width: 100%;
+  height: 51px;
+  border: 1px solid #d8e0e8;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1b2d40;
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.paciente-modal-form input:focus,
+.paciente-modal-form select:focus {
+  border-color: #0078e8;
+  box-shadow:
+    0 0 0 1px #0078e8,
+    0 0 0 4px rgba(0, 120, 232, 0.14);
+}
+
+/* Customização do Select de UF */
+.custom-uf-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-uf-select {
+  width: 100%;
+  height: 51px;
+  border: 1px solid #d8e0e8;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1b2d40;
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #8795a7 50%),
+    linear-gradient(135deg, #8795a7 50%, transparent 50%);
+  background-position:
+    calc(100% - 24px) 22px,
+    calc(100% - 18px) 22px;
+  background-size: 7px 7px, 7px 7px;
+  background-repeat: no-repeat;
+}
+
+.custom-uf-select.ativo {
+  border-color: #0078e8;
+  box-shadow:
+    0 0 0 1px #0078e8,
+    0 0 0 4px rgba(0, 120, 232, 0.14);
+}
+
+.custom-uf-options {
+  position: absolute;
+  max-height: 180px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #d8e0e8;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1010;
+  left: 0;
+  right: 0;
+}
+
+.custom-uf-option {
+  padding: 10px 16px;
+  font-size: 15px;
+  color: #1b2d40;
+  cursor: pointer;
+}
+
+.custom-uf-option:hover {
+  background: #f4f7fa;
+}
+
+.custom-uf-option.selecionado {
+  background: #064779;
+  color: #ffffff;
+}
+
+.input-disabled {
+  background: #f4f7fa !important;
+  color: #6a798d;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Divisores de seção interna */
+.form-section-divisor {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  margin: 0;
+  color: #071b31;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.section-subtitle {
+  margin: 6px 0 0 0; 
+  color: #617184; 
+  font-size: 15px;
+}
+
+/* Elementos Internos de Segurança */
+.seguranca-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.sessao-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sessao-titulo {
+  color: #172b3e;
+  font-size: 16px;
+  fontWeight: 700;
+}
+
+.sessao-email {
+  color: #617184;
+  font-size: 14px;
+}
+
+.seguranca-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Grids Responsivos */
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; align-items: start; }
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+.paciente-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ___________________________________________________________________________
+   ALERTAS E TOASTS
+   ___________________________________________________________________________ */
+.paciente-alert {
+  position: fixed;
+  right: 26px;
+  bottom: 38px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(445px, calc(100vw - 32px));
+  min-height: 66px;
+  padding: 16px 18px;
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #115c0a;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 14px 30px rgba(15, 34, 54, 0.14);
+  box-sizing: border-box;
+}
+
+.paciente-alert::before {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #115c0a;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.paciente-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.78);
+  z-index: 1000;
+}
+
+.paciente-modal-box {
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.32);
+  display: flex;
+  flex-direction: column;
+}
+
+.paciente-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 30px 8px;
+}
+
+.paciente-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  color: #4f6072;
+  font-size: 30px;
+  border: 0;
+  cursor: pointer;
+}
+
+.paciente-modal-close:hover {
+  background: #eef3f8;
+}
+
+/* Erros e Validações */
+.paciente-modal-form input[aria-invalid="true"],
+.custom-uf-select[aria-invalid="true"] {
+  border-color: #ef4444 !important;
+}
+
+.field-error {
+  color: #ff1f2d;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.35;
+  margin-top: 4px; 
+}
+
+@media (max-width: 720px) {
+  .pacientes-container { padding: 30px 18px 42px; }
+  .pacientes-header { align-items: stretch; flex-direction: column; margin-bottom: 26px; }
+  .form-grid-3, .form-grid-2 { grid-template-columns: 1fr; }
+  .paciente-modal-footer { flex-direction: column-reverse; }
+  .btn-cancelar, .paciente-modal-footer .btn-salvar { width: 100%; }
+  .seguranca-row { flex-direction: column; align-items: stretch; }
+  .seguranca-actions { flex-direction: column; }
+}

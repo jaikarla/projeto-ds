@@ -7,6 +7,7 @@ import {
   LogOut,
   UserPlus,
   Users,
+  User,
 } from 'lucide-react'
 import logoBpa from '../Assets/logo-bpa.png'
 
@@ -49,10 +50,24 @@ function Sidebar({ session, onLogout }) {
 
       <div className="app-sidebar-user-area">
         <span className="app-sidebar-user-email">{session?.email || 'usuario@bpa.com'}</span>
-        <button className="app-sidebar-logout" type="button" onClick={onLogout}>
-          <LogOut size={18} strokeWidth={1.9} />
+        
+        <NavLink 
+          to="/perfil" 
+          className={({ isActive }) => `app-sidebar-nav-item ${isActive ? 'active' : ''}`}
+        >
+          <User size={19} strokeWidth={1.9} />
+          <span>Perfil</span>
+        </NavLink>
+
+        <button 
+          className="app-sidebar-nav-item" 
+          type="button" 
+          onClick={onLogout}
+        >
+          <LogOut size={19} strokeWidth={1.9} />
           <span>Sair</span>
         </button>
+        
         <span className="app-sidebar-version">v1.0 - Sistema BPA</span>
       </div>
     </aside>
