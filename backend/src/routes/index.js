@@ -18,7 +18,7 @@ router.use("/profissionais", profissionaisRoutes);
 router.use("/estudantes", estudantesRoutes);
 router.use("/pacientes", pacientesRoutes);
 router.use("/procedimentos", procedimentosRoutes);
-router.use("/bpa", bpaRoutes);
+router.use("/relatorios", bpaRoutes);
 router.use("/faturistas", faturistaRoutes);
 router.use("/atendimentos", atendimentoRoutes);
 router.use("/dashboard", dashboardRoutes);

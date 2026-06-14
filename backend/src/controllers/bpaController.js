@@ -1,3 +1,11 @@
+import {
+  buscarContadores,
+  buscarDadosRelatorio,
+  gerarCSV,
+  gerarTXT
+} from '../services/bpaService.js'
+
+
 //controllers para o BPA
 export const getBpas = (req, res) => {
   res.status(200).json({
@@ -42,19 +50,72 @@ export const calcularBpa = (req, res) => {
     message: "Cálculo do BPA realizado"
   });
 };
+// retorna contadores do período para exibir na tela
+export const getContadores = async (req, res) => {
+  try {
+    const { dataInicial, dataFinal } = req.query
 
-//para gerar um relatório do BPA
-export const gerarRelatorio = (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Relatório gerado com sucesso"
-  });
-};
+    if (!dataInicial || !dataFinal) {
+      return res.status(400).json({
+        success: false,
+        message: 'Data inicial e data final são obrigatórias.'
+      })
+    }
 
-//para exportar os dados do BPA em um formato específico (ex: CSV, Excel, PDF)
-export const exportarBpa = (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "BPA exportado"
-  });
-};
+    const contadores = await buscarContadores(dataInicial, dataFinal)
+    res.status(200).json(contadores)
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+// exporta o relatório em CSV ou TXT — RN8
+export const exportarRelatorio = async (req, res) => {
+  try {
+    const { tipo, formato } = req.params
+    const {
+      dataInicial, dataFinal,
+      cnes, nomeEstabelecimento, uf, mesAno,
+      cnsProfissional, cbo, equipe
+    } = req.query
+
+    if (!dataInicial || !dataFinal) {
+      return res.status(400).json({
+        success: false,
+        message: 'Data inicial e data final são obrigatórias.'
+      })
+    }
+
+    const dados = await buscarDadosRelatorio(dataInicial, dataFinal, tipo)
+
+    // RN8 — sem dados no período não gera arquivo
+    if (dados.bpaC.length === 0 && dados.bpaI.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Não existem dados para o período selecionado.'
+      })
+    }
+
+    const cabecalho = { cnes, nomeEstabelecimento, uf, mesAno, cnsProfissional, cbo, equipe }
+
+    if (formato === 'csv') {
+      const conteudo = gerarCSV(dados, cabecalho)
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8')
+      res.setHeader('Content-Disposition', `attachment; filename=BPA_${tipo}_${dataInicial}_${dataFinal}.csv`)
+      return res.send(conteudo)
+    }
+
+    if (formato === 'txt') {
+      const conteudo = gerarTXT(dados, cabecalho, dataInicial, dataFinal)
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+      res.setHeader('Content-Disposition', `attachment; filename=BPA_${tipo}_${dataInicial}_${dataFinal}.txt`)
+      return res.send(conteudo)
+    }
+
+    res.status(400).json({ success: false, message: 'Formato inválido. Use csv ou txt.' })
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
