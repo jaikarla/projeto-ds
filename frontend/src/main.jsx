@@ -12,6 +12,7 @@ import PacientesPage from './Pacientes/PacientesPage.jsx';
 import Profissionais from './Profissionais/Profissionais.jsx'
 import Procedimentos from './Procedimentos/Procedimentos.jsx'
 import Relatorios from "./Relatorios/RelatoriosPage.jsx";
+import PerfilPage from './Perfil/PerfilPage.jsx'
 import './Global.css'
 
 createRoot(document.getElementById('root')).render(
@@ -38,6 +39,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/atendimentos" element={<Atendimentos />} />
           <Route path="/procedimentos" element={<Procedimentos />} />
           <Route path="/relatorios" element={<Relatorios />} />
+          <Route path="/perfil" element={<PerfilPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
