@@ -1,24 +1,24 @@
 export const validaProcedimento = (req, res, next) => {
   const { nome, codigo, tipo } = req.body;
 
-  // Regra A: nome, código e tipo são obrigatórios
+  // Regra A: nome, cï¿½digo e tipo sï¿½o obrigatï¿½rios
   if (!nome || !codigo || !tipo) {
     return res.status(400).json({ 
       success: false, 
-      message: "Nome, código e tipo são obrigatórios." 
+      message: "Nome, cï¿½digo e tipo sï¿½o obrigatï¿½rios." 
     });
   }
 
-  // Regra B: O código só permite até 10 dígitos numéricos
+  // Regra B: O cï¿½digo sï¿½ permite atï¿½ 10 dï¿½gitos numï¿½ricos
   const regexCodigo = /^\d{1,10}$/;
   if (!regexCodigo.test(codigo)) {
     return res.status(400).json({ 
       success: false, 
-      message: "O código deve conter apenas números e no máximo 10 dígitos." 
+      message: "O cï¿½digo deve conter apenas nï¿½meros e no mï¿½ximo 10 dï¿½gitos." 
     });
   }
 
-  // Regra C: O tipo só aceita BPA-C ou BPA-I
+  // Regra C: O tipo sï¿½ aceita BPA-C ou BPA-I
   if (tipo !== 'BPA-C' && tipo !== 'BPA-I') {
     return res.status(400).json({ 
       success: false, 

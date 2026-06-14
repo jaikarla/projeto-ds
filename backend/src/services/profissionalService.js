@@ -24,7 +24,6 @@ export const criarProfissional = async (dados) => {
   validarCamposObrigatorios([
     dados.cpf,
     dados.nome,
-    dados.cbo,
     dados.tipo,
     dados.cns
   ]);
@@ -35,6 +34,11 @@ export const criarProfissional = async (dados) => {
 
   validarTipo(dados.tipo);
 
+  // CBO obrigatório apenas para profissional
+  if (dados.tipo === 'profissional') {
+    validarCamposObrigatorios([dados.cbo])
+  }
+
   //cro e cro_uf é obrigatório para profissionais, mas não para estudantes
   if (dados.tipo.toLowerCase() === "profissional") {
     validarCamposObrigatorios([
@@ -44,6 +48,11 @@ export const criarProfissional = async (dados) => {
 
   validarCRO(dados.cro);
 }
+
+  // CBO fixo
+  if (dados.tipo?.toLowerCase() === 'estudante') {
+    dados.cbo = 'Estudante'
+  }
 
   //matrícula obrigatória para estudante
   if (dados.tipo.toLowerCase() === "estudante" && !dados.matricula) {
@@ -78,6 +87,13 @@ export const criarProfissional = async (dados) => {
     throw new Error("CNS já cadastrado.");
 }
 
+  if (dados.tipo?.toLowerCase() === 'estudante' && dados.matricula) {
+    const matriculaExistente = await Profissional.buscar_estudante_matricula(dados.matricula)
+    if (matriculaExistente) {
+      throw new Error("Matrícula já cadastrada.")
+    }
+}
+
   return await Profissional.criar_profissional(dados)
 };
 
@@ -87,7 +103,6 @@ export const atualizarProfissional = async (id, dados) => {
   validarCamposObrigatorios([
     dados.cpf,
     dados.nome,
-    dados.cbo,
     dados.tipo,
     dados.cns
   ]);
@@ -98,6 +113,11 @@ export const atualizarProfissional = async (id, dados) => {
 
   validarTipo(dados.tipo);
 
+  // CBO obrigatório apenas para profissional
+  if (dados.tipo === 'profissional') {
+    validarCamposObrigatorios([dados.cbo])
+  }
+
   //cro e cro_uf é obrigatório para profissionais, mas não para estudantes
   if (dados.tipo.toLowerCase() === "profissional") {
     validarCamposObrigatorios([
@@ -107,6 +127,10 @@ export const atualizarProfissional = async (id, dados) => {
 
   validarCRO(dados.cro);
 }
+  // CBO fixo
+  if (dados.tipo?.toLowerCase() === 'estudante') {
+    dados.cbo = 'Estudante'
+  }
 
   //matrícula obrigatória para estudante
   if (dados.tipo.toLowerCase() === "estudante" && !dados.matricula) {
@@ -139,6 +163,15 @@ export const atualizarProfissional = async (id, dados) => {
 
   if (cnsExistente && cnsExistente.id !== Number(id)) {
     throw new Error("CNS já cadastrado.");
+}
+
+
+  // matricula
+  if (dados.tipo?.toLowerCase() === 'estudante' && dados.matricula) {
+  const matriculaExistente = await Profissional.buscar_estudante_matricula(dados.matricula)
+  if (matriculaExistente && matriculaExistente.id !== Number(id)) {
+    throw new Error("Matrícula já cadastrada.")
+  }
 }
 
   return await Profissional.atualizar_dados_profissional(id, dados)

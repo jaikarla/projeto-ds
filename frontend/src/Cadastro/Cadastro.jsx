@@ -4,6 +4,7 @@ import { UserSearch, FileDown, ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { register } from '../auth/authService.js'
 import logoBpa from '../Assets/logo-bpa.png'
 import './Cadastro.css'
+import axios from 'axios'
 
 const SESSION_STORAGE_KEY = 'bpaAuthSession'
 
@@ -21,7 +22,8 @@ const summaryFeatures = [
 ];
 
 export default function Cadastro() {
-  const navigate = useNavigate() 
+  const navigate = useNavigate()
+  const [erroApi, setErroApi] = useState('')
   const [showSenha, setShowSenha] = useState(false)
   const [senha, setSenha] = useState('')
   const [nome, setNome] = useState('')
@@ -43,8 +45,8 @@ export default function Cadastro() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault() // Impede a página de recarregar
-    setError('')
+    e.preventDefault() 
+    setErroApi('') 
 
     if (senha !== confirmarSenha) {
       setError('As senhas não coincidem!')
@@ -56,23 +58,50 @@ export default function Cadastro() {
       return
     }
 
-    setLoading(true)
-
     try {
-      const resultado = await register({ nome, email, cpf, telefone, senha })
-      const authSession = {
-        token: resultado.token,
-        email: resultado.faturista.email,
-        nome: resultado.faturista.nome,
-        loggedAt: new Date().toISOString(),
-      }
+      await axios.post('http://localhost:3000/api/auth/register', { 
+        nome, 
+        email, 
+        cpf, 
+        telefone, 
+        senha, 
+        cep, 
+        numero, 
+        complemento 
+      })
+      
+      navigate('/login')
 
-      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(authSession))
-      navigate('/dashboard')
-    } catch (err) {
-      setError(err.message || 'Erro ao cadastrar. Verifique os dados e tente novamente.')
-    } finally {
-      setLoading(false)
+    } catch (error) {
+      const mensagemErro = error.response?.data?.message || error.response?.data || error.message || "";
+      const textoDoErro = typeof mensagemErro === 'object' ? JSON.stringify(mensagemErro) : String(mensagemErro);
+
+      if (
+        textoDoErro.includes("faturistas_cpf_key") || 
+        textoDoErro.includes("duplicate key value violates unique constraint \"faturistas_cpf_key\"")
+      ) {
+        setErroApi("Este CPF já foi cadastrado.");
+      } else if (
+        textoDoErro.includes("faturistas_email_key") || 
+        textoDoErro.includes("duplicate key value violates unique constraint \"faturistas_email_key\"")
+      ) {
+        setErroApi("Este e-mail já foi cadastrado.");
+      } else if (
+        textoDoErro.toLowerCase().includes("email inválido") || 
+        textoDoErro.toLowerCase().includes("invalid email") ||
+        textoDoErro.toLowerCase().includes("format")
+      ) {
+        setErroApi("O e-mail adicionado não é válido. Verifique o formato correto: seuemail@email.com");
+      } else if (textoDoErro.includes("11 dígitos") || textoDoErro.includes("CPF inválido")) {
+        setErroApi("CPF inválido. Deve conter 11 dígitos.");
+      } else {
+
+        if (!email.includes(".") || email.split("@")[1]?.length < 3) {
+          setErroApi("O e-mail adicionado não é válido. Verifique o formato correto: seuemail@email.com");
+        } else {
+          setErroApi("Ocorreu um erro ao realizar o cadastro. Tente novamente.");
+        }
+      }
     }
   }
 
@@ -129,7 +158,10 @@ export default function Cadastro() {
                 <input 
                   type="email" 
                   value={email} 
-                  onChange={(e) => setEmail(e.target.value)} 
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setErroApi('');
+                  }} 
                   required 
                 />
               </div>
@@ -141,7 +173,10 @@ export default function Cadastro() {
                     type="text" 
                     placeholder="000.000.000-00" 
                     value={cpf} 
-                    onChange={(e) => setCpf(e.target.value)} 
+                    onChange={(e) => {
+                      setCpf(e.target.value);
+                      setErroApi('');
+                    }}
                     required 
                   />
                 </div>
@@ -171,10 +206,11 @@ export default function Cadastro() {
                     className="cadastro-toggle-eye"
                     onClick={() => setShowSenha(!showSenha)}
                   >
-                    {showSenha ? <EyeOff size={20} /> : <Eye size={20} />}
+                    {/* LÓGICA CORRIGIDA: Olho aberto mostra a senha, olho fechado esconde */}
+                    {showSenha ? <Eye size={20} /> : <EyeOff size={20} />}
                   </button>
                 </div>
-              </div>
+            </div>
 
               <ul className="cadastro-password-requirements">
                 <li className={regras.minCaracteres ? 'valido' : 'invalido'}>
@@ -225,8 +261,7 @@ export default function Cadastro() {
                 </button>
               </div>
 
-              {error && <p className="cadastro-error-message">{error}</p>}
-
+              {erroApi && <p className="cadastro-error-message">{erroApi}</p>}
               <div className="cadastro-card-footer">
                 <span>Já tem conta? </span>
                 <Link to="/login" className="cadastro-link font-bold">Entrar</Link>

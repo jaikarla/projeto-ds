@@ -23,7 +23,7 @@ export const buscarEstudantePorId = async (id) => {
 export const criarEstudante = async (dados) => {
 
   //campos obrigatórios
-  if(!dados.nome || !dados.cpf || !dados.cns || !dados.dataNascimento || !dados.matricula || !dados.cbo) {
+  if(!dados.nome || !dados.cpf || !dados.cns || !dados.matricula ) {
     throw new Error("Todos os campos obrigatórios devem ser preenchidos.");
   }
 
@@ -60,14 +60,21 @@ export const criarEstudante = async (dados) => {
     throw new Error("Matrícula já cadastrada")
   }
 
-  // força tipo estudantr
+  try {
   return await Profissional.criar_profissional({
     ...dados,
     cro: null,
+    cbo: 'Estudante',
     tipo: 'estudante'
   })
-};
+} catch (error) {
+  if (error.code === '23505' || error.message.includes('matricula')) {
+    throw new Error("Matrícula já cadastrada")
+  }
 
+  throw error
+}
+}
 
 //atualizar estudante
 export const atualizarEstudante = async (id, dados) => {
@@ -79,6 +86,7 @@ export const atualizarEstudante = async (id, dados) => {
   // garantir que o tipo não seja alterado 
   return await Profissional.atualizar_dados_profissional(id,{
     ...dados,
+    cbo: 'Estudante',
     tipo: 'estudante'
   })
 };

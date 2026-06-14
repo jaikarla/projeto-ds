@@ -11,6 +11,7 @@ vi.mock('../models/profissional.js', () => ({
     buscar_profissional_cpf: vi.fn(),
     buscar_profissional_cro: vi.fn(),
     buscar_profissional_cns: vi.fn(),
+    buscar_estudante_matricula: vi.fn(),
     criar_profissional: vi.fn(),
     atualizar_dados_profissional: vi.fn()
   }

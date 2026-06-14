@@ -10,7 +10,7 @@ class DashboardService {
       let cadastroQueryParams = []
 
       if (dataInicio && dataFim) {
-        whereClause = 'WHERE a.data_atendimento >= $1 AND a.data_atendimento <= $2'
+        whereClause = 'WHERE a.data_atendimento >= $1::date AND a.data_atendimento <= $2::date'
         queryParams = [dataInicio, dataFim]
         cadastroDateClause = 'AND data_cadastro >= $1::date AND data_cadastro <= $2::date'
         cadastroQueryParams = [dataInicio, dataFim]
@@ -44,8 +44,8 @@ class DashboardService {
           INNER JOIN atendimento_procedimentos ap ON ap.atendimento_id = a.id
           INNER JOIN procedimentos p ON p.id = ap.procedimento_id
           WHERE p.tipo = 'BPA-I'
-          ${dataInicio && dataFim ? 'AND a.data_atendimento >= $' + (queryParams.length + 1) + ' AND a.data_atendimento <= $' + (queryParams.length + 2) : ''}
-        `, dataInicio && dataFim ? [...queryParams, dataInicio, dataFim] : []),
+          ${dataInicio && dataFim ? 'AND a.data_atendimento >= $1::date AND a.data_atendimento <= $2::date' : ''}
+        `, dataInicio && dataFim ? [dataInicio, dataFim] : []),
         
         pool.query(`
           SELECT COUNT(DISTINCT a.id) as total 
@@ -53,8 +53,8 @@ class DashboardService {
           INNER JOIN atendimento_procedimentos ap ON ap.atendimento_id = a.id
           INNER JOIN procedimentos p ON p.id = ap.procedimento_id
           WHERE p.tipo = 'BPA-C'
-          ${dataInicio && dataFim ? 'AND a.data_atendimento >= $' + (queryParams.length + 1) + ' AND a.data_atendimento <= $' + (queryParams.length + 2) : ''}
-        `, dataInicio && dataFim ? [...queryParams, dataInicio, dataFim] : []),
+          ${dataInicio && dataFim ? 'AND a.data_atendimento >= $1::date AND a.data_atendimento <= $2::date' : ''}
+        `, dataInicio && dataFim ? [dataInicio, dataFim] : []),
         
         pool.query(`
           SELECT 
@@ -115,7 +115,7 @@ class DashboardService {
           SUM(ap.quantidade) as total_procedimentos_realizados
         FROM atendimentos a
         LEFT JOIN atendimento_procedimentos ap ON ap.atendimento_id = a.id
-        WHERE a.data_atendimento >= $1 AND a.data_atendimento <= $2
+        WHERE a.data_atendimento >= $1::date AND a.data_atendimento <= $2::date
         GROUP BY DATE(a.data_atendimento)
         ORDER BY data DESC
       `, [dataInicio, dataFim])

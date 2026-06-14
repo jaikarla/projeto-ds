@@ -1,5 +1,6 @@
 .app-layout {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: #f8fafc;
   color: #071b31;
   display: grid;
@@ -7,7 +8,9 @@
 }
 
 .app-sidebar {
-  min-height: 100vh;
+  height: 100vh;
+  /* overflow alterado para garantir que o flexbox calcule o espaço vertical do respiro */
+  overflow-y: auto; 
   background: #073759;
   color: #c8ddf1;
   display: flex;
@@ -85,12 +88,12 @@
 }
 
 .app-sidebar-user-area {
-  margin-top: auto;
+  margin-top: auto; 
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 20px 22px 22px;
+  padding: 20px 14px 22px; 
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 6px;
 }
 
 .app-sidebar-user-email {
@@ -98,34 +101,23 @@
   font-size: 12px;
   line-height: 1.4;
   overflow-wrap: anywhere;
-}
-
-.app-sidebar-logout {
-  width: fit-content;
-  color: #d6e9f9;
-  background: transparent;
-  border: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.app-sidebar-logout:hover {
-  color: #42dbc7;
+  padding: 0 16px 6px; 
 }
 
 .app-sidebar-version {
   color: rgba(184, 212, 236, 0.58);
   font-size: 11px;
+  padding: 6px 16px 0; 
 }
 
 .app-layout-main {
   min-width: 0;
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
   background: #f8fafc;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-header {
@@ -142,7 +134,10 @@
 }
 
 .app-layout-content {
-  min-height: calc(100vh - 68px);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 @media (max-width: 980px) {
@@ -154,10 +149,27 @@
 @media (max-width: 760px) {
   .app-layout {
     display: block;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
   }
 
   .app-sidebar {
+    height: auto;
     min-height: auto;
+    overflow: visible;
+  }
+
+  .app-layout-main {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    display: block;
+  }
+
+  .app-layout-content {
+    min-height: calc(100vh - 68px);
+    overflow: visible;
   }
 
   .app-sidebar-brand {
