@@ -83,6 +83,8 @@ function PerfilPage() {
             <h3 className="section-title">Informações do usuário</h3>
           </div>
 
+          {errors.geral && <span className="field-error" style={{ display: 'block', marginBottom: '12px' }}>{errors.geral}</span>}
+
           <div className="form-grid-2">
             <div>
               <label>Nome completo *</label>
@@ -292,6 +294,7 @@ function PerfilPage() {
               <p style={{ color: '#4f6072', fontSize: '15px', lineHeight: '1.5', margin: '0 0 24px 0' }}>
                 Atenção: Esta ação é irreversível. Todos os seus dados de faturista serão removidos da base do BPA e você perderá o acesso imediatamente.
               </p>
+              {errors.geral && <span className="field-error" style={{ display: 'block', marginBottom: '12px' }}>{errors.geral}</span>}
               <div className="paciente-modal-footer" style={{ padding: 0 }}>
                 <button type="button" className="btn-cancelar" onClick={() => setShowDeleteModal(false)}>
                   Voltar atrás

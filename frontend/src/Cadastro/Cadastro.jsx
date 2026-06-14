@@ -4,9 +4,6 @@ import { UserSearch, FileDown, ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { register } from '../auth/authService.js'
 import logoBpa from '../Assets/logo-bpa.png'
 import './Cadastro.css'
-import axios from 'axios'
-
-const SESSION_STORAGE_KEY = 'bpaAuthSession'
 
 const summaryFeatures = [
   { 
@@ -47,6 +44,7 @@ export default function Cadastro() {
   const handleSubmit = async (e) => {
     e.preventDefault() 
     setErroApi('') 
+    setError('')
 
     if (senha !== confirmarSenha) {
       setError('As senhas não coincidem!')
@@ -59,21 +57,13 @@ export default function Cadastro() {
     }
 
     try {
-      await axios.post('http://localhost:3000/api/auth/register', { 
-        nome, 
-        email, 
-        cpf, 
-        telefone, 
-        senha, 
-        cep, 
-        numero, 
-        complemento 
-      })
+      setLoading(true)
+      await register({ nome, email, cpf, telefone, senha })
       
       navigate('/login')
 
     } catch (error) {
-      const mensagemErro = error.response?.data?.message || error.response?.data || error.message || "";
+      const mensagemErro = error.response?.data?.message || error.response?.data?.erro || error.response?.data || error.message || "";
       const textoDoErro = typeof mensagemErro === 'object' ? JSON.stringify(mensagemErro) : String(mensagemErro);
 
       if (
@@ -102,6 +92,8 @@ export default function Cadastro() {
           setErroApi("Ocorreu um erro ao realizar o cadastro. Tente novamente.");
         }
       }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -261,7 +253,7 @@ export default function Cadastro() {
                 </button>
               </div>
 
-              {erroApi && <p className="cadastro-error-message">{erroApi}</p>}
+              {(erroApi || error) && <p className="cadastro-error-message">{erroApi || error}</p>}
               <div className="cadastro-card-footer">
                 <span>Já tem conta? </span>
                 <Link to="/login" className="cadastro-link font-bold">Entrar</Link>

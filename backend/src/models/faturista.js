@@ -19,6 +19,14 @@ const Faturista={
         return result.rows[0]
     },
 
+    async busca_faturista_id_com_senha(id){
+        const result = await pool.query(
+            'SELECT * FROM faturistas WHERE id = $1',
+            [id]
+        )
+        return result.rows[0]
+    },
+
     //busca faturista pelo email usado no login
     // retorna a senha para comparar
     async busca_faturista_email(email){
@@ -70,10 +78,11 @@ const Faturista={
 
     //remover faturista
     async remover_faturista(id){
-        await pool.query(
-            'DELETE FROM faturistas WHERE id = $1',
+        const result = await pool.query(
+            'DELETE FROM faturistas WHERE id = $1 RETURNING id',
             [id]
         )
+        return result.rows[0]
     }
 }
 

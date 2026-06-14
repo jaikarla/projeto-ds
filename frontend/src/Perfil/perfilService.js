@@ -1,117 +1,85 @@
-const API_URL = 'https://api.sistemabpa.com.br/api/perfil'; // Troca pela url original
+const API_URL = '/api/faturistas';
+const SESSION_STORAGE_KEY = 'bpaAuthSession';
+
+function getStoredSession() {
+  try {
+    return JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function decodeJwtPayload(token) {
+  if (!token) return {};
+
+  try {
+    const base64 = token.split('.')[1]?.replace(/-/g, '+').replace(/_/g, '/');
+    if (!base64) return {};
+    return JSON.parse(atob(base64));
+  } catch {
+    return {};
+  }
+}
+
+function getSessionData() {
+  const session = getStoredSession();
+  const tokenPayload = decodeJwtPayload(session.token);
+  const id = session.id || session.faturista?.id || tokenPayload.id;
+
+  if (!id) {
+    throw new Error('Sessao invalida. Faca login novamente.');
+  }
+
+  return { id, token: session.token };
+}
+
+async function requestJson(url, options = {}) {
+  const { token } = getSessionData();
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers
+    }
+  });
+  const payload = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(payload.erro || payload.message || payload.mensagem || 'Nao foi possivel concluir a operacao.');
+  }
+
+  return payload;
+}
 
 export const perfilService = {
-  /**
-   * Puxa os dados do faturista do banco de dados
-   */
   async getPerfil() {
-    try {
-      // QUANDO TIVER O BANCO REAL, DESCOMENTE AS LINHAS ABAIXO:
-      // const token = localStorage.getItem('bpaAuthSession');
-      // const response = await fetch(API_URL, {
-      //   method: 'GET',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${token}`
-      //   }
-      // });
-      // if (!response.ok) throw new Error('Erro ao buscar dados do banco');
-      // return await response.json();
-
-      // ENQUANTO NÃO TEM O BANCO: Simula o atraso da rede (500ms) e retornamos o formato do banco
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      return {
-        nome_completo: 'Raiana Laís pereira Donato',
-        email_usuario: 'raianalaispd@gmail.com',
-        cpf_usuario: '14907809476',
-        telefone_usuario: '81999998888',
-        cep_endereco: '50000000',
-        numero_endereco: '123',
-        complemento_endereco: 'Bloco B, Apto 201'
-      };
-    } catch (error) {
-      console.error("Erro no serviço de perfil:", error);
-      throw error;
-    }
+    const { id } = getSessionData();
+    const payload = await requestJson(`${API_URL}/${id}`);
+    return payload.dados || payload.data || payload;
   },
 
-  /**
-   * Salva as alterações do faturista de volta no banco de dados
-   */
   async updatePerfil(dadosAtualizados) {
-    try {
-      // QUANDO TIVER O BANCO REAL, DESCOMENTE AS LINHAS ABAIXO:
-      // const token = localStorage.getItem('bpaAuthSession');
-      // const response = await fetch(API_URL, {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${token}`
-      //   },
-      //   body: JSON.stringify(dadosAtualizados)
-      // });
-      // if (!response.ok) throw new Error('Erro ao salvar no banco');
-      // return await response.json();
-
-      // ENQUANTO NÃO TEM O BANCO: Simulamos que o banco salvou com sucesso
-      await new Promise(resolve => setTimeout(resolve, 600));
-      console.log("Dados salvos simulados no banco:", dadosAtualizados);
-      return { success: true, data: dadosAtualizados };
-    } catch (error) {
-      console.error("Erro ao atualizar perfil no serviço:", error);
-      throw error;
-    }
+    const { id } = getSessionData();
+    const payload = await requestJson(`${API_URL}/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(dadosAtualizados)
+    });
+    return payload.dados || payload.data || payload;
   },
 
-  /**
-   * Altera a senha do faturista logado no sistema
-   */
   async updateSenha(payloadSenha) {
-    try {
-      // QUANDO TIVER O BANCO REAL, DESCOMENTE AS LINHAS ABAIXO:
-      // const token = localStorage.getItem('bpaAuthSession');
-      // const response = await fetch(`${API_URL}/alterar-senha`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${token}`
-      //   },
-      //   body: JSON.stringify(payloadSenha)
-      // });
-      // if (!response.ok) throw new Error('Erro ao atualizar senha no banco');
-      // return await response.json();
-
-      // ENQUANTO NÃO TEM O BANCO: Simulação de sucesso
-      await new Promise(resolve => setTimeout(resolve, 500));
-      console.log("Senha atualizada com sucesso no simulador:", payloadSenha);
-      return { success: true };
-    } catch (error) {
-      console.error("Erro ao atualizar senha no serviço:", error);
-      throw error;
-    }
+    const { id } = getSessionData();
+    return await requestJson(`${API_URL}/${id}/senha`, {
+      method: 'PATCH',
+      body: JSON.stringify(payloadSenha)
+    });
   },
 
-  /**
-   * Deleta a conta do usuário no banco
-   */
   async deleteConta() {
-    try {
-      // QUANDO TIVER O BANCO REAL, DESCOMENTE AS LINHAS ABAIXO:
-      // const token = localStorage.getItem('bpaAuthSession');
-      // const response = await fetch(API_URL, {
-      //   method: 'DELETE',
-      //   headers: { 'Authorization': `Bearer ${token}` }
-      // });
-      // if (!response.ok) throw new Error('Erro ao deletar conta');
-      // return true;
-
-      // ENQUANTO NÃO TEM O BANCO:
-      await new Promise(resolve => setTimeout(resolve, 700));
-      return { success: true };
-    } catch (error) {
-      console.error("Erro ao deletar conta no serviço:", error);
-      throw error;
-    }
+    const { id } = getSessionData();
+    return await requestJson(`${API_URL}/${id}`, {
+      method: 'DELETE'
+    });
   }
 };

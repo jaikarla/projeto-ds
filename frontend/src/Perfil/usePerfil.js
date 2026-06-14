@@ -12,32 +12,12 @@ export function usePerfil(onLogoutSuccess) {
     numero: '',
     complemento: ''
   });
-  
+
   const [dadosOriginais, setDadosOriginais] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    async function carregarDados() {
-      try {
-        const dadosApi = await perfilService.getPerfil();
-        const dadosFormatados = perfilMappers.toState(dadosApi);
-        
-        // Aplica máscaras iniciais nos dados estáticos
-        if (dadosFormatados.cpf) dadosFormatados.cpf = aplicarMascaraCPF(dadosFormatados.cpf);
-        if (dadosFormatados.telefone) dadosFormatados.telefone = aplicarMascaraTelefone(dadosFormatados.telefone);
-        if (dadosFormatados.cep) dadosFormatados.cep = aplicarMascaraCEP(dadosFormatados.cep);
-
-        setFormData(dadosFormatados);
-        setDadosOriginais(dadosFormatados);
-      } catch (err) {
-        console.error("Erro ao carregar dados do perfil", err);
-      }
-    }
-    carregarDados();
-  }, []);
 
   const aplicarMascaraCPF = (v) => {
     let masked = v.replace(/\D/g, '');
@@ -60,21 +40,43 @@ export function usePerfil(onLogoutSuccess) {
     return masked;
   };
 
+  useEffect(() => {
+    async function carregarDados() {
+      try {
+        const dadosApi = await perfilService.getPerfil();
+        const dadosFormatados = perfilMappers.toState(dadosApi);
+
+        if (dadosFormatados.cpf) dadosFormatados.cpf = aplicarMascaraCPF(dadosFormatados.cpf);
+        if (dadosFormatados.telefone) dadosFormatados.telefone = aplicarMascaraTelefone(dadosFormatados.telefone);
+        if (dadosFormatados.cep) dadosFormatados.cep = aplicarMascaraCEP(dadosFormatados.cep);
+
+        setFormData(dadosFormatados);
+        setDadosOriginais(dadosFormatados);
+        setErrors({});
+      } catch (err) {
+        console.error('Erro ao carregar dados do perfil', err);
+        setErrors({ geral: err.message || 'Erro ao carregar dados do perfil.' });
+      }
+    }
+
+    carregarDados();
+  }, []);
+
   const handleChange = (field, value) => {
     if (field === 'cpf') {
-      let digits = value.replace(/\D/g, '');
+      const digits = value.replace(/\D/g, '');
       if (digits.length <= 11) value = aplicarMascaraCPF(value);
       else return;
     }
 
     if (field === 'telefone') {
-      let digits = value.replace(/\D/g, '');
+      const digits = value.replace(/\D/g, '');
       if (digits.length <= 11) value = aplicarMascaraTelefone(value);
       else return;
     }
 
     if (field === 'cep') {
-      let digits = value.replace(/\D/g, '');
+      const digits = value.replace(/\D/g, '');
       if (digits.length <= 8) value = aplicarMascaraCEP(value);
       else return;
     }
@@ -84,14 +86,14 @@ export function usePerfil(onLogoutSuccess) {
 
   const validarFormulario = () => {
     const novosErros = {};
-    if (!formData.nome || !formData.nome.trim()) novosErros.nome = 'O nome completo é obrigatório.';
-    if (!formData.email || !formData.email.trim() || !formData.email.includes('@')) novosErros.email = 'Insira um e-mail válido.';
-    
+    if (!formData.nome || !formData.nome.trim()) novosErros.nome = 'O nome completo e obrigatorio.';
+    if (!formData.email || !formData.email.trim() || !formData.email.includes('@')) novosErros.email = 'Insira um e-mail valido.';
+
     const cpfLimpo = (formData.cpf || '').replace(/\D/g, '');
-    if (cpfLimpo.length !== 11) novosErros.cpf = 'O CPF deve conter 11 dígitos.';
-    
+    if (cpfLimpo.length !== 11) novosErros.cpf = 'O CPF deve conter 11 digitos.';
+
     const telLimpo = (formData.telefone || '').replace(/\D/g, '');
-    if (telLimpo.length < 10 || telLimpo.length > 11) novosErros.telefone = 'Insira um telefone válido com DDD.';
+    if (telLimpo.length < 10 || telLimpo.length > 11) novosErros.telefone = 'Insira um telefone valido com DDD.';
 
     setErrors(novosErros);
     return Object.keys(novosErros).length === 0;
@@ -114,14 +116,22 @@ export function usePerfil(onLogoutSuccess) {
 
     try {
       const payload = perfilMappers.toApi(formData);
-      await perfilService.updatePerfil(payload);
-      
-      setDadosOriginais({ ...formData });
+      const dadosAtualizados = await perfilService.updatePerfil(payload);
+      const dadosFormatados = perfilMappers.toState(dadosAtualizados);
+
+      if (dadosFormatados.cpf) dadosFormatados.cpf = aplicarMascaraCPF(dadosFormatados.cpf);
+      if (dadosFormatados.telefone) dadosFormatados.telefone = aplicarMascaraTelefone(dadosFormatados.telefone);
+
+      const novoFormData = { ...formData, ...dadosFormatados };
+      setFormData(novoFormData);
+      setDadosOriginais(novoFormData);
+      setErrors({});
       setIsEditing(false);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     } catch (err) {
-      console.error("Erro ao salvar alterações do perfil", err);
+      console.error('Erro ao salvar alteracoes do perfil', err);
+      setErrors({ geral: err.message || 'Erro ao salvar alteracoes do perfil.' });
     }
   };
 
@@ -131,7 +141,8 @@ export function usePerfil(onLogoutSuccess) {
       setShowDeleteModal(false);
       if (onLogoutSuccess) onLogoutSuccess();
     } catch (err) {
-      console.error("Erro ao deletar conta", err);
+      console.error('Erro ao deletar conta', err);
+      setErrors({ geral: err.message || 'Erro ao deletar conta.' });
     }
   };
 
@@ -141,12 +152,14 @@ export function usePerfil(onLogoutSuccess) {
         senha_atual: senhaData.senhaAtual,
         nova_senha: senhaData.novaSenha
       });
-      
+
+      setErrors({});
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
       return true;
     } catch (err) {
-      console.error("Erro ao alterar a senha:", err);
+      console.error('Erro ao alterar a senha:', err);
+      setErrors({ geral: err.message || 'Erro ao alterar a senha.' });
       return false;
     }
   };
