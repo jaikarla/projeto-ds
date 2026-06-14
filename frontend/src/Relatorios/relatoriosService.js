@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080/api'; // Ajustar com a porta do back
+const API_BASE_URL = '/api'; 
 
 export async function fetchRelatoriosContadores(dataInicial, dataFinal) {
   if (!dataInicial || !dataFinal) return { total: 0, bpaC: 0, bpaI: 0 };
