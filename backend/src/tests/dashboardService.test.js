@@ -75,10 +75,16 @@ describe('DashboardService', () => {
         .mockResolvedValueOnce(mockUltimosAtendimentos)
 
       const resultado = await DashboardService.getResumo('2024-01-01', '2024-01-31')
+      const chamadas = pool.query.mock.calls
 
       expect(resultado.periodo.dataInicio).toBe('2024-01-01')
       expect(resultado.periodo.dataFim).toBe('2024-01-31')
-      expect(pool.query).toHaveBeenCalled()
+      expect(chamadas[0][0]).toContain('data_cadastro >= $1::date')
+      expect(chamadas[0][1]).toEqual(['2024-01-01', '2024-01-31'])
+      expect(chamadas[1][0]).toContain('data_cadastro >= $1::date')
+      expect(chamadas[1][1]).toEqual(['2024-01-01', '2024-01-31'])
+      expect(chamadas[3][0]).toBe('SELECT COUNT(*) as total FROM procedimentos')
+      expect(chamadas[3][1]).toBeUndefined()
     })
 
     it('deve retornar 0 quando não há registros', async () => {

@@ -6,16 +6,30 @@ class DashboardService {
     try {
       let whereClause = ''
       let queryParams = []
+      let cadastroDateClause = ''
+      let cadastroQueryParams = []
 
       if (dataInicio && dataFim) {
         whereClause = 'WHERE a.data_atendimento >= $1::date AND a.data_atendimento <= $2::date'
         queryParams = [dataInicio, dataFim]
+        cadastroDateClause = 'AND data_cadastro >= $1::date AND data_cadastro <= $2::date'
+        cadastroQueryParams = [dataInicio, dataFim]
       }
 
       const results = await Promise.all([
-        pool.query("SELECT COUNT(*) as total FROM profissionais WHERE tipo = 'profissional'"),
+        pool.query(`
+          SELECT COUNT(*) as total
+          FROM profissionais
+          WHERE tipo = 'profissional'
+          ${cadastroDateClause}
+        `, cadastroQueryParams),
         
-        pool.query("SELECT COUNT(*) as total FROM profissionais WHERE tipo = 'estudante'"),
+        pool.query(`
+          SELECT COUNT(*) as total
+          FROM profissionais
+          WHERE tipo = 'estudante'
+          ${cadastroDateClause}
+        `, cadastroQueryParams),
         
         pool.query(`
           SELECT COUNT(*) as total FROM atendimentos a
@@ -64,19 +78,21 @@ class DashboardService {
         `, whereClause ? queryParams : [])
       ])
 
+      const getTotal = (index) => parseInt(results[index]?.rows?.[0]?.total, 10) || 0
+
       const dadosDashboard = {
         periodo: dataInicio && dataFim ? { dataInicio, dataFim } : { dataInicio: null, dataFim: null },
         cadastros: {
-          profissionais: parseInt(results[0].rows[0].total) || 0,
-          estudantes: parseInt(results[1].rows[0].total) || 0
+          profissionais: getTotal(0),
+          estudantes: getTotal(1)
         },
         producao: {
-          totalAtendimentos: parseInt(results[2].rows[0].total) || 0,
-          totalProcedimentosDisponiveis: parseInt(results[3].rows[0].total) || 0
+          totalAtendimentos: getTotal(2),
+          totalProcedimentosDisponiveis: getTotal(3)
         },
         atendimentosPorTipo: {
-          bpaI: parseInt(results[4].rows[0].total) || 0,
-          bpaC: parseInt(results[5].rows[0].total) || 0
+          bpaI: getTotal(4),
+          bpaC: getTotal(5)
         },
         ultimosAtendimentos: results[6].rows || []
       }
