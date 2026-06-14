@@ -40,6 +40,7 @@ function Login() {
 
             const authSession = {
                 token: resultado.token,
+                id: resultado.faturista.id,
                 email: resultado.faturista.email,
                 nome: resultado.faturista.nome,
                 loggedAt: new Date().toISOString(),
