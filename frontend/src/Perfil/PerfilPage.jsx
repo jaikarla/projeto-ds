@@ -1,48 +1,55 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePerfil } from './usePerfil';
-import { UserRoundPen, LogOut, Trash2, Check } from 'lucide-react';
+import { UserRoundPen, LogOut, Trash2, KeyRound } from 'lucide-react';
 import './Perfil.css';
 
 function PerfilPage() {
-  const navigate = useNavigate();
-  const dropdownRef = useRef(null);
-  const [dropdownAberto, setDropdownAberto] = useState(false);
+    const navigate = useNavigate();
+    const [senhaModalAberto, setSenhaModalAberto] = useState(false);
+    const [senhaData, setSenhaData] = useState({ senhaAtual: '', novaSenha: '', confirmarSenha: '' });
+    const [senhaErro, setSenhaErro] = useState('');
 
-  const limparSessaoEDeslogar = () => {
-    localStorage.removeItem('bpaAuthSession');
-    navigate('/login');
-  };
+    const limparSessaoEDeslogar = () => {
+        localStorage.removeItem('bpaAuthSession');
+        navigate('/login');
+    };
 
-  const {
-    formData,
-    isEditing,
-    showToast,
-    showDeleteModal,
-    errors,
-    setShowDeleteModal,
-    handleChange,
-    handleEditar,
-    handleCancelar,
-    handleSalvar,
-    handleConfirmarExclusao
-  } = usePerfil(limparSessaoEDeslogar);
+    const {
+        formData,
+        isEditing,
+        showToast,
+        showDeleteModal,
+        errors,
+        setShowDeleteModal,
+        handleChange,
+        handleEditar,
+        handleCancelar,
+        handleSalvar,
+        handleConfirmarExclusao,
+        handleAlterarSenha
+    } = usePerfil(limparSessaoEDeslogar);
 
-  const ufs = [
-    "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "MT", 
-    "PA", "PB", "PE", "PI", "PR", "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"
-  ];
-
-  // Fecha o dropdown de UF se clicar fora dele
-  useEffect(() => {
-    function clicarFora(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownAberto(false);
-      }
-    }
-    document.addEventListener("mousedown", clicarFora);
-    return () => document.removeEventListener("mousedown", clicarFora);
-  }, []);
+    const submeterNovaSenha = async (e) => {
+        e.preventDefault();
+        if (!senhaData.senhaAtual || !senhaData.novaSenha || !senhaData.confirmarSenha) {
+        setSenhaErro('Todos os campos são obrigatórios.');
+        return;
+        }
+        if (senhaData.novaSenha !== senhaData.confirmarSenha) {
+        setSenhaErro('A nova senha e a confirmação não conferem.');
+        return;
+        }
+        
+        const sucesso = await handleAlterarSenha(senhaData);
+        if (sucesso) {
+        setSenhaData({ senhaAtual: '', novaSenha: '', confirmarSenha: '' });
+        setSenhaErro('');
+        setSenhaModalAberto(false);
+        } else {
+        setSenhaErro('Erro ao atualizar a senha no servidor.');
+        }
+    };
 
   return (
     <div className="pacientes-container">
@@ -104,21 +111,9 @@ function PerfilPage() {
             </div>
           </div>
 
-          <div className="form-grid-3">
+          <div className="form-grid-2">
             <div>
-              <label>Cargo / Função</label>
-              <input 
-                type="text" 
-                value={formData.cargo || ''}
-                onChange={(e) => handleChange('cargo', e.target.value)}
-                disabled={!isEditing}
-                className={!isEditing ? 'input-disabled' : ''}
-                placeholder="Ex.: Faturista"
-              />
-            </div>
-
-            <div>
-              <label>CPF</label>
+              <label>CPF *</label>
               <input 
                 type="text" 
                 maxLength="14"
@@ -133,48 +128,61 @@ function PerfilPage() {
             </div>
 
             <div>
-              <label>Registro profissional</label>
+              <label>Telefone *</label>
               <input 
                 type="text" 
-                value={formData.registro || ''}
-                onChange={(e) => handleChange('registro', e.target.value)}
+                maxLength="15"
+                value={formData.telefone || ''}
+                onChange={(e) => handleChange('telefone', e.target.value)}
                 disabled={!isEditing}
                 className={!isEditing ? 'input-disabled' : ''}
-                aria-invalid={errors.registro ? "true" : "false"}
+                placeholder="(00) 00000-0000"
+                aria-invalid={errors.telefone ? "true" : "false"}
               />
-              {errors.registro && <span className="field-error">{errors.registro}</span>}
+              {errors.telefone && <span className="field-error">{errors.telefone}</span>}
             </div>
           </div>
 
+          <div className="form-section-divisor" style={{ margin: '10px 0 10px 0' }}>
+            <h3 className="section-title">Endereço (Opcional)</h3>
+          </div>
+
           <div className="form-grid-3">
-            <div ref={dropdownRef} className="custom-uf-wrapper">
-              <label>UF do conselho</label>
-              <div 
-                className={`custom-uf-select ${dropdownAberto ? 'ativo' : ''} ${!isEditing ? 'input-disabled' : ''}`}
-                onClick={() => { if (isEditing) setDropdownAberto(!dropdownAberto); }}
-                aria-invalid={errors.uf ? "true" : "false"}
-              >
-                {formData.uf || '--'}
-              </div>
-              
-              {dropdownAberto && isEditing && (
-                <div className="custom-uf-options" style={{ bottom: 'auto', top: '100%' }}>
-                  <div className="custom-uf-option" onClick={() => { handleChange('uf', ''); setDropdownAberto(false); }}>--</div>
-                  {ufs.map(uf => (
-                    <div 
-                      key={uf} 
-                      className={`custom-uf-option ${formData.uf === uf ? 'selecionado' : ''}`}
-                      onClick={() => {
-                        handleChange('uf', uf);
-                        setDropdownAberto(false);
-                      }}
-                    >
-                      {uf}
-                    </div>
-                  ))}
-                </div>
-              )}
-              {errors.uf && <span className="field-error">{errors.uf}</span>}
+            <div>
+              <label>CEP</label>
+              <input 
+                type="text" 
+                maxLength="9"
+                value={formData.cep || ''}
+                onChange={(e) => handleChange('cep', e.target.value)}
+                disabled={!isEditing}
+                className={!isEditing ? 'input-disabled' : ''}
+                placeholder="00000-000"
+              />
+            </div>
+
+            <div>
+              <label>Número</label>
+              <input 
+                type="text" 
+                value={formData.numero || ''}
+                onChange={(e) => handleChange('numero', e.target.value)}
+                disabled={!isEditing}
+                className={!isEditing ? 'input-disabled' : ''}
+                placeholder="Nº"
+              />
+            </div>
+
+            <div>
+              <label>Complemento</label>
+              <input 
+                type="text" 
+                value={formData.complemento || ''}
+                onChange={(e) => handleChange('complemento', e.target.value)}
+                disabled={!isEditing}
+                className={!isEditing ? 'input-disabled' : ''}
+                placeholder="Apto, Bloco, etc."
+              />
             </div>
           </div>
 
@@ -191,11 +199,11 @@ function PerfilPage() {
         </form>
       </div>
 
-      {/* CARD DE SEGURANÇA DA CONTA */}
+      {/* CARD DE SEGURANÇA E ALTERAÇÃO DE SENHA */}
       <div className="pacientes-table-wrapper" style={{ padding: '30px', marginTop: '24px' }}>
         <div className="form-section-divisor" style={{ margin: '0 0 20px 0' }}>
-          <h3 className="section-title">Segurança da conta</h3>
-          <p className="section-subtitle">Sair da sessão ativa ou remover seu acesso ao sistema</p>
+          <h3 className="section-title">Segurança e Autenticação</h3>
+          <p className="section-subtitle">Gerencie suas credenciais de acesso e segurança da conta</p>
         </div>
 
         <div className="seguranca-row">
@@ -205,6 +213,11 @@ function PerfilPage() {
           </div>
 
           <div className="seguranca-actions">
+            <button type="button" className="btn-cancelar btn-logout" onClick={() => setSenhaModalAberto(true)}>
+              <KeyRound size={16} style={{ marginRight: '6px' }} />
+              Alterar senha
+            </button>
+
             <button type="button" className="btn-cancelar btn-logout" onClick={limparSessaoEDeslogar}>
               <LogOut size={16} strokeWidth={2.5} style={{ marginRight: '6px' }} />
               Sair da conta
@@ -217,6 +230,55 @@ function PerfilPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal de Mudança de Senha */}
+      {senhaModalAberto && (
+        <div className="paciente-modal-overlay">
+          <div className="paciente-modal-box" style={{ width: '440px' }}>
+            <div className="paciente-modal-header">
+              <h2>Alterar Senha de Acesso</h2>
+              <button type="button" className="paciente-modal-close" onClick={() => { setSenhaModalAberto(false); setSenhaErro(''); }}>&times;</button>
+            </div>
+            <form onSubmit={submeterNovaSenha} className="paciente-modal-form" style={{ padding: '10px 30px 30px' }}>
+              <div>
+                <label>Senha atual</label>
+                <input 
+                  type="password" 
+                  value={senhaData.senhaAtual} 
+                  onChange={e => setSenhaData(p => ({ ...p, senhaAtual: e.target.value }))}
+                />
+              </div>
+              <div>
+                <label>Nova senha</label>
+                <input 
+                  type="password" 
+                  value={senhaData.novaSenha} 
+                  onChange={e => setSenhaData(p => ({ ...p, novaSenha: e.target.value }))}
+                />
+              </div>
+              <div>
+                <label>Confirmar nova senha</label>
+                <input 
+                  type="password" 
+                  value={senhaData.confirmarSenha} 
+                  onChange={e => setSenhaData(p => ({ ...p, confirmarSenha: e.target.value }))}
+                />
+              </div>
+              
+              {senhaErro && <span className="field-error" style={{ display: 'block', marginTop: '10px' }}>{senhaErro}</span>}
+
+              <div className="paciente-modal-footer" style={{ marginTop: '20px', padding: 0 }}>
+                <button type="button" className="btn-cancelar" onClick={() => { setSenhaModalAberto(false); setSenhaErro(''); }}>
+                  Cancelar
+                </button>
+                <button type="submit" className="btn-salvar">
+                  Atualizar senha
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Modal de exclusão */}
       {showDeleteModal && (

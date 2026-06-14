@@ -87,7 +87,7 @@ button:disabled {
 .perfil-btn-edit-top {
   display: flex;
   align-items: center;
-  background: #8470ff; 
+  background: #064779; 
   border: none;
   border-radius: 9px;
   padding: 0 20px;
@@ -101,7 +101,7 @@ button:disabled {
 }
 
 .perfil-btn-edit-top:hover {
-  background: #6f5ae0;
+  background: #003b69;
 }
 
 /* Botão Excluir Conta */
@@ -149,7 +149,7 @@ button:disabled {
   flex-direction: column;
   justify-content: flex-end;
   gap: 5px;
-  color: #071b31; /* Alinhado ao azul */
+  color: #071b31;
   font-size: 16px;
   font-weight: 600;
   height: 40px; 

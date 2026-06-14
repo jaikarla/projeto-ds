@@ -24,10 +24,11 @@ export const perfilService = {
       return {
         nome_completo: 'Raiana Laís pereira Donato',
         email_usuario: 'raianalaispd@gmail.com',
-        cargo_funcao: 'Faturista',
         cpf_usuario: '14907809476',
-        registro_profissional: '84759-X',
-        uf_conselho: 'SP'
+        telefone_usuario: '81999998888',
+        cep_endereco: '50000000',
+        numero_endereco: '123',
+        complemento_endereco: 'Bloco B, Apto 201'
       };
     } catch (error) {
       console.error("Erro no serviço de perfil:", error);
@@ -59,6 +60,34 @@ export const perfilService = {
       return { success: true, data: dadosAtualizados };
     } catch (error) {
       console.error("Erro ao atualizar perfil no serviço:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Altera a senha do faturista logado no sistema
+   */
+  async updateSenha(payloadSenha) {
+    try {
+      // QUANDO TIVER O BANCO REAL, DESCOMENTE AS LINHAS ABAIXO:
+      // const token = localStorage.getItem('bpaAuthSession');
+      // const response = await fetch(`${API_URL}/alterar-senha`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${token}`
+      //   },
+      //   body: JSON.stringify(payloadSenha)
+      // });
+      // if (!response.ok) throw new Error('Erro ao atualizar senha no banco');
+      // return await response.json();
+
+      // ENQUANTO NÃO TEM O BANCO: Simulação de sucesso
+      await new Promise(resolve => setTimeout(resolve, 500));
+      console.log("Senha atualizada com sucesso no simulador:", payloadSenha);
+      return { success: true };
+    } catch (error) {
+      console.error("Erro ao atualizar senha no serviço:", error);
       throw error;
     }
   },

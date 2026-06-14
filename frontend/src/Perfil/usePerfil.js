@@ -6,10 +6,11 @@ export function usePerfil(onLogoutSuccess) {
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
-    cargo: '',
     cpf: '',
-    registro: '',
-    uf: 'PE'
+    telefone: '',
+    cep: '',
+    numero: '',
+    complemento: ''
   });
   
   const [dadosOriginais, setDadosOriginais] = useState({});
@@ -18,12 +19,17 @@ export function usePerfil(onLogoutSuccess) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Carrega os dados iniciais do banco através do Service e do Mapper
   useEffect(() => {
     async function carregarDados() {
       try {
         const dadosApi = await perfilService.getPerfil();
         const dadosFormatados = perfilMappers.toState(dadosApi);
+        
+        // Aplica máscaras iniciais nos dados estáticos
+        if (dadosFormatados.cpf) dadosFormatados.cpf = aplicarMascaraCPF(dadosFormatados.cpf);
+        if (dadosFormatados.telefone) dadosFormatados.telefone = aplicarMascaraTelefone(dadosFormatados.telefone);
+        if (dadosFormatados.cep) dadosFormatados.cep = aplicarMascaraCEP(dadosFormatados.cep);
+
         setFormData(dadosFormatados);
         setDadosOriginais(dadosFormatados);
       } catch (err) {
@@ -33,16 +39,44 @@ export function usePerfil(onLogoutSuccess) {
     carregarDados();
   }, []);
 
+  const aplicarMascaraCPF = (v) => {
+    let masked = v.replace(/\D/g, '');
+    masked = masked.replace(/(\d{3})(\d)/, '$1.$2');
+    masked = masked.replace(/(\d{3})(\d)/, '$1.$2');
+    masked = masked.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    return masked;
+  };
+
+  const aplicarMascaraTelefone = (v) => {
+    let masked = v.replace(/\D/g, '');
+    masked = masked.replace(/^(\d{2})(\d)/g, '($1) $2');
+    masked = masked.replace(/(\d{5})(\d)/, '$1-$2');
+    return masked;
+  };
+
+  const aplicarMascaraCEP = (v) => {
+    let masked = v.replace(/\D/g, '');
+    masked = masked.replace(/^(\d{5})(\d)/, '$1-$2');
+    return masked;
+  };
+
   const handleChange = (field, value) => {
     if (field === 'cpf') {
-      // Aplica máscara de CPF dinamicamente
-      let masked = value.replace(/\D/g, '');
-      if (masked.length <= 11) {
-        masked = masked.replace(/(\d{3})(\d)/, '$1.$2');
-        masked = masked.replace(/(\d{3})(\d)/, '$1.$2');
-        masked = masked.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        value = masked;
-      } else return;
+      let digits = value.replace(/\D/g, '');
+      if (digits.length <= 11) value = aplicarMascaraCPF(value);
+      else return;
+    }
+
+    if (field === 'telefone') {
+      let digits = value.replace(/\D/g, '');
+      if (digits.length <= 11) value = aplicarMascaraTelefone(value);
+      else return;
+    }
+
+    if (field === 'cep') {
+      let digits = value.replace(/\D/g, '');
+      if (digits.length <= 8) value = aplicarMascaraCEP(value);
+      else return;
     }
 
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -50,34 +84,39 @@ export function usePerfil(onLogoutSuccess) {
 
   const validarFormulario = () => {
     const novosErros = {};
-    if (!formData.nome.trim()) novosErros.nome = 'O nome completo é obrigatório.';
-    if (!formData.email.trim() || !formData.email.includes('@')) novosErros.email = 'Insira um e-mail válido.';
-    if (formData.cpf.replace(/\D/g, '').length !== 11) novosErros.cpf = 'O CPF deve conter 11 dígitos.';
-    if (!formData.registro.trim()) novosErros.registro = 'O registro profissional é obrigatório.';
+    if (!formData.nome || !formData.nome.trim()) novosErros.nome = 'O nome completo é obrigatório.';
+    if (!formData.email || !formData.email.trim() || !formData.email.includes('@')) novosErros.email = 'Insira um e-mail válido.';
+    
+    const cpfLimpo = (formData.cpf || '').replace(/\D/g, '');
+    if (cpfLimpo.length !== 11) novosErros.cpf = 'O CPF deve conter 11 dígitos.';
+    
+    const telLimpo = (formData.telefone || '').replace(/\D/g, '');
+    if (telLimpo.length < 10 || telLimpo.length > 11) novosErros.telefone = 'Insira um telefone válido com DDD.';
 
     setErrors(novosErros);
     return Object.keys(novosErros).length === 0;
   };
 
   const handleEditar = () => {
-    setDadosOriginais(formData);
+    setDadosOriginais({ ...formData });
     setIsEditing(true);
   };
 
   const handleCancelar = () => {
-    setFormData(dadosOriginais);
+    setFormData({ ...dadosOriginais });
     setErrors({});
     setIsEditing(false);
   };
 
   const handleSalvar = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!validarFormulario()) return;
 
     try {
       const payload = perfilMappers.toApi(formData);
       await perfilService.updatePerfil(payload);
       
+      setDadosOriginais({ ...formData });
       setIsEditing(false);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
@@ -88,11 +127,27 @@ export function usePerfil(onLogoutSuccess) {
 
   const handleConfirmarExclusao = async () => {
     try {
-      await perfilService.deleteAccount();
+      await perfilService.deleteConta();
       setShowDeleteModal(false);
       if (onLogoutSuccess) onLogoutSuccess();
     } catch (err) {
       console.error("Erro ao deletar conta", err);
+    }
+  };
+
+  const handleAlterarSenha = async (senhaData) => {
+    try {
+      await perfilService.updateSenha({
+        senha_atual: senhaData.senhaAtual,
+        nova_senha: senhaData.novaSenha
+      });
+      
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+      return true;
+    } catch (err) {
+      console.error("Erro ao alterar a senha:", err);
+      return false;
     }
   };
 
@@ -107,6 +162,7 @@ export function usePerfil(onLogoutSuccess) {
     handleEditar,
     handleCancelar,
     handleSalvar,
-    handleConfirmarExclusao
+    handleConfirmarExclusao,
+    handleAlterarSenha
   };
 }
