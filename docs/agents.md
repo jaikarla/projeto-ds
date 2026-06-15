@@ -1,7 +1,5 @@
 # AGENTS.md
 
-`sujeito a mudanças`
-
 ## Visão Geral
 
 O Projeto BPA é um sistema web para gerenciamento e preenchimento de informações relacionadas ao Boletim de Produção Ambulatorial (BPA). O sistema segue arquitetura em camadas e separação de responsabilidades entre Controllers, Services, Models e Banco de Dados.
