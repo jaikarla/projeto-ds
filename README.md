@@ -118,10 +118,45 @@ Para executar um arquivo específico:
 ```bash
 npx vitest backend/src/tests/<nomeDoArquivoDeTeste>
 ```
+### Endpoints da API
+
+Após iniciar o backend, alguns endpoints disponíveis são:
+
+```http
+GET    /api/profissionais
+POST   /api/profissionais
+
+GET    /api/pacientes
+POST   /api/pacientes
+
+GET    /api/atendimentos
+POST   /api/atendimentos
+
+GET    /api/procedimentos
+POST   /api/procedimentos
+```
+
+As requisições podem ser testadas utilizando Postman, Insomnia ou outra ferramenta de sua preferência.
 
 ## 🛠️ Construído com
 
-Mencione as ferramentas utilizadas para criar seu projeto.
+| Tecnologia | Versão | Finalidade |
+|------------|---------|------------|
+| JavaScript | ES2023+ | Linguagem principal do projeto |
+| Node.js | 20+ | Ambiente de execução do backend |
+| Express.js | 5.2.1 | Desenvolvimento da API REST |
+| PostgreSQL (pg) | 8.20.0 | Conexão e manipulação do banco de dados PostgreSQL |
+| Neon PostgreSQL | Cloud Service | Hospedagem do banco de dados em nuvem |
+| React | 19.2.5 | Construção da interface do usuário |
+| React Router DOM | 7.16.0 | Gerenciamento de rotas no frontend |
+| Axios | 1.17.0 | Comunicação entre frontend e backend |
+| Vite | 8.0.9 | Ambiente de desenvolvimento e build do frontend |
+| JWT (jsonwebtoken) | 9.0.3 | Autenticação baseada em tokens |
+| bcrypt | 6.0.0 | Criptografia de senhas |
+| Vitest | 4.1.6 | Testes unitários do backend |
+| Lucide React | 1.17.0 | Biblioteca de ícones para a interface |
+| Git | Controle de versão | Gerenciamento do histórico do código |
+| GitHub | Plataforma Web | Hospedagem e colaboração do projeto |
 
 ## 📌 Versão
 
