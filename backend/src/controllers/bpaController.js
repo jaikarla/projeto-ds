@@ -70,52 +70,52 @@ export const getContadores = async (req, res) => {
   }
 }
 
-// exporta o relat√≥rio em CSV ou TXT ‚Äî RN8
+// exporta o relatÛrio em CSV ou TXT ? RF06
 export const exportarRelatorio = async (req, res) => {
   try {
-    const { tipo, formato } = req.params
+    const { tipo, formato } = req.params;
     const {
       dataInicial, dataFinal,
       cnes, nomeEstabelecimento, uf, mesAno,
       cnsProfissional, cbo, equipe
-    } = req.query
+    } = req.query;
 
     if (!dataInicial || !dataFinal) {
       return res.status(400).json({
         success: false,
-        message: 'Data inicial e data final s√£o obrigat√≥rias.'
-      })
+        message: 'Data inicial e data final s„o obrigatÛrias.'
+      });
     }
 
-    const dados = await buscarDadosRelatorio(dataInicial, dataFinal, tipo)
+    const dados = await buscarDadosRelatorio(dataInicial, dataFinal, tipo);
 
-    // RN8 ‚Äî sem dados no per√≠odo n√£o gera arquivo
+    // CEN¡RIO DE FALHA: sem dados no perÌodo n„o gera arquivo
     if (dados.bpaC.length === 0 && dados.bpaI.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'N√£o existem dados para o per√≠odo selecionado.'
-      })
+        message: 'N„o existem dados para o perÌodo selecionado.'
+      });
     }
 
-    const cabecalho = { cnes, nomeEstabelecimento, uf, mesAno, cnsProfissional, cbo, equipe }
+    const cabecalho = { cnes, nomeEstabelecimento, uf, mesAno, cnsProfissional, cbo, equipe };
 
     if (formato === 'csv') {
-      const conteudo = gerarCSV(dados, cabecalho)
-      res.setHeader('Content-Type', 'text/csv; charset=utf-8')
-      res.setHeader('Content-Disposition', `attachment; filename=BPA_${tipo}_${dataInicial}_${dataFinal}.csv`)
-      return res.send(conteudo)
+      const conteudo = gerarCSV(dados, cabecalho);
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename=BPA_${tipo}_${dataInicial}_${dataFinal}.csv`);
+      return res.send(conteudo);
     }
 
     if (formato === 'txt') {
-      const conteudo = gerarTXT(dados, cabecalho, dataInicial, dataFinal)
-      res.setHeader('Content-Type', 'text/plain; charset=utf-8')
-      res.setHeader('Content-Disposition', `attachment; filename=BPA_${tipo}_${dataInicial}_${dataFinal}.txt`)
-      return res.send(conteudo)
+      const conteudo = gerarTXT(dados, cabecalho, dataInicial, dataFinal);
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename=BPA_${tipo}_${dataInicial}_${dataFinal}.txt`);
+      return res.send(conteudo);
     }
 
-    res.status(400).json({ success: false, message: 'Formato inv√°lido. Use csv ou txt.' })
+    res.status(400).json({ success: false, message: 'Formato inv·lido. Use csv ou txt.' });
 
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    res.status(500).json({ success: false, message: error.message });
   }
 }
