@@ -1,6 +1,5 @@
 // OBS: este service usa o model de Profissionais e filtra por tipo = 'estudante
-// Estudantes não possuem tabel a propria no banco de dados
-
+// Estudantes não possuem tabela própria no banco de dados
 
 import Profissional from "../models/profissional.js";
 
