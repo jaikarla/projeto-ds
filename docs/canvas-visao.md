@@ -1,8 +1,4 @@
-# Canvas de Visão de Projeto
-
-> Sujeito a atualizações.
-
----
+# 🎯Canvas de Visão de Projeto
 
 # 1. Problema Central
 
