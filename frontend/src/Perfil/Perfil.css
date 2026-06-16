@@ -179,6 +179,51 @@ button:disabled {
     0 0 0 4px rgba(0, 120, 232, 0.14);
 }
 
+.perfil-password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.perfil-password-wrapper input {
+  padding-right: 50px;
+}
+
+.perfil-toggle-password {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #6487aa;
+  cursor: pointer;
+}
+
+.perfil-toggle-password:hover {
+  color: #003366;
+}
+
+.perfil-password-error {
+  display: block;
+  width: 100%;
+  margin-top: 2px;
+  padding: 12px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  box-sizing: border-box;
+}
+
 /* Customização do Select de UF */
 .custom-uf-wrapper {
   position: relative;

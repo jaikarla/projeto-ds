@@ -28,12 +28,6 @@ export function ProfessionalModal({
         </div>
 
         <form className="professional-form" onSubmit={onSubmit}>
-          {errorMessage && (
-            <p className="feedback-message" role="alert">
-              {errorMessage}
-            </p>
-          )}
-
           <label>
             <span>Nome Completo *</span>
             <input
@@ -90,7 +84,7 @@ export function ProfessionalModal({
                 <input
                   aria-invalid={Boolean(fieldErrors.registro)}
                   name="registro"
-                  placeholder="Ex: CRO-12345"
+                  placeholder="Ex: XX-12345"
                   type="text"
                   value={form.registro}
                   onChange={onInputChange}
@@ -145,6 +139,12 @@ export function ProfessionalModal({
             />
             {fieldErrors.cns && <span className="field-error">{fieldErrors.cns}</span>}
           </label>
+
+          {errorMessage && (
+            <p className="feedback-message" role="alert">
+              {errorMessage}
+            </p>
+          )}
 
           <div className="modal-actions">
             <button className="secondary-button" type="button" onClick={onClose}>

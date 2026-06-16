@@ -506,9 +506,9 @@ button:disabled {
   position: fixed;
   right: 26px;
   bottom: 38px;
-  z-index: 20;
+  z-index: 1200;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   width: min(445px, calc(100vw - 32px));
   min-height: 66px;
@@ -521,6 +521,12 @@ button:disabled {
   font-weight: 700;
   box-shadow: 0 14px 30px rgba(15, 34, 54, 0.14);
   box-sizing: border-box;
+}
+
+.paciente-alert span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .paciente-alert::before {

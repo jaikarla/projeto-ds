@@ -70,6 +70,7 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
       dataNascimento: 'A data de nascimento é obrigatória',
       sexo: 'O sexo é obrigatório',
       racaCor: 'A raça/cor é obrigatória',
+      etnia: 'A etnia é obrigatória',
       cpf: 'O CPF é obrigatório',
       nacionalidade: 'A nacionalidade é obrigatória',
       cns: 'O cartão CNS é obrigatório',
@@ -160,13 +161,15 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
               {erros.racaCor && <span className="field-error">{erros.racaCor}</span>}
             </div>
             <div>
-              <label>Etnia</label>
+              <label>Etnia *</label>
               <input 
                 type="text" 
                 placeholder="Digite a etnia" 
                 value={values.etnia || ''} 
                 onChange={e => handleChange('etnia', e.target.value)} 
+                aria-invalid={erros.etnia ? "true" : "false"}
               />
+              {erros.etnia && <span className="field-error">{erros.etnia}</span>}
             </div>
             <div>
               <label>Nacionalidade *</label>

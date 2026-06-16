@@ -28,9 +28,6 @@ export default function Cadastro() {
   const [cpf, setCpf] = useState('')
   const [telefone, setTelefone] = useState('')
   const [confirmarSenha, setConfirmarSenha] = useState('')
-  const [cep, setCep] = useState('')
-  const [numero, setNumero] = useState('')
-  const [complemento, setComplemento] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -227,24 +224,6 @@ export default function Cadastro() {
                   onChange={(e) => setConfirmarSenha(e.target.value)}
                   required 
                 />
-              </div>
-
-              <div className="cadastro-address-section">
-                <h4 className="cadastro-address-title">Endereço (Opcional)</h4>
-                <div className="cadastro-address-row">
-                  <div className="cadastro-input-group field-cep">
-                    <label>CEP</label>
-                    <input type="text" placeholder="00000-000" value={cep} onChange={(e) => setCep(e.target.value)} />
-                  </div>
-                  <div className="cadastro-input-group field-num">
-                    <label>Número</label>
-                    <input type="text" placeholder="Nº" value={numero} onChange={(e) => setNumero(e.target.value)} />
-                  </div>
-                  <div className="cadastro-input-group field-comp">
-                    <label>Complemento</label>
-                    <input type="text" placeholder="Bloco..." value={complemento} onChange={(e) => setComplemento(e.target.value)} />
-                  </div>
-                </div>
               </div>
 
               <div className="cadastro-submit-area">
