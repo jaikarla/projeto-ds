@@ -6,10 +6,7 @@ export const perfilMappers = {
       nome: apiData.nome || apiData.nome_completo || '',
       email: apiData.email || apiData.email_usuario || '',
       cpf: apiData.cpf || apiData.cpf_usuario || '',
-      telefone: apiData.telefone || apiData.telefone_usuario || '',
-      cep: '',
-      numero: '',
-      complemento: ''
+      telefone: apiData.telefone || apiData.telefone_usuario || ''
     };
   },
 

@@ -21,10 +21,6 @@ export function normalizeRegistro(value) {
   return trimmedValue
 }
 
-export function displayRegistro(value) {
-  return value?.replace(/^[A-Z]{3}-/, '') ?? ''
-}
-
 export function apiToForm(professional) {
   return {
     nome: professional.nomeCompleto ?? professional.nome ?? '',

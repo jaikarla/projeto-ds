@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePerfil } from './usePerfil';
-import { UserRoundPen, LogOut, Trash2, KeyRound } from 'lucide-react';
+import { UserRoundPen, LogOut, Trash2, KeyRound, Eye, EyeOff } from 'lucide-react';
 import './Perfil.css';
+
+const senhaInicial = { senhaAtual: '', novaSenha: '', confirmarSenha: '' };
+const senhaVisivelInicial = { senhaAtual: false, novaSenha: false, confirmarSenha: false };
 
 function PerfilPage() {
     const navigate = useNavigate();
     const [senhaModalAberto, setSenhaModalAberto] = useState(false);
-    const [senhaData, setSenhaData] = useState({ senhaAtual: '', novaSenha: '', confirmarSenha: '' });
-    const [senhaErro, setSenhaErro] = useState('');
+    const [senhaData, setSenhaData] = useState(senhaInicial);
+    const [senhaErros, setSenhaErros] = useState({});
+    const [senhaVisivel, setSenhaVisivel] = useState(senhaVisivelInicial);
 
     const limparSessaoEDeslogar = () => {
         localStorage.removeItem('bpaAuthSession');
@@ -30,24 +34,60 @@ function PerfilPage() {
         handleAlterarSenha
     } = usePerfil(limparSessaoEDeslogar);
 
+    const abrirModalSenha = () => {
+        setSenhaData(senhaInicial);
+        setSenhaErros({});
+        setSenhaVisivel(senhaVisivelInicial);
+        setSenhaModalAberto(true);
+    };
+
+    const fecharModalSenha = () => {
+        setSenhaModalAberto(false);
+        setSenhaErros({});
+        setSenhaVisivel(senhaVisivelInicial);
+    };
+
+    const alterarCampoSenha = (campo, valor) => {
+        setSenhaData(prev => ({ ...prev, [campo]: valor }));
+        setSenhaErros(prev => {
+            const novosErros = { ...prev };
+            delete novosErros[campo];
+            delete novosErros.geral;
+            return novosErros;
+        });
+    };
+
+    const alternarSenhaVisivel = (campo) => {
+        setSenhaVisivel(prev => ({ ...prev, [campo]: !prev[campo] }));
+    };
+
+    const validarSenha = () => {
+        const novosErros = {};
+
+        if (!senhaData.senhaAtual.trim()) novosErros.senhaAtual = 'Informe a senha atual.';
+        if (!senhaData.novaSenha.trim()) novosErros.novaSenha = 'Informe a nova senha.';
+        if (!senhaData.confirmarSenha.trim()) novosErros.confirmarSenha = 'Confirme a nova senha.';
+
+        if (senhaData.novaSenha && senhaData.confirmarSenha && senhaData.novaSenha !== senhaData.confirmarSenha) {
+            novosErros.confirmarSenha = 'A nova senha e a confirmação não conferem.';
+        }
+
+        setSenhaErros(novosErros);
+        return Object.keys(novosErros).length === 0;
+    };
+
     const submeterNovaSenha = async (e) => {
         e.preventDefault();
-        if (!senhaData.senhaAtual || !senhaData.novaSenha || !senhaData.confirmarSenha) {
-        setSenhaErro('Todos os campos são obrigatórios.');
-        return;
-        }
-        if (senhaData.novaSenha !== senhaData.confirmarSenha) {
-        setSenhaErro('A nova senha e a confirmação não conferem.');
-        return;
-        }
+
+        if (!validarSenha()) return;
         
-        const sucesso = await handleAlterarSenha(senhaData);
-        if (sucesso) {
-        setSenhaData({ senhaAtual: '', novaSenha: '', confirmarSenha: '' });
-        setSenhaErro('');
-        setSenhaModalAberto(false);
+        const resultado = await handleAlterarSenha(senhaData);
+        if (resultado.sucesso) {
+            setSenhaData(senhaInicial);
+            setSenhaErros({});
+            setSenhaModalAberto(false);
         } else {
-        setSenhaErro('Erro ao atualizar a senha no servidor.');
+            setSenhaErros({ geral: resultado.mensagem });
         }
     };
 
@@ -145,49 +185,6 @@ function PerfilPage() {
             </div>
           </div>
 
-          <div className="form-section-divisor" style={{ margin: '10px 0 10px 0' }}>
-            <h3 className="section-title">Endereço (Opcional)</h3>
-          </div>
-
-          <div className="form-grid-3">
-            <div>
-              <label>CEP</label>
-              <input 
-                type="text" 
-                maxLength="9"
-                value={formData.cep || ''}
-                onChange={(e) => handleChange('cep', e.target.value)}
-                disabled={!isEditing}
-                className={!isEditing ? 'input-disabled' : ''}
-                placeholder="00000-000"
-              />
-            </div>
-
-            <div>
-              <label>Número</label>
-              <input 
-                type="text" 
-                value={formData.numero || ''}
-                onChange={(e) => handleChange('numero', e.target.value)}
-                disabled={!isEditing}
-                className={!isEditing ? 'input-disabled' : ''}
-                placeholder="Nº"
-              />
-            </div>
-
-            <div>
-              <label>Complemento</label>
-              <input 
-                type="text" 
-                value={formData.complemento || ''}
-                onChange={(e) => handleChange('complemento', e.target.value)}
-                disabled={!isEditing}
-                className={!isEditing ? 'input-disabled' : ''}
-                placeholder="Apto, Bloco, etc."
-              />
-            </div>
-          </div>
-
           {isEditing && (
             <div className="paciente-modal-footer" style={{ borderTop: '1px solid #edf1f5', paddingTop: '20px', marginTop: '10px' }}>
               <button type="button" className="btn-cancelar" onClick={handleCancelar}>
@@ -215,7 +212,7 @@ function PerfilPage() {
           </div>
 
           <div className="seguranca-actions">
-            <button type="button" className="btn-cancelar btn-logout" onClick={() => setSenhaModalAberto(true)}>
+            <button type="button" className="btn-cancelar btn-logout" onClick={abrirModalSenha}>
               <KeyRound size={16} style={{ marginRight: '6px' }} />
               Alterar senha
             </button>
@@ -239,38 +236,77 @@ function PerfilPage() {
           <div className="paciente-modal-box" style={{ width: '440px' }}>
             <div className="paciente-modal-header">
               <h2>Alterar Senha de Acesso</h2>
-              <button type="button" className="paciente-modal-close" onClick={() => { setSenhaModalAberto(false); setSenhaErro(''); }}>&times;</button>
+              <button type="button" className="paciente-modal-close" onClick={fecharModalSenha}>&times;</button>
             </div>
             <form onSubmit={submeterNovaSenha} className="paciente-modal-form" style={{ padding: '10px 30px 30px' }}>
               <div>
                 <label>Senha atual</label>
-                <input 
-                  type="password" 
-                  value={senhaData.senhaAtual} 
-                  onChange={e => setSenhaData(p => ({ ...p, senhaAtual: e.target.value }))}
-                />
+                <div className="perfil-password-wrapper">
+                  <input 
+                    type={senhaVisivel.senhaAtual ? 'text' : 'password'} 
+                    value={senhaData.senhaAtual} 
+                    onChange={e => alterarCampoSenha('senhaAtual', e.target.value)}
+                    aria-invalid={senhaErros.senhaAtual ? "true" : "false"}
+                    autoComplete="current-password"
+                  />
+                  <button
+                    type="button"
+                    className="perfil-toggle-password"
+                    onClick={() => alternarSenhaVisivel('senhaAtual')}
+                    aria-label={senhaVisivel.senhaAtual ? 'Ocultar senha atual' : 'Mostrar senha atual'}
+                  >
+                    {senhaVisivel.senhaAtual ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                </div>
+                {senhaErros.senhaAtual && <span className="field-error">{senhaErros.senhaAtual}</span>}
               </div>
               <div>
                 <label>Nova senha</label>
-                <input 
-                  type="password" 
-                  value={senhaData.novaSenha} 
-                  onChange={e => setSenhaData(p => ({ ...p, novaSenha: e.target.value }))}
-                />
+                <div className="perfil-password-wrapper">
+                  <input 
+                    type={senhaVisivel.novaSenha ? 'text' : 'password'} 
+                    value={senhaData.novaSenha} 
+                    onChange={e => alterarCampoSenha('novaSenha', e.target.value)}
+                    aria-invalid={senhaErros.novaSenha ? "true" : "false"}
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    className="perfil-toggle-password"
+                    onClick={() => alternarSenhaVisivel('novaSenha')}
+                    aria-label={senhaVisivel.novaSenha ? 'Ocultar nova senha' : 'Mostrar nova senha'}
+                  >
+                    {senhaVisivel.novaSenha ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                </div>
+                {senhaErros.novaSenha && <span className="field-error">{senhaErros.novaSenha}</span>}
               </div>
               <div>
                 <label>Confirmar nova senha</label>
-                <input 
-                  type="password" 
-                  value={senhaData.confirmarSenha} 
-                  onChange={e => setSenhaData(p => ({ ...p, confirmarSenha: e.target.value }))}
-                />
+                <div className="perfil-password-wrapper">
+                  <input 
+                    type={senhaVisivel.confirmarSenha ? 'text' : 'password'} 
+                    value={senhaData.confirmarSenha} 
+                    onChange={e => alterarCampoSenha('confirmarSenha', e.target.value)}
+                    aria-invalid={senhaErros.confirmarSenha ? "true" : "false"}
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    className="perfil-toggle-password"
+                    onClick={() => alternarSenhaVisivel('confirmarSenha')}
+                    aria-label={senhaVisivel.confirmarSenha ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'}
+                  >
+                    {senhaVisivel.confirmarSenha ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                </div>
+                {senhaErros.confirmarSenha && <span className="field-error">{senhaErros.confirmarSenha}</span>}
               </div>
               
-              {senhaErro && <span className="field-error" style={{ display: 'block', marginTop: '10px' }}>{senhaErro}</span>}
+              {senhaErros.geral && <span className="perfil-password-error">{senhaErros.geral}</span>}
 
               <div className="paciente-modal-footer" style={{ marginTop: '20px', padding: 0 }}>
-                <button type="button" className="btn-cancelar" onClick={() => { setSenhaModalAberto(false); setSenhaErro(''); }}>
+                <button type="button" className="btn-cancelar" onClick={fecharModalSenha}>
                   Cancelar
                 </button>
                 <button type="submit" className="btn-salvar">
