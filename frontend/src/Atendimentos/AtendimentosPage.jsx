@@ -22,8 +22,7 @@ export function AtendimentosPage() {
             type="button"
             onClick={atendimentos.handleOpenModal}
           >
-            <Plus size={18} />
-            Novo Atendimento
+            <span>+</span> Novo Atendimento
           </button>
         </div>
 

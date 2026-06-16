@@ -39,54 +39,65 @@ button:disabled {
    BOTÕES GERAIS
    __________________________________________________________________________ */
 .btn-novo-paciente,
-.btn-salvar {
-  border: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 50px;
-  padding: 0 22px;
-  border-radius: 9px;
-  background: #064779;
-  color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
-  font-size: 16px;
+.btn-salvar,
+.paciente-modal-footer .btn-salvar {
+  border: 0 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  min-height: 50px !important;
+  height: 50px !important;
+  padding: 0 22px !important;
+  border-radius: 9px !important;
+  background: linear-gradient(90deg, #1a827f 40%, #8474c0 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18) !important;
+  font-size: 16px !important;
+}
+
+.paciente-modal-footer .btn-salvar {
+  min-width: 116px !important;
 }
 
 .btn-novo-paciente:hover,
-.btn-salvar:hover {
-  background: #003b69;
+.btn-salvar:hover,
+.paciente-modal-footer .btn-salvar:hover {
+  background: #043E6E !important;
+  background-image: none !important; 
 }
 
-.btn-novo-paciente svg {
-  display: none; 
-}
-.btn-novo-paciente::before {
-  content: "+";
+.btn-novo-paciente span {
   font-size: 28px;
   line-height: 1;
   transform: translateY(-1px);
   font-weight: 700;
+  display: inline-block;
 }
 
-.btn-cancelar {
-  border: 0;
-  cursor: pointer;
-  min-width: 110px;
-  min-height: 50px;
-  border: 1px solid #d8e0e8;
-  border-radius: 9px;
-  background: #ffffff;
-  color: #001f3f;
-  font-weight: 700;
-  font-size: 16px;
+.btn-cancelar,
+.paciente-modal-footer .btn-cancelar {
+  border: 0 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 110px !important;
+  min-height: 50px !important;
+  height: 50px !important;
+  border: 1px solid #d8e0e8 !important;
+  border-radius: 9px !important;
+  background: #ffffff !important;
+  color: #4f6072 !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
 }
 
-.btn-cancelar:hover {
-  background: #f4f7fa;
+.btn-cancelar:hover,
+.paciente-modal-footer .btn-cancelar:hover {
+  background: #eef3f8 !important;
 }
 
 /* ___________________________________________________________________________
@@ -494,9 +505,6 @@ button:disabled {
   padding-top: 10px;
 }
 
-.paciente-modal-footer .btn-salvar {
-  min-width: 116px;
-}
 
 /* ___________________________________________________________________________
 

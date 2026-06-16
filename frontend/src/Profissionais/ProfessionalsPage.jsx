@@ -21,8 +21,7 @@ export function ProfessionalsPage() {
             type="button"
             onClick={professionals.handleOpenModal}
           >
-            <span aria-hidden="true">+</span>
-            Novo Profissional
+            <span>+</span> Novo Profissional
           </button>
         </div>
 

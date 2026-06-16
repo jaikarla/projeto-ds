@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { calcularIdade } from '../pacientesMappers.js';
+import '../Pacientes.css'
 
 export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresIniciais }) {
   const [values, setValues] = useState(valoresIniciais);

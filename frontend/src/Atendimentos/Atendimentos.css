@@ -40,32 +40,28 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 45px;
-  padding: 0 20px;
-  border-radius: 8px;
-  background: #064779;
+  gap: 12px; 
+  min-height: 50px; 
+  padding: 0 22px;
+  border-radius: 9px; 
+  background: linear-gradient(90deg, #1a827f 40%, #8474c0 100%);
   color: #ffffff;
   font-weight: 700;
-  font-size: 15px;
   box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
+  font-size: 16px; 
 }
 
 .atendimento-primary-button:hover {
-  background: #003b69;
+  background: #043E6E;
+  background-image: none; 
 }
 
-.atendimento-search-field {
-  display: flex;
-  align-items: center;
-  width: min(432px, 100%);
-  height: 46px;
-  margin-bottom: 27px;
-  padding: 0 14px;
-  border: 1px solid #d8e0e8;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #64758a;
+.atendimento-primary-button span {
+  font-size: 28px;
+  line-height: 1;
+  transform: translateY(-1px);
+  font-weight: 700;
+  display: inline-block; 
 }
 
 .atendimento-search-field input {
