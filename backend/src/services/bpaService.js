@@ -49,12 +49,12 @@ export const buscarDadosRelatorio = async (dataInicial, dataFinal, tipo) => {
 }
 
 
-// gera conteúdo CSV
+// gera conteÃºdo CSV
 export const gerarCSV = (dados, cabecalho) => {
   const linhas = [];
 
 
-  // cabeçalho do arquivo
+  // cabeÃ§alho do arquivo
   if (cabecalho.cnes || cabecalho.nomeEstabelecimento) {
     linhas.push(`CNES:${cabecalho.cnes || ''},ESTABELECIMENTO:${cabecalho.nomeEstabelecimento || ''},UF:${cabecalho.uf || ''},MES_ANO:${cabecalho.mesAno || ''}`);
     linhas.push('');
@@ -102,7 +102,7 @@ export const gerarCSV = (dados, cabecalho) => {
 }
 
 
-// gera conteúdo TXT
+// gera conteÃºdo TXT
 export const gerarTXT = (dados, cabecalho, dataInicial, dataFinal) => {
   const linhas = [];
   const sep = '='.repeat(60);

@@ -70,7 +70,7 @@ export const getContadores = async (req, res) => {
   }
 }
 
-// exporta o relatÛrio em CSV ou TXT ? RF06
+// exporta o relat√≥rio em CSV ou TXT - RN8
 export const exportarRelatorio = async (req, res) => {
   try {
     const { tipo, formato } = req.params;
@@ -83,17 +83,17 @@ export const exportarRelatorio = async (req, res) => {
     if (!dataInicial || !dataFinal) {
       return res.status(400).json({
         success: false,
-        message: 'Data inicial e data final s„o obrigatÛrias.'
+        message: 'Data inicial e data final s√£o obrigat√≥rias.'
       });
     }
 
     const dados = await buscarDadosRelatorio(dataInicial, dataFinal, tipo);
 
-    // CEN¡RIO DE FALHA: sem dados no perÌodo n„o gera arquivo
+    // CEN√ÅRIO DE FALHA: sem dados no per√≠odo n√£o gera arquivo
     if (dados.bpaC.length === 0 && dados.bpaI.length === 0) {
       return res.status(404).json({
         success: false,
-        message: 'N„o existem dados para o perÌodo selecionado.'
+        message: 'N√£o existem dados para o per√≠odo selecionado.'
       });
     }
 
@@ -113,7 +113,7 @@ export const exportarRelatorio = async (req, res) => {
       return res.send(conteudo);
     }
 
-    res.status(400).json({ success: false, message: 'Formato inv·lido. Use csv ou txt.' });
+    res.status(400).json({ success: false, message: 'Formato inv√°lido. Use csv ou txt.' });
 
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
