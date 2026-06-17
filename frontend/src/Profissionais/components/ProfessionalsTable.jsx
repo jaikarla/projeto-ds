@@ -1,5 +1,3 @@
-import { displayRegistro } from '../professionalMappers'
-
 export function ProfessionalsTable({
   isLoading,
   professionals,
@@ -30,7 +28,7 @@ export function ProfessionalsTable({
           <span role="cell">{professional.cpf}</span>
           <span role="cell">
             {professional.registro && professional.registro.trim() !== ''
-              ? `${displayRegistro(professional.registro)} (${professional.uf || ''})` 
+              ? professional.registro
               : ''
             }
           </span>

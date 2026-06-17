@@ -7,10 +7,7 @@ export function usePerfil(onLogoutSuccess) {
     nome: '',
     email: '',
     cpf: '',
-    telefone: '',
-    cep: '',
-    numero: '',
-    complemento: ''
+    telefone: ''
   });
 
   const [dadosOriginais, setDadosOriginais] = useState({});
@@ -34,12 +31,6 @@ export function usePerfil(onLogoutSuccess) {
     return masked;
   };
 
-  const aplicarMascaraCEP = (v) => {
-    let masked = v.replace(/\D/g, '');
-    masked = masked.replace(/^(\d{5})(\d)/, '$1-$2');
-    return masked;
-  };
-
   useEffect(() => {
     async function carregarDados() {
       try {
@@ -48,7 +39,6 @@ export function usePerfil(onLogoutSuccess) {
 
         if (dadosFormatados.cpf) dadosFormatados.cpf = aplicarMascaraCPF(dadosFormatados.cpf);
         if (dadosFormatados.telefone) dadosFormatados.telefone = aplicarMascaraTelefone(dadosFormatados.telefone);
-        if (dadosFormatados.cep) dadosFormatados.cep = aplicarMascaraCEP(dadosFormatados.cep);
 
         setFormData(dadosFormatados);
         setDadosOriginais(dadosFormatados);
@@ -72,12 +62,6 @@ export function usePerfil(onLogoutSuccess) {
     if (field === 'telefone') {
       const digits = value.replace(/\D/g, '');
       if (digits.length <= 11) value = aplicarMascaraTelefone(value);
-      else return;
-    }
-
-    if (field === 'cep') {
-      const digits = value.replace(/\D/g, '');
-      if (digits.length <= 8) value = aplicarMascaraCEP(value);
       else return;
     }
 
@@ -156,11 +140,13 @@ export function usePerfil(onLogoutSuccess) {
       setErrors({});
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
-      return true;
+      return { sucesso: true };
     } catch (err) {
       console.error('Erro ao alterar a senha:', err);
-      setErrors({ geral: err.message || 'Erro ao alterar a senha.' });
-      return false;
+      return {
+        sucesso: false,
+        mensagem: err.message || 'Erro ao alterar a senha.'
+      };
     }
   };
 

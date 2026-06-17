@@ -272,31 +272,6 @@ ___________________________________________________*/
   font-weight: 700;
 }
 
-/* SEÇÃO ENDEREÇO ____________________________________*/
-.cadastro-address-section {
-  margin-top: 5px;
-  border-top: 1px dashed rgba(0, 51, 102, 0.2);
-  padding-top: 15px;
-}
-
-.cadastro-address-title {
-  color: #003366;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  margin: 0 0 12px 0;
-  font-weight: 600;
-  text-align: left;
-}
-
-.cadastro-address-row {
-  display: flex;
-  gap: 12px;
-}
-
-.cadastro-address-row .cadastro-input-group:nth-child(1) { flex: 2; }
-.cadastro-address-row .cadastro-input-group:nth-child(2) { flex: 1; }
-.cadastro-address-row .cadastro-input-group:nth-child(3) { flex: 2; }
-
 /* BOTÃO CADASTRAR CENTRALIZADO ______________________*/
 .cadastro-submit-area {
   margin-top: 15px;
