@@ -1,38 +1,38 @@
-# ADR 002 - Adoção de Arquitetura Monolítica (Monolito)
+# ADR 002 - AdoÃ§Ã£o de Arquitetura MonolÃ­tica (Monolito)
 
-## Cabeçalho
+## CabeÃ§alho
 * **Status:** Aceito
 * **Data:** 30/04/2026
 * **Decisores:** Ana Clara Bizarria, Byanca Souza, Jaianny Souza, Layse Gomes, Maria Claudia Rocha, Raiana Donato e Samara Petrilly. 
 
 ## Contexto
-Ao iniciar o projeto do sistema de faturamento do Boletim de Produção Ambulatorial (BPA), tornou-se necessário decidir como os componentes estruturais do sistema (Front-end e Back-end) seriam organizados, distribuídos e conectados. O principal objetivo técnico é escolher uma macroarquitetura que viabilize máxima agilidade no desenvolvimento inicial e facilidade extrema de manutenção. Dado que o projeto é conduzido por uma equipe enxuta, precisamos de uma solução que centralize o código e elimine barreiras operacionais complexas de infraestrutura e gerenciamento de redes distribuídas neste estágio do ciclo de vida do software.
+Ao iniciar o projeto do sistema de faturamento do Boletim de ProduÃ§Ã£o Ambulatorial (BPA), tornou-se necessÃ¡rio decidir como os componentes estruturais do sistema (Front-end e Back-end) seriam organizados, distribuÃ­dos e conectados. O principal objetivo tÃ©cnico Ã© escolher uma macroarquitetura que viabilize mÃ¡xima agilidade no desenvolvimento inicial e facilidade extrema de manutenÃ§Ã£o. Dado que o projeto Ã© conduzido por uma equipe enxuta, precisamos de uma soluÃ§Ã£o que centralize o cÃ³digo e elimine barreiras operacionais complexas de infraestrutura e gerenciamento de redes distribuÃ­das neste estÃ¡gio do ciclo de vida do software.
 
-## Decisão
+## DecisÃ£o
 
-**Por que escolhemos a Arquitetura Monolítica?**
-* **Velocidade de Desenvolvimento (Time-to-market):** Como o projeto está em fase de validação e nem todas as regras de negócio do BPA estão rigidamente consolidadas, o monolito permite realizar alterações estruturais profundas e refatorações no código rapidamente, sem a necessidade de gerenciar contratos complexos ou versionamento de APIs entre múltiplos serviços isolados.
-* **Baixa Complexidade de Rede:** Ao concentrar o sistema em uma única unidade de execução, eliminamos completamente preocupações nativas de sistemas distribuídos, tais como falhas de comunicação inter-serviços, latência de rede, gerenciamento de service mesh ou arquiteturas de autenticação e autorização descentralizadas.
-* **Otimização para Equipes Enxutas:** Centralizar o código-fonte permite que toda a equipe detenha o conhecimento holístico da plataforma. Isso reduz drasticamente o atrito de contexto e elimina a necessidade de alternar e coordenar múltiplos repositórios no Git.
+**Por que escolhemos a Arquitetura MonolÃ³tica?**
+* **Velocidade de Desenvolvimento (Time-to-market):** Como o projeto estÃ¡ em fase de validaÃ§Ã£o e nem todas as regras de negÃ³cio do BPA estÃ£o rigidamente consolidadas, o monolito permite realizar alteraÃ§Ãµes estruturais profundas e refatoraÃ§Ãµes no cÃ³digo rapidamente, sem a necessidade de gerenciar contratos complexos ou versionamento de APIs entre mÃºltiplos serviÃ§os isolados.
+* **Baixa Complexidade de Rede:** Ao concentrar o sistema em uma Ãºnica unidade de execuÃ§Ã£o, eliminamos completamente preocupaÃ§Ãµes nativas de sistemas distribuÃ­dos, tais como falhas de comunicaÃ§Ã£o inter-serviÃ§os, latÃªncia de rede, gerenciamento de service mesh ou arquiteturas de autenticaÃ§Ã£o e autorizaÃ§Ã£o descentralizadas.
+* **OtimizaÃ§Ã£o para Equipes Enxutas:** Centralizar o cÃ³digo-fonte permite que toda a equipe detenha o conhecimento holÃ­stico da plataforma. Isso reduz drasticamente o atrito de contexto e elimina a necessidade de alternar e coordenar mÃºltiplos repositÃ³rios no Git.
 
-**Por que acoplar a estratégia de Front-end (React + Vite) e Back-end?**
-* **Deploy e Orquestração Simplificados:** A publicação do ecossistema de software reduz-se a um único pipeline de deploy. Isso simplifica drasticamente a gestão da infraestrutura, barateia os custos de hospedagem e evita a necessidade de ferramentas complexas de orquestração de containers nesta fase acadêmica.
-* **Sincronia de Contratos de Dados:** A integração entre a interface do usuário e os endpoints de faturamento ocorre de forma direta e transparente, permitindo que alterações em tabelas ou rotas do backend sejam refletidas e testadas imediatamente no frontend sem quebras invisíveis.
+**Por que acoplar a estratÃ©gia de Front-end (React + Vite) e Back-end?**
+* **Deploy e OrquestraÃ§Ã£o Simplificados:** A publicaÃ§Ã£o do ecossistema de software reduz-se a um Ãºnico pipeline de deploy. Isso simplifica drasticamente a gestÃ£o da infraestrutura, barateia os custos de hospedagem e evita a necessidade de ferramentas complexas de orquestraÃ§Ã£o de containers nesta fase acadÃªmica.
+* **Sincronia de Contratos de Dados:** A integraÃ§Ã£o entre a interface do usuÃ¡rio e os endpoints de faturamento ocorre de forma direta e transparente, permitindo que alteraÃ§Ãµes em tabelas ou rotas do backend sejam refletidas e testadas imediatamente no frontend sem quebras invisÃ­veis.
 
-Decidimos adotar a **Arquitetura Monolítica (Monolito)** como o padrão estrutural do projeto.
-* **Distribuição:** Os componentes de interface (React/Vite) e processamento (Node.js) coexistirão de forma integrada, sendo implantados e distribuídos como uma única aplicação coesa.
-* **Comunicação:** Os fluxos de dados serão centralizados, utilizando chamadas de API REST diretas e síncronas trafegadas em formato JSON, eliminando camadas desnecessárias de mensageria ou RPC para este escopo.
+Decidimos adotar a **Arquitetura MonolÃ­tica (Monolito)** como o padrÃ£o estrutural do projeto.
+* **DistribuiÃ§Ã£o:** Os componentes de interface (React/Vite) e processamento (Node.js) coexistirÃ£o de forma integrada, sendo implantados e distribuÃ­dos como uma Ãºnica aplicaÃ§Ã£o coesa.
+* **ComunicaÃ§Ã£o:** Os fluxos de dados serÃ£o centralizados, utilizando chamadas de API REST diretas e sÃ­ncronas trafegadas em formato JSON, eliminando camadas desnecessÃ¡rias de mensageria ou RPC para este escopo.
 
-## Consequências
+## ConsequÃªncias
 
 ### Positivas
-* **Deploy mais simples:** Fica consideravelmente mais fácil realizar a publicação e manutenção do sistema, já que tudo se resume a uma única aplicação ativa.
-* **Menos complicação na comunicação:** Como a arquitetura corre junta, mitigamos problemas de timeout de rede e necessidade de lidar com protocolos complexos de comunicação distribuída (como gRPC).
-* **Dados consistentes e refatoração segura:** Capacidade de alterar regras de ponta a ponta (da tela ao banco de dados) em um único ciclo de desenvolvimento com maior previsibilidade.
-* **Curva de aprendizado reduzida:** Facilita a integração e o trabalho paralelo de todas as integrantes da equipe dentro do mesmo ecossistema de arquivos.
+* **Deploy mais simples:** Fica consideravelmente mais fÃ¡cil realizar a publicaÃ§Ã£o e manutenÃ§Ã£o do sistema, jÃ¡ que tudo se resume a uma Ãºnica aplicaÃ§Ã£o ativa.
+* **Menos complicaÃ§Ã£o na comunicaÃ§Ã£o:** Como a arquitetura corre junta, mitigamos problemas de timeout de rede e necessidade de lidar com protocolos complexos de comunicaÃ§Ã£o distribuÃ­da (como gRPC).
+* **Dados consistentes e refatoraÃ§Ã£o segura:** Capacidade de alterar regras de ponta a ponta (da tela ao banco de dados) em um Ãºnico ciclo de desenvolvimento com maior previsibilidade.
+* **Curva de aprendizado reduzida:** Facilita a integraÃ§Ã£o e o trabalho paralelo de todas as integrantes da equipe dentro do mesmo ecossistema de arquivos.
 
 ### Negativas
-* **Escalabilidade horizontal limitada:** Não há isolamento de componentes. Se o módulo de processamento de faturamento do BPA exigir mais performance, todo o ecossistema (inclusive a interface estática) precisará ser escalado uniformemente.
-* **Risco de endividamento técnico (Monolito de Lama):** A falta de barreiras físicas entre os módulos exige disciplina rigorosa de design de código por parte do time para evitar acoplamentos nocivos entre módulos distintos.
-* **Aumento progressivo do tempo de build:** À medida que o volume de arquivos de frontend e backend crescer, os testes e o processo de compilação da aplicação unificada se tornarão mais lentos.
-* **Ponto único de falha (SPOF):** Uma exceção grave não tratada ou erro de runtime no backend tem o potencial intrínseco de derrubar a interface e indisponibilizar a aplicação inteira.
+* **Escalabilidade horizontal limitada:** NÃ£o hÃ¡ isolamento de componentes. Se o mÃ³dulo de processamento de faturamento do BPA exigir mais performance, todo o ecossistema (inclusive a interface estÃ¡tica) precisarÃ¡ ser escalado uniformemente.
+* **Risco de endividamento tÃ©cnico (Monolito de Lama):** A falta de barreiras fÃ­sicas entre os mÃ³dulos exige disciplina rigorosa de design de cÃ³digo por parte do time para evitar acoplamentos nocivos entre mÃ³dulos distintos.
+* **Aumento progressivo do tempo de build:** Ã€ medida que o volume de arquivos de frontend e backend crescer, os testes e o processo de compilaÃ§Ã£o da aplicaÃ§Ã£o unificada se tornarÃ¢o mais lentos.
+* **Ponto Ãºnico de falha (SPOF):** Uma excecÃ£o grave nÃ£o tratada ou erro de runtime no backend tem o potencial intrÃ­nseco de derrubar a interface e indisponibilizar a aplicaÃ§Ã£o inteira.
