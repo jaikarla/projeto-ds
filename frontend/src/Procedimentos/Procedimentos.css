@@ -64,6 +64,23 @@ button:disabled {
   display: inline-block; 
 }
 
+.procedimentos-secondary-button {
+  min-width: 110px;
+  min-height: 50px;
+  border: 1px solid #d8e0e8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #001f3f;
+
+  font-family: inherit;      
+  font-size: 16px;           
+  font-weight: normal;       
+}
+
+.procedimentos-secondary-button:hover {
+  background: #e0e0e0;       
+}
+
 .procedimentos-toolbar {
   display: flex;
   align-items: center;
@@ -346,20 +363,6 @@ button:disabled {
   justify-content: flex-end;
   gap: 10px;
   padding-top: 10px;
-}
-
-.procedimentos-secondary-button {
-  min-width: 110px;
-  min-height: 50px;
-  border: 1px solid #d8e0e8;
-  border-radius: 9px;
-  background: #ffffff;
-  color: #001f3f;
-  font-weight: 700;
-}
-
-.procedimentos-secondary-button:hover {
-  background: #f4f7fa;
 }
 
 .procedimentos-modal-actions .procedimentos-primary-button {

@@ -63,6 +63,23 @@ button:disabled {
   display: inline-block; 
 }
 
+.secondary-button {
+  min-width: 110px;
+  min-height: 50px;
+  border: 1px solid #d8e0e8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #001f3f;
+  
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.secondary-button:hover {
+  background: #e0e0e0;
+}
+
 .search-field {
   display: flex;
   align-items: center;
@@ -336,19 +353,6 @@ button:disabled {
   padding-top: 10px;
 }
 
-.secondary-button {
-  min-width: 110px;
-  min-height: 50px;
-  border: 1px solid #d8e0e8;
-  border-radius: 9px;
-  background: #ffffff;
-  color: #001f3f;
-  font-weight: 700;
-}
-
-.secondary-button:hover {
-  background: #f4f7fa;
-}
 
 .modal-actions .primary-button {
   min-width: 116px;

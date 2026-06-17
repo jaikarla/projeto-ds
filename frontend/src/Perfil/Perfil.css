@@ -85,23 +85,38 @@ button:disabled {
 }
 
 .perfil-btn-edit-top {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  background: #064779; 
+  justify-content: center;
+  
+  gap: 6px; 
+  min-height: 50px;
+  padding: 0 22px;  
   border: none;
   border-radius: 9px;
-  padding: 0 20px;
-  min-height: 46px;
-  font-size: 15px;
-  font-weight: 600;
+  
+  background: linear-gradient(90deg, #1a827f 40%, #8474c0 100%);
   color: #ffffff;
+  box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.2s;
+  
+  font-family: inherit;
+  font-size: 16px;      
+  font-weight: 700;     
+  
 }
 
 .perfil-btn-edit-top:hover {
-  background: #003b69;
+  background: #043E6E;
+  background-image: none;
+}
+
+.perfil-btn-edit-top span {
+  font-size: 28px;
+  line-height: 1;
+  transform: translateY(-1px);
+  font-weight: 700;
+  display: inline-block; 
 }
 
 /* Botão Excluir Conta */
