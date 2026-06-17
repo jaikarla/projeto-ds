@@ -1,7 +1,5 @@
 # Boletim de Produção Ambulatorial - BPA
 
-> construção do readme em andamento.
-
 O projeto Boletim de Produção Ambulatorial (BPA), foi desenvolvido durante três meses para a Clínica de Especialidades Odontológicas (CEO), clínica escola do Hospital Odontológico (HO) da Universidade Federal de Pernambuco (UFPE).
 
 ## 💡Começando
@@ -27,8 +25,6 @@ git --version
 ```
 
 ### Instalação
-
-Uma série de exemplos passo-a-passo que informam o que você deve executar para ter um ambiente de desenvolvimento em execução.
 
 #### 1. Clone o repositório
 
@@ -164,11 +160,11 @@ Nós usamos Git e Github para controle de versão. Para as versões disponíveis
 
 ## 🖇️ Colaborando
 
-Por favor, leia o  `página a ser criada`  para obter detalhes sobre o nosso código de conduta e o processo para nos enviar pedidos de solicitação.
+Por favor, leia o  [CONTRIBUTING.md](./CONTRIBUTING.md)  para obter detalhes sobre o nosso código de conduta e o processo para nos enviar pedidos de solicitação.
 
 ## ✒️ Autores
 
-Você pode ver a lista de todos os colaboradores que participaram deste projeto em [CONTRIBUTORS.md](./CONTRIBUTORS.md)
+Você pode ver a lista de todos os colaboradores que participaram deste projeto em [CONTRIBUTORS.md](./CONTRIBUTORS.md).
 
 ## 📄 Licença
 
