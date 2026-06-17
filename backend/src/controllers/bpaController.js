@@ -97,7 +97,7 @@ export const exportarRelatorio = async (req, res) => {
       });
     }
 
-    const cabecalho = { cnes, nomeEstabelecimento, uf, mesAno, cnsProfissional, cbo, equipe };
+    const cabecalho = { tipo, cnes, nomeEstabelecimento, uf, mesAno, cnsProfissional, cbo, equipe };
 
     if (formato === 'csv') {
       const conteudo = gerarCSV(dados, cabecalho);
