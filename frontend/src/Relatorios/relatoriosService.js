@@ -11,8 +11,13 @@ export async function fetchRelatoriosContadores(dataInicial, dataFinal) {
 }
 
 export async function downloadRelatorioApi(tipo, formato, filtros) {
+  // remove campos null, undefined ou vazios antes de montar a URL
+  const filtrosLimpos = Object.fromEntries(
+    Object.entries(filtros).filter(([, valor]) => valor !== null && valor !== undefined && valor !== '')
+  );
+  
   // Converte o objeto de filtros em query params (dataInicial, dataFinal, cnes, uf, etc.)
-  const params = new URLSearchParams(filtros).toString();
+  const params = new URLSearchParams(filtrosLimpos).toString();
   
   const response = await fetch(`${API_BASE_URL}/relatorios/exportar/${tipo}/${formato}?${params}`, {
     method: 'GET',
@@ -21,7 +26,10 @@ export async function downloadRelatorioApi(tipo, formato, filtros) {
     }
   });
 
-  if (!response.ok) throw new Error(`Erro ao gerar o arquivo ${formato.toUpperCase()}.`);
+  if (!response.ok){
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.message || `Erro ao gerar o arquivo ${formato.toUpperCase()}.`);
+  }
 
   // Retorna o arquivo como um Blob nativo para download direto no navegador
   return response.blob();

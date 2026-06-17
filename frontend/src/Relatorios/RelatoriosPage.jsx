@@ -19,6 +19,7 @@ export default function RelatoriosPage() {
     handleInputChange,
     handleExport,
     exporting,
+    errorMessage,
   } = useRelatorios();
 
   return (
@@ -27,6 +28,13 @@ export default function RelatoriosPage() {
         <h1>Relatórios BPA</h1>
         <p>Gere relatórios de produção ambulatorial</p>
       </div>
+
+    {/* mensagem de erro visível */}
+    {errorMessage && (
+      <p className="feedback-message" role="alert">
+        {errorMessage}
+      </p>
+    )}
 
       {/* CARD DO PERÍODO */}
       <div className="relatorios-card-base">
