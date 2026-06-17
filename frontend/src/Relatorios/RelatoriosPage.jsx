@@ -101,9 +101,29 @@ export default function RelatoriosPage() {
         </button>
       </div>
 
-      {/* FOOTER - NENHUM PROCEDIMENTO */}
+      {/* FOOTER - FEEDBACK BASEADO NOS CONTADORES */}
       <div className="relatorios-empty-state-box">
-        <p>Nenhum procedimento {activeTab === 'Geral' ? '' : activeTab} no período.</p>
+        {activeTab === 'BPA-C' &&(
+          <p>
+            {contadores.bpaC === 0
+              ? 'Nenhum procedimento BPA-C registrado no período.'
+              : `${contadores.bpaC} procedimentos BPA-C encontrado(s) no período.`}
+          </p>
+        )}
+        {activeTab === 'BPA-I' &&(
+          <p>
+            {contadores.bpaI === 0
+              ? 'Nenhum procedimento BPA-I registrado no período.'
+              : `${contadores.bpaI} procedimentos BPA-I encontrado(s) no período.`}
+          </p>
+        )}
+        {activeTab === 'Geral' &&(
+          <p>
+            {contadores.total === 0
+              ? 'Nenhum procedimento registrado no período.'
+              : `${contadores.total} procedimentos encontrados no período.`}
+          </p>
+        )}
       </div>
     </div>
   );
