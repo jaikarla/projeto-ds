@@ -9,6 +9,17 @@ import {
   validarCamposObrigatorios
 } from '../validators/validacoes.js';
 
+const normalizarSexo = (sexo) => {
+  const sexoFormatado = String(sexo).trim().toUpperCase();
+
+  if (sexoFormatado === 'M') return 'Masculino';
+  if (sexoFormatado === 'F') return 'Feminino';
+  if (sexoFormatado === 'MASCULINO') return 'Masculino';
+  if (sexoFormatado === 'FEMININO') return 'Feminino';
+
+  return sexo;
+};
+
 //listar todos os pacientes
 export const listarPacientes = async () => {
   return await Paciente.buscar_pacientes();
@@ -43,6 +54,11 @@ export const criarPaciente = async (dados) => {
 
   validarEndereco(dados.endereco);
 
+  const dadosNormalizados = {
+    ...dados,
+    sexo: normalizarSexo(dados.sexo)
+  };
+
   //duplicidade de CPF
   const cpfExistente =
   await Paciente.buscar_paciente_cpf(dados.cpf);
@@ -59,7 +75,7 @@ export const criarPaciente = async (dados) => {
     throw new Error("CNS já cadastrado.");
   }
 
-  return await Paciente.criar_paciente(dados)
+  return await Paciente.criar_paciente(dadosNormalizados)
 };
 
 //atualizar paciente
@@ -86,6 +102,11 @@ export const atualizarPaciente = async (id, dados) => {
 
   validarEndereco(dados.endereco);
 
+  const dadosNormalizados = {
+    ...dados,
+    sexo: normalizarSexo(dados.sexo)
+  };
+
   //duplicidade de CPF
   const cpfExistente =
     await Paciente.buscar_paciente_cpf(dados.cpf
@@ -103,7 +124,7 @@ export const atualizarPaciente = async (id, dados) => {
     throw new Error("CNS já cadastrado.");
   }
 
-  return await Paciente.atualizar_dados_pacientes(id, dados)
+  return await Paciente.atualizar_dados_pacientes(id, dadosNormalizados)
 };
 
 
