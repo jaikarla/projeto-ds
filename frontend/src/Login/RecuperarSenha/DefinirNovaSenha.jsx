@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { resetPassword } from '../../auth/authService.js';
 
 export default function DefinirNovaSenha() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   
-  // captura o email que o backend injetou na URL 
   const email = searchParams.get('email') || '';
 
   const [senha, setSenha] = useState('');
@@ -19,7 +18,12 @@ export default function DefinirNovaSenha() {
     e.preventDefault();
     setErro('');
     setSucesso('');
-    
+
+    if (!email) {
+      setErro('Link de recuperação inválido. Solicite um novo e-mail de recuperação.');
+      return;
+    }
+
     if (senha.length < 6) {
       setErro('A senha deve ter pelo menos 6 caracteres.');
       return;
@@ -33,22 +37,20 @@ export default function DefinirNovaSenha() {
     setCarregando(true);
 
     try {
-      // Ajuste esta URL para a rota exata de atualização de senha sem login do seu backend
-      // Geralmente algo como /api/auth/redefinir-senha ou similar
-      await axios.patch('/api/auth/recuperar', {
+      await resetPassword({
         email,
         novaSenha: senha
       });
 
       setSucesso('Senha redefinida com sucesso! Redirecionando para o login...');
       
-      // aguarda 3 segundos para o usuário ler a mensagem e joga para o login
+      // Aguarda 3 segundos para o usuário ler a mensagem e joga para o login
       setTimeout(() => {
         navigate('/login');
       }, 3000);
 
     } catch (error) {
-      setErro(error.response?.data?.erro || 'Erro ao redefinir a senha. Tente novamente.');
+      setErro(error.message || 'Erro ao redefinir a senha. Tente novamente.');
     } finally {
       setCarregando(false);
     }

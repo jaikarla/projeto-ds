@@ -47,7 +47,8 @@ class AuthService {
     if (!faturista) {
       throw new Error('E-mail não encontrado');
     }
-    const linkRecuperacao = `${process.env.FRONTEND_URL}/definir-nova-senha?email=${faturista.email}`; // definir-nova-senha é o link(nome) da tela (a ser criado)
+    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+    const linkRecuperacao = `${frontendUrl}/definir-nova-senha?email=${encodeURIComponent(faturista.email)}`;
 
     // dispara o email
     await transporter.sendMail({
@@ -69,6 +70,36 @@ class AuthService {
     return {
       email: faturista.email,
       nome: faturista.nome
+    };
+  }
+
+  async redefinirSenha(email, novaSenha) {
+    if (!email || !novaSenha) {
+      throw new Error('E-mail e nova senha são obrigatórios.');
+    }
+
+    const emailFormatado = String(email).trim().toLowerCase();
+    
+    const faturista = await Faturista.busca_faturista_email(emailFormatado);
+    if (!faturista) {
+      throw new Error('Usuário não encontrado.');
+    }
+
+    const senhaRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{6,}$/;
+    if (!senhaRegex.test(novaSenha)) {
+      throw new Error(
+        'Senha inválida. Deve ter no mínimo 6 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 símbolo.'
+      );
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const senhaCriptografada = await bcrypt.hash(novaSenha, salt);
+
+    await Faturista.atualizar_senha_faturista(faturista.id, senhaCriptografada);
+
+    return {
+      id: faturista.id,
+      email: faturista.email
     };
   }
 
