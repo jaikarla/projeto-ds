@@ -1,6 +1,7 @@
 import { createElement, useEffect, useState } from 'react'
 import {
   CalendarDays,
+  CheckCircle,
   ClipboardList,
   FileText,
   GraduationCap,
@@ -187,6 +188,16 @@ function Dashboard() {
           </p>
         )}
       </form>
+
+      {activePeriod && (
+        <div className="dashboard-filter-applied" role="status" aria-live="polite">
+          <CheckCircle size={20} strokeWidth={2.1} aria-hidden="true" />
+          <span>
+            O filtro foi aplicado para o período de {formatDate(activePeriod.dataInicio)} à{' '}
+            {formatDate(activePeriod.dataFim)}.
+          </span>
+        </div>
+      )}
 
       {errorMessage && (
         <p className="dashboard-feedback" role="alert">
