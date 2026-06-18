@@ -13,6 +13,7 @@ import Profissionais from './Profissionais/Profissionais.jsx'
 import Procedimentos from './Procedimentos/Procedimentos.jsx'
 import Relatorios from "./Relatorios/RelatoriosPage.jsx";
 import PerfilPage from './Perfil/PerfilPage.jsx'
+import DefinirNovaSenha from './Login/RecuperarSenha/DefinirNovaSenha';
 import './Global.css'
 
 createRoot(document.getElementById('root')).render(
@@ -30,6 +31,8 @@ createRoot(document.getElementById('root')).render(
 
         {/* Rota da página de Recuperação de Senha */}
         <Route path="/recuperar-senha" element={<RecuperarSenha />} />
+
+        <Route path="/definir-nova-senha" element={<DefinirNovaSenha />} />
 
         {/* Rotas do restante do sistema */}
         <Route element={<AppLayout />}>

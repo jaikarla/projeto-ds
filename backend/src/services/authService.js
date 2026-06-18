@@ -1,8 +1,18 @@
 // Usa bcrypt instalado no projeto para comparação de senha.
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 import Faturista from '../models/faturista.js';
 import { criarFaturista } from './faturistaService.js';
+
+const transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST || 'smtp.mailtrap.io',
+  port: process.env.EMAIL_PORT || 2525,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 class AuthService {
   async login(email, senha) {
@@ -37,7 +47,25 @@ class AuthService {
     if (!faturista) {
       throw new Error('E-mail não encontrado');
     }
+    const linkRecuperacao = `${process.env.FRONTEND_URL}/definir-nova-senha?email=${faturista.email}`; // definir-nova-senha é o link(nome) da tela (a ser criado)
 
+    // dispara o email
+    await transporter.sendMail({
+      from: '"Suporte BPA" <suporte@sistemabpa.com>',
+      to: faturista.email,
+      subject: "Recuperação de Senha - Faturista",
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Olá, ${faturista.nome}!</h2>
+          <p>Recebemos uma solicitação para redefinir a senha da sua conta de Faturista no sistema BPA.</p>
+          <p>Para escolher uma nova senha, clique no botão abaixo:</p>
+          <a href="${linkRecuperacao}" style="background-color: #4F46E5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 15px 0;">
+            Redefinir Minha Senha
+          </a>
+          <p style="font-size: 12px; color: #666;">Se você não solicitou essa alteração, pode ignorar este e-mail com segurança.</p>
+        </div>
+      `,
+    });
     return {
       email: faturista.email,
       nome: faturista.nome
