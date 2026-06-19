@@ -66,7 +66,7 @@ Item 1 - Integração com o TI Saúde e/ou outro sistema de saúde que a clínic
 | Camada de Aplicação - Backend | Node.js + Express | Padrão da disciplina |
 | Camada de Apresentação - Frontend | React via Vite | Padrão da disciplina |
 | Camada de Persistência - Banco de Dados | PostgreSQL | Além de gratuito, este garante confiabilidade e a durabilidade dos dados. |
-| Deploy (ainda a ser estudado) | (ainda a ser estudado) | |
+| Deploy | `a ser definido` | |
 
 ---
 
@@ -79,8 +79,8 @@ Item 1 - Integração com o TI Saúde e/ou outro sistema de saúde que a clínic
 | Review Sprint 2 | 14/05 | Features core do MVP. |
 | Review Sprint 3 | 28/05 | Qualidade e refactoring aplicados. |
 | Review Sprint 4 | 11/06 | MVP estabilizado, documentado e pronto para entrega. |
-| Entrega formal | 18/06 | Produto entregue ao stakeholder. |
-| Apresentação | 29-30/06 | Apresentação acadêmica final. |
+| Entrega formal | `a ser definido` | Produto entregue ao stakeholder. |
+| Apresentação | 25-29/06 | Apresentação acadêmica final. |
 
 ---
 

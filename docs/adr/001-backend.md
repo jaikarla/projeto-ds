@@ -1,27 +1,27 @@
 # ADR 001 - Backend com Node.js e PostgreSQL
 
-## Cabeçalho
+## CabeÃ§alho
 * **Status:** Aceito
 * **Data:** 30/04/2026
-* **Decisores:** Padrão da disciplina (Escopo predefinido)
+* **Decisores:** PadrÃ£o da disciplina (Escopo predefinido)
 
 ## Contexto
-Durante a sprint de concepção e especificação do sistema de BPA (Boletim de Produção Ambulatorial), voltado para a automação e gerenciamento de faturamento no âmbito do Sistema Único de Saúde (SUS), identificou-se a necessidade imperativa de definir a fundação tecnológica do ecossistema de backend. Esta camada será a responsável direta por processar regras de negócio críticas e complexas, realizar validações estritas de dados de saúde, garantir a persistência segura e íntegra das informações em um banco de dados e fornecer endpoints de alta performance para o consumo da aplicação frontend. Diante disso, tornou-se fundamental documentar os critérios e as justificativas técnicas que guiarão a construção desse servidor de aplicação.
+Durante a sprint de concepÃ§Ã£o e especificaÃ§Ã£oo do sistema de BPA (Boletim de ProduÃ§Ã£o Ambulatorial), voltado para a automaÃ§Ã£o e gerenciamento de faturamento no Ã¢mbito do Sistema Ãšnico de Sapude (SUS), identificou-se a necessidade imperativa de definir a fundaÃ§Ã£oo tecnolÃ³gica do ecossistema de backend. Esta camada serÃ¡ a responsÃ¡vel direta por processar regras de negÃ³cio crÃ­ticas e complexas, realizar validaÃ§Ãµes estritas de dados de saÃºde, garantir a persistÃªncia segura e Ã­ntegra das informaÃ§Ãµes em um banco de dados e fornecer endpoints de alta performance para o consumo da aplicaÃ§Ã£o frontend. Diante disso, tornou-se fundamental documentar os critÃ©rios e as justificativas tÃ©cnicas que guiarÃ£o a construÃ§Ã£o desse servidor de aplicaÃ§Ã£o.
 
-## Decisão
-Foi estabelecido o uso de **Node.js com JavaScript** no ambiente de execução do backend, operando em conjunto com o **PostgreSQL** como o sistema de gerenciamento de banco de dados relacional (SGBDR). 
+## DecisÃ£o
+Foi estabelecido o uso de **Node.js com JavaScript** no ambiente de execuÃ§Ã£o do backend, operando em conjunto com o **PostgreSQL** como o sistema de gerenciamento de banco de dados relacional (SGBDR). 
 
-A camada de comunicação entre o cliente e o servidor será estruturada sob o modelo arquitetural **API REST**, trafegando dados exclusivamente no formato JSON. Adicionalmente, para mitigar o acoplamento de código e garantir a manutenibilidade, testabilidade e escalabilidade do projeto, o código-fonte do backend será rigorosamente organizado em uma **arquitetura em camadas** (explicitamente dividida em rotas, controladores, serviços de aplicação e repositórios de dados).
+A camada de comunicaÃ§Ã£o entre o cliente e o servidor serÃ¡ estruturada sob o modelo arquitetural **API REST**, trafegando dados exclusivamente no formato JSON. Adicionalmente, para mitigar o acoplamento de cÃ³digo e garantir a manutenibilidade, testabilidade e escalabilidade do projeto, o cÃ³digo-fonte do backend serÃ¡ rigorosamente organizado em uma **arquitetura em camadas** (explicitamente dividida em rotas, controladores, serviÃ§os de aplicaÃ§Ã£o e repositÃ³rios de dados).
 
-## Consequências
+## ConsequÃªncias
 
 ### Positivas
-* **Integração simplificada com o front-end:** O alinhamento tecnológico de utilizar JavaScript tanto no ecossistema do cliente quanto do servidor reduz drasticamente a fricção de serialização de objetos e facilita o compartilhamento mental da lógica de validação por parte da equipe de desenvolvimento.
-* **Velocidade de desenvolvimento (Time-to-market):** O ambiente do Node.js, impulsionado pelo gerenciador de pacotes NPM, viabiliza o reaproveitamento de módulos consolidados pela comunidade, acelerando a entrega de valor nas sprints.
-* **Unificação da linguagem no projeto:** Centralizar o desenvolvimento em uma única linguagem otimiza o fluxo de trabalho do time de engenharia e reduz o tempo de transição ou nivelamento técnico entre os membros da equipe.
-* **Confiabilidade e consistência relacional:** A escolha do PostgreSQL assegura total conformidade com o padrão ACID, fornecendo o suporte robusto e a segurança transacional necessários para lidar com históricos e registros de produção ambulatorial sem riscos de corrupção de dados.
+* **IntegraÃ§Ã£o simplificada com o front-end:** O alinhamento tecnolÃ³gico de utilizar JavaScript tanto no ecossistema do cliente quanto do servidor reduz drasticamente a fricÃ§Ã£o de serializaÃ§Ã£o de objetos e facilita o compartilhamento mental da lÃ³gica de validaÃ§Ã£o por parte da equipe de desenvolvimento.
+* **Velocidade de desenvolvimento (Time-to-market):** O ambiente do Node.js, impulsionado pelo gerenciador de pacotes NPM, viabiliza o reaproveitamento de mÃ³dulos consolidados pela comunidade, acelerando a entrega de valor nas sprints.
+* **UnificaÃ§Ã£o da linguagem no projeto:** Centralizar o desenvolvimento em uma Ãºnica linguagem otimiza o fluxo de trabalho do time de engenharia e reduz o tempo de transiÃ§Ã£o ou nivelamento tÃ©cnico entre os membros da equipe.
+* **Confiabilidade e consistÃªncia relacional:** A escolha do PostgreSQL assegura total conformidade com o padrÃ£o ACID, fornecendo o suporte robusto e a seguranÃ§aa transacional necessÃ¡rios para lidar com histÃ³ricos e registros de produÃ§Ã£o ambulatorial sem riscos de corrupÃ§Ã£o de dados.
 
 ### Negativas
-* **Ausência de tipagem estática forte:** Por rodar em JavaScript puro, o sistema perde checagens em tempo de compilação, transferindo a responsabilidade de evitar bugs de tipagem e referências nulas para uma cobertura rigorosa de testes automatizados e validações manuais defensivas no código.
-* **Necessidade de governança estrutural manual:** O Node.js não impõe uma estrutura de pastas ou padrões de projeto rígidos de forma nativa. Isso exige disciplina contínua e revisões de código estritas por parte do time para manter a padronização das camadas propostas, evitando o acúmulo de débito técnico.
-* **Atenção redobrada na modelagem do banco:** A modelagem de dados para tabelas de faturamento exige mapeamento detalhado de chaves, índices e integridade referencial no PostgreSQL, demandando um cuidado minucioso na criação de esquemas para evitar gargalos de performance em consultas futuras complexas.
+* **AusÃªncia de tipagem estÃ©tica forte:** Por rodar em JavaScript puro, o sistema perde checagens em tempo de compilaÃ§Ã£o, transferindo a responsabilidade de evitar bugs de tipagem e referÃªncias nulas para uma cobertura rigorosa de testes automatizados e validaÃ§Ãµes manuais defensivas no cÃ³digo.
+* **Necessidade de governanÃ§a estrutural manual:** O Node.js nÃ£o impÃµe uma estrutura de pastas ou padrÃµes de projeto rÃ­gidos de forma nativa. Isso exige disciplina contÃ­nua e revisÃµes de cÃ³digo estritas por parte do time para manter a padronizaÃ§Ã£o das camadas propostas, evitando o acÃºmulo de dÃ©bito tÃ©cnico.
+* **AtenÃ§Ã£o redobrada na modelagem do banco:** A modelagem de dados para tabelas de faturamento exige mapeamento detalhado de chaves, Ã­ndices e integridade referencial no PostgreSQL, demandando um cuidado minucioso na criaÃ§Ã£o de esquemas para evitar gargalos de performance em consultas futuras complexas.

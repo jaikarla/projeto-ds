@@ -8,6 +8,7 @@ export function useRelatorios() {
   const [activeTab, setActiveTab] = useState('BPA-C');
   const [loadingContadores, setLoadingContadores] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   
   const [contadores, setContadores] = useState({ total: 0, bpaC: 0, bpaI: 0 });
 
@@ -29,21 +30,23 @@ export function useRelatorios() {
   useEffect(() => {
     if (dataInicial && dataFinal) {
       setLoadingContadores(true);
+      setErrorMessage('');
       fetchRelatoriosContadores(dataInicial, dataFinal)
         .then(setContadores)
-        .catch((err) => console.error(err.message))
+        .catch((err) => setErrorMessage(err.message))
         .finally(() => setLoadingContadores(false));
     }
   }, [dataInicial, dataFinal]);
 
   const handleExport = async (formato) => {
     if (!dataInicial || !dataFinal) {
-      alert('Por favor, defina o período de Data Inicial e Data Final.');
+      setErrorMessage('Por favor, defina o período de Data Inicial e Data Final.');
       return;
     }
 
     try {
       setExporting(true);
+      setErrorMessage('')
       const filtrosFormatados = formToApiFiltros(dataInicial, dataFinal, activeTab, cabecalhos);
       
       // Mapeia o nome das abas para o padrão que a rota do back aceitar (bpa-c, bpa-i, geral)
@@ -60,7 +63,7 @@ export function useRelatorios() {
       link.click();
       link.parentNode.removeChild(link);
     } catch (error) {
-      alert(`Falha na exportação: ${error.message}`);
+      setErrorMessage(error.message);
     } finally {
       setExporting(false);
     }
@@ -79,5 +82,6 @@ export function useRelatorios() {
     handleExport,
     loadingContadores,
     exporting,
+    errorMessage,
   };
 }

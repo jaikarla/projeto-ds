@@ -19,6 +19,7 @@ export default function RelatoriosPage() {
     handleInputChange,
     handleExport,
     exporting,
+    errorMessage,
   } = useRelatorios();
 
   return (
@@ -27,6 +28,13 @@ export default function RelatoriosPage() {
         <h1>Relatórios BPA</h1>
         <p>Gere relatórios de produção ambulatorial</p>
       </div>
+
+    {/* mensagem de erro visível */}
+    {errorMessage && (
+      <p className="feedback-message" role="alert">
+        {errorMessage}
+      </p>
+    )}
 
       {/* CARD DO PERÍODO */}
       <div className="relatorios-card-base">
@@ -93,9 +101,29 @@ export default function RelatoriosPage() {
         </button>
       </div>
 
-      {/* FOOTER - NENHUM PROCEDIMENTO */}
+      {/* FOOTER - FEEDBACK BASEADO NOS CONTADORES */}
       <div className="relatorios-empty-state-box">
-        <p>Nenhum procedimento {activeTab === 'Geral' ? '' : activeTab} no período.</p>
+        {activeTab === 'BPA-C' &&(
+          <p>
+            {contadores.bpaC === 0
+              ? 'Nenhum procedimento BPA-C registrado no período.'
+              : `${contadores.bpaC} procedimentos BPA-C encontrado(s) no período.`}
+          </p>
+        )}
+        {activeTab === 'BPA-I' &&(
+          <p>
+            {contadores.bpaI === 0
+              ? 'Nenhum procedimento BPA-I registrado no período.'
+              : `${contadores.bpaI} procedimentos BPA-I encontrado(s) no período.`}
+          </p>
+        )}
+        {activeTab === 'Geral' &&(
+          <p>
+            {contadores.total === 0
+              ? 'Nenhum procedimento registrado no período.'
+              : `${contadores.total} procedimentos encontrados no período.`}
+          </p>
+        )}
       </div>
     </div>
   );

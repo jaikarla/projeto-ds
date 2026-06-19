@@ -144,6 +144,27 @@ button:disabled {
   font-weight: 700;
 }
 
+.dashboard-filter-applied {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: -12px 0 24px;
+  padding: 13px 15px;
+  border: 1px solid #c7eadf;
+  border-radius: 8px;
+  background: #f0fbf7;
+  color: #075f53;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  box-shadow: 0 1px 2px rgba(15, 34, 54, 0.05);
+}
+
+.dashboard-filter-applied svg {
+  flex: 0 0 auto;
+  color: #04777a;
+}
+
 .dashboard-feedback {
   margin: 0 0 18px;
   padding: 12px 14px;

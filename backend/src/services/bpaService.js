@@ -55,11 +55,22 @@ export const gerarCSV = (dados, cabecalho) => {
 
 
   // cabeçalho do arquivo
-  if (cabecalho.cnes || cabecalho.nomeEstabelecimento) {
-    linhas.push(`CNES:${cabecalho.cnes || ''},ESTABELECIMENTO:${cabecalho.nomeEstabelecimento || ''},UF:${cabecalho.uf || ''},MES_ANO:${cabecalho.mesAno || ''}`);
-    linhas.push('');
-  }
+  if (cabecalho.cnes || cabecalho.nomeEstabelecimento || cabecalho.cnsProfissional) {
+    let linhaCabecalho = `CNES:${cabecalho.cnes || ''},ESTABELECIMENTO:${cabecalho.nomeEstabelecimento || ''}`
 
+  // campos para BPA-C / Geral
+  if (cabecalho.uf || cabecalho.mesAno) {
+      linhaCabecalho += `,UF:${cabecalho.uf || ''},MES_ANO:${cabecalho.mesAno || ''}`
+    } 
+
+  // campos para BPA-I 
+  if (cabecalho.cnsProfissional || cabecalho.cbo || cabecalho.equipe) {
+      linhaCabecalho += `,CNS_PROFISSIONAL:${cabecalho.cnsProfissional || ''},CBO:${cabecalho.cbo || ''},EQUIPE:${cabecalho.equipe || ''}`
+    }
+
+    linhas.push(linhaCabecalho)
+    linhas.push('')
+  }
 
   // BPA-C
   if (dados.bpaC.length > 0) {
@@ -116,6 +127,9 @@ export const gerarTXT = (dados, cabecalho, dataInicial, dataFinal) => {
   if (cabecalho.nomeEstabelecimento) linhas.push(`ESTABELECIMENTO: ${cabecalho.nomeEstabelecimento}`);
   if (cabecalho.uf) linhas.push(`UF: ${cabecalho.uf}`);
   if (cabecalho.mesAno) linhas.push(`MES/ANO: ${cabecalho.mesAno}`);
+  if (cabecalho.cnsProfissional) linhas.push(`CNS DO PROFISSIONAL: ${cabecalho.cnsProfissional}`);
+  if (cabecalho.cbo) linhas.push(`CBO: ${cabecalho.cbo}`);
+  if (cabecalho.equipe) linhas.push(`EQUIPE: ${cabecalho.equipe}`);
   linhas.push(sep);
 
 
