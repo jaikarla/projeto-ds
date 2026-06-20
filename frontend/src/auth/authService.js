@@ -47,13 +47,13 @@ export async function recoverPassword(email) {
   return payload.dados
 }
 
-export async function resetPassword({ email, novaSenha }) {
+export async function resetPassword({ email, token, novaSenha }) {
   const payload = await requestJson(`${API_URL}/redefinir-senha`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, novaSenha }),
+    body: JSON.stringify({ email, token, novaSenha }),
   })
 
   return payload.dados

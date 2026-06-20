@@ -6,7 +6,9 @@ export default function DefinirNovaSenha() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   
+  const token = searchParams.get('token') || '';
   const email = searchParams.get('email') || '';
+  const credencialRecuperacao = token || email;
 
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
@@ -19,7 +21,7 @@ export default function DefinirNovaSenha() {
     setErro('');
     setSucesso('');
 
-    if (!email) {
+    if (!credencialRecuperacao) {
       setErro('Link de recuperação inválido. Solicite um novo e-mail de recuperação.');
       return;
     }
@@ -39,6 +41,7 @@ export default function DefinirNovaSenha() {
     try {
       await resetPassword({
         email,
+        token,
         novaSenha: senha
       });
 
@@ -62,7 +65,7 @@ export default function DefinirNovaSenha() {
         <h2 style={styles.title}>Redefinir Senha</h2>
         <p style={styles.subtitle}>
           Defina a nova credencial de acesso para a conta: <br />
-          <strong>{email || 'E-mail não identificado'}</strong>
+          <strong>{email || 'Link de recuperação identificado'}</strong>
         </p>
 
         {erro && <div style={styles.errorAlert}>{erro}</div>}
@@ -77,7 +80,7 @@ export default function DefinirNovaSenha() {
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               required
-              disabled={carregando || !email}
+              disabled={carregando || !credencialRecuperacao}
               style={styles.input}
             />
           </div>
@@ -90,17 +93,17 @@ export default function DefinirNovaSenha() {
               value={confirmarSenha}
               onChange={(e) => setConfirmarSenha(e.target.value)}
               required
-              disabled={carregando || !email}
+              disabled={carregando || !credencialRecuperacao}
               style={styles.input}
             />
           </div>
 
           <button
             type="submit"
-            disabled={carregando || !email}
+            disabled={carregando || !credencialRecuperacao}
             style={{
               ...styles.button,
-              backgroundColor: carregando || !email ? '#a5b4fc' : '#4f46e5'
+              backgroundColor: carregando || !credencialRecuperacao ? '#a5b4fc' : '#4f46e5'
             }}
           >
             {carregando ? 'Salvando...' : 'Atualizar Senha'}
