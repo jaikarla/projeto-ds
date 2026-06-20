@@ -19,7 +19,9 @@ CREATE TABLE faturistas(
     email VARCHAR(100) UNIQUE NOT NULL,
     cpf VARCHAR(14) UNIQUE NOT NULL, --(string para preservar formatação)
     telefone VARCHAR(20),
-    senha VARCHAR(255) NOT NULL --armazenar em bcrypt (segurança)
+    senha VARCHAR(255) NOT NULL, --armazenar em bcrypt (segurança)
+    reset_password_token VARCHAR(64),
+    reset_password_expires TIMESTAMP
 );
 
 --============================================

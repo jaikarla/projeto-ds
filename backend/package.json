@@ -5,6 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "dev": "node server.js",
+    "migrate": "node src/database/migrate.js",
     "test": "vitest run",
     "start": "node server.js"
   },
