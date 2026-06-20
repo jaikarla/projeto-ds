@@ -11,7 +11,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Garante o "Settings" fixado lá embaixo */
+  justify-content: space-between;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   padding: 40px 0; 
 
@@ -131,8 +131,7 @@
 .app-header {
   min-height: 68px;
   background: #fff;
-  border-bottom: 3px solid transparent;
-  border-image: linear-gradient(to right, #043e6e, #1a827fd5, #8474c0d7) 1; 
+  border-bottom: 1px solid #d9dee6;
   display: flex;
   justify-content: flex-end;
   align-items: center;

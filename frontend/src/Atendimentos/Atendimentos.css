@@ -40,28 +40,31 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px; 
-  min-height: 50px; 
+  gap: 12px;
+  min-height: 50px;
   padding: 0 22px;
-  border-radius: 9px; 
+  border-radius: 9px;
   background: linear-gradient(90deg, #1a827f 40%, #8474c0 100%);
   color: #ffffff;
   font-weight: 700;
   box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
-  font-size: 16px; 
+  font-size: 16px;
+  box-sizing: border-box; 
 }
 
 .atendimento-primary-button:hover {
   background: #043E6E;
-  background-image: none; 
+  background-image: none;
 }
 
 .atendimento-primary-button span {
-  font-size: 28px;
+  font-size: 24px;       
   line-height: 1;
-  transform: translateY(-1px);
+  display: inline-flex;  
+  align-items: center;
+  justify-content: center;
   font-weight: 700;
-  display: inline-block; 
+  flex-shrink: 0;        
 }
 
 .atendimento-secondary-button {
@@ -81,15 +84,35 @@ button:disabled {
   background: #e0e0e0;        
 }
 
+.atendimento-search-field {
+  display: flex;
+  align-items: center;
+  width: min(480px, 100%);  
+  height: 52px;            
+  margin-bottom: 29px;      
+  padding: 0 16px;          
+  border: 1px solid #d8e0e8;
+  border-radius: 10px;      
+  background: #ffffff;
+  color: #64758a;
+  box-sizing: border-box;   
+}
+
+.atendimento-search-field svg {
+  flex-shrink: 0;
+  width: 22px;              
+  height: 22px;            
+}
+
 .atendimento-search-field input {
   width: 100%;
   height: 100%;
-  margin-left: 10px;
+  margin-left: 12px;        
   border: 0;
   outline: none;
   background: transparent;
   color: #182b3e;
-  font-size: 15px;
+  font-size: 16px;          
 }
 
 .atendimento-search-field input::placeholder {
