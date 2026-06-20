@@ -28,6 +28,7 @@ export function useRelatorios() {
   // Toda vez que as datas mudarem, busca de forma reativa os contadores da API
   useEffect(() => {
     if (dataInicial && dataFinal) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoadingContadores(true);
       fetchRelatoriosContadores(dataInicial, dataFinal)
         .then(setContadores)

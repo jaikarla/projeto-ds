@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { calcularIdade } from '../pacientesMappers.js';
 
 export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresIniciais }) {
@@ -29,13 +29,6 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
     setErros({});
     setDropdownAberto(false);
   }, [paciente, aberto, valoresIniciais]);
-
-  useEffect(() => {
-    if (values.dataNascimento) {
-      const idadeCalculada = calcularIdade(values.dataNascimento);
-      setValues(prev => ({ ...prev, idade: idadeCalculada }));
-    }
-  }, [values.dataNascimento]);
 
   // Fecha o dropdown de UF se clicar fora dele
   useEffect(() => {
@@ -132,8 +125,12 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
               {erros.dataNascimento && <span className="field-error">{erros.dataNascimento}</span>}
             </div>
             <div>
-              <label>Idade</label>
-              <input type="text" disabled value={values.idade || ''} className="input-disabled" />
+              <input
+                type="text"
+                disabled
+                value={values.dataNascimento ? calcularIdade(values.dataNascimento) : ''}
+                className="input-disabled"
+              />
             </div>
             <div>
               <label>Sexo *</label>
