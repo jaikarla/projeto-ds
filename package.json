@@ -1,6 +1,16 @@
 {
-  "dependencies": {
-    "bcrypt": "^6.0.0",
-    "jsonwebtoken": "^9.0.3"
+  "name": "projeto-ds",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "install:all": "npm install --workspaces",
+    "migrate": "npm --workspace backend run migrate",
+    "test": "npm --workspace backend test",
+    "build": "npm --workspace frontend run build",
+    "dev:backend": "npm --workspace backend run dev",
+    "dev:frontend": "npm --workspace frontend run dev"
   }
 }
