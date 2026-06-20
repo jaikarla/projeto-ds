@@ -1,5 +1,6 @@
 // Usa bcrypt instalado no projeto para comparação de senha.
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import Faturista from '../models/faturista.js';
@@ -7,12 +8,15 @@ import { criarFaturista } from './faturistaService.js';
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST || 'smtp.mailtrap.io',
-  port: process.env.EMAIL_PORT || 2525,
+  port: Number(process.env.EMAIL_PORT || 2525),
+  secure: Number(process.env.EMAIL_PORT) === 465,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
+
+const criarHashToken = (token) => crypto.createHash('sha256').update(token).digest('hex');
 
 class AuthService {
   async login(email, senha) {
@@ -47,12 +51,22 @@ class AuthService {
     if (!faturista) {
       throw new Error('E-mail não encontrado');
     }
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      throw new Error('Serviço de e-mail não configurado.');
+    }
+
+    const tokenRecuperacao = crypto.randomBytes(32).toString('hex');
+    const tokenHash = criarHashToken(tokenRecuperacao);
+    const expiraEm = new Date(Date.now() + 60 * 60 * 1000);
+
+    await Faturista.salvar_token_recuperacao(faturista.id, tokenHash, expiraEm);
+
     const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
-    const linkRecuperacao = `${frontendUrl}/definir-nova-senha?email=${encodeURIComponent(faturista.email)}`;
+    const linkRecuperacao = `${frontendUrl}/definir-nova-senha?token=${tokenRecuperacao}`;
 
     // dispara o email
     await transporter.sendMail({
-      from: '"Suporte BPA" <suporte@sistemabpa.com>',
+      from: process.env.EMAIL_FROM || '"Suporte BPA" <suporte@sistemabpa.com>',
       to: faturista.email,
       subject: "Recuperação de Senha - Faturista",
       html: `
@@ -73,16 +87,19 @@ class AuthService {
     };
   }
 
-  async redefinirSenha(email, novaSenha) {
-    if (!email || !novaSenha) {
-      throw new Error('E-mail e nova senha são obrigatórios.');
+  async redefinirSenha(credencialRecuperacao, novaSenha) {
+    if (!credencialRecuperacao || !novaSenha) {
+      throw new Error('Link de recuperação e nova senha são obrigatórios.');
     }
 
-    const emailFormatado = String(email).trim().toLowerCase();
-    
-    const faturista = await Faturista.busca_faturista_email(emailFormatado);
+    const credencial = String(credencialRecuperacao).trim();
+    const pareceEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credencial);
+    const faturista = pareceEmail
+      ? await Faturista.busca_faturista_email(credencial.toLowerCase())
+      : await Faturista.busca_faturista_token_recuperacao(criarHashToken(credencial));
+
     if (!faturista) {
-      throw new Error('Usuário não encontrado.');
+      throw new Error('Link de recuperação inválido ou expirado.');
     }
 
     const senhaRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{6,}$/;
@@ -96,6 +113,7 @@ class AuthService {
     const senhaCriptografada = await bcrypt.hash(novaSenha, salt);
 
     await Faturista.atualizar_senha_faturista(faturista.id, senhaCriptografada);
+    await Faturista.limpar_token_recuperacao(faturista.id);
 
     return {
       id: faturista.id,

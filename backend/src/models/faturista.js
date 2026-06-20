@@ -76,6 +76,37 @@ const Faturista={
         )
     },
 
+    async salvar_token_recuperacao(id, tokenHash, expiraEm){
+        await pool.query(
+            `UPDATE faturistas
+            SET reset_password_token = $1,
+                reset_password_expires = $2
+            WHERE id = $3`,
+            [tokenHash, expiraEm, id]
+        )
+    },
+
+    async busca_faturista_token_recuperacao(tokenHash){
+        const result = await pool.query(
+            `SELECT *
+            FROM faturistas
+            WHERE reset_password_token = $1
+              AND reset_password_expires > NOW()`,
+            [tokenHash]
+        )
+        return result.rows[0]
+    },
+
+    async limpar_token_recuperacao(id){
+        await pool.query(
+            `UPDATE faturistas
+            SET reset_password_token = NULL,
+                reset_password_expires = NULL
+            WHERE id = $1`,
+            [id]
+        )
+    },
+
     //remover faturista
     async remover_faturista(id){
         const result = await pool.query(
