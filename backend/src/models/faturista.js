@@ -86,13 +86,13 @@ const Faturista={
         )
     },
 
-    async busca_faturista_token_recuperacao(tokenHash){
+    async busca_faturista_token_recuperacao(tokenHash, dataAtual){
         const result = await pool.query(
             `SELECT *
             FROM faturistas
             WHERE reset_password_token = $1
-              AND reset_password_expires > NOW()`,
-            [tokenHash]
+              AND reset_password_expires > $2`,
+              [tokenHash, dataAtual]
         )
         return result.rows[0]
     },

@@ -96,7 +96,7 @@ class AuthService {
     const pareceEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credencial);
     const faturista = pareceEmail
       ? await Faturista.busca_faturista_email(credencial.toLowerCase())
-      : await Faturista.busca_faturista_token_recuperacao(criarHashToken(credencial));
+      : await Faturista.busca_faturista_token_recuperacao(criarHashToken(credencial), new Date());
 
     if (!faturista) {
       throw new Error('Link de recuperação inválido ou expirado.');
