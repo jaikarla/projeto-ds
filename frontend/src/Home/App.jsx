@@ -68,7 +68,7 @@ const features = [
   {
     icon: <FileDown size={26} strokeWidth={2} />,
     title: 'Relatórios e Prestação de Contas',
-    desc: 'Gere relatórios por período e faça o download dos dados de maneira simples, garantindo organization e agilidade nas informações.'
+    desc: 'Gere relatórios por período e faça o download dos dados de maneira simples, garantindo organização e agilidade nas informações.'
   }
 ];
 
