@@ -6,15 +6,9 @@ Este sistema foi desenvolvido como um projeto acadêmico e tem como objetivo apo
 
 ## 📋 Código de Conduta
 
-Ao participar deste projeto, todos os colaboradores concordam em:
+Todos os participantes deste projeto devem seguir as diretrizes estabelecidas em nosso Código de Conduta.
 
-- Manter uma comunicação respeitosa e profissional;
-- Respeitar opiniões, ideias e sugestões dos demais participantes;
-- Evitar linguagem ofensiva, discriminatória ou inadequada;
-- Colaborar de forma construtiva durante discussões técnicas e revisões de código;
-- Zelar pela qualidade e pela integridade do projeto.
-
-Contribuições que desrespeitem essas diretrizes poderão ser rejeitadas.
+Consulte o arquivo [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) para mais informações.
 
 ---
 
