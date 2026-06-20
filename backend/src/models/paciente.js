@@ -31,6 +31,21 @@ const isDatabaseError = (error) => {
   )
 }
 
+const formatarData = (data) => {
+  if (!data) return data
+  if (data instanceof Date) return data.toISOString().split('T')[0]
+  return String(data).split('T')[0]
+}
+
+const normalizarPaciente = (paciente) => {
+  if (!paciente) return paciente
+
+  return {
+    ...paciente,
+    data_nascimento: formatarData(paciente.data_nascimento)
+  }
+}
+
 const Paciente = {
 
   // buscar todos os pacientes com endereço
@@ -46,7 +61,7 @@ const Paciente = {
             LEFT JOIN enderecos e ON e.paciente_id = p.id
             ORDER BY p.nome`,
     )
-    return result.rows
+    return result.rows.map(normalizarPaciente)
   },
 
   // busca de paciente pelo id com endereço
@@ -63,7 +78,7 @@ const Paciente = {
             WHERE p.id = $1`,
       [id]
     )
-    return result.rows[0]
+    return normalizarPaciente(result.rows[0])
   },
 
   //busca de paciente pelo CNS 
@@ -81,7 +96,7 @@ const Paciente = {
             WHERE p.cns = $1`,
         [cns]
       )
-      return result.rows[0]
+      return normalizarPaciente(result.rows[0])
     } catch (error) {
       if (isDatabaseError(error)) {
         return fallbackPacientes.find((paciente) => paciente.cns === cns)
@@ -105,7 +120,7 @@ const Paciente = {
             WHERE p.cpf =$1`,
         [cpf]
       )
-      return result.rows[0]
+      return normalizarPaciente(result.rows[0])
     } catch (error) {
       if (isDatabaseError(error)) {
         return fallbackPacientes.find((paciente) => paciente.cpf === cpf)
@@ -160,7 +175,15 @@ const Paciente = {
           )
         }
         await client.query('COMMIT')
-        return paciente
+        return normalizarPaciente({
+          ...paciente,
+          cep: endereco?.cep || null,
+          logradouro: endereco?.logradouro || null,
+          numero: endereco?.numero || null,
+          bairro: endereco?.bairro || null,
+          cidade: endereco?.cidade || null,
+          uf: endereco?.uf || null
+        })
       } catch (err) {
         await client.query('ROLLBACK')
         throw err
@@ -223,7 +246,7 @@ const Paciente = {
                     RETURNING *`,
       [nome, data_nascimento, cpf, sexo, raca, etnia, nacionalidade, cns, id]
     )
-    return result.rows[0]
+    return normalizarPaciente(result.rows[0])
   },
 
   //atualizar endereço do paciente

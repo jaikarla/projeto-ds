@@ -14,20 +14,25 @@ import { deletarEstudante } from "../services/estudantesService";
 describe("Testes para criar estudante", () => {
     //Teste 1
     test("Deve criar um estudante com dados válidos", async () => {
+        const sufixo = String(Date.now()).slice(-9);
+        const cpf = `98${sufixo}`;
+        const cns = `543210${sufixo}`;
+        const matricula = `20${sufixo}`;
+
         const estudante = await criarEstudante({
             nome: "Maria Souza",
-            cpf: "98765432100",
-            cns: "543210987654321",
+            cpf,
+            cns,
             dataNascimento: "1995-05-15",
-            matricula: "20230001",
+            matricula,
             cbo: "123456"
         });
 
         expect(estudante).toHaveProperty("id");
         expect(estudante.nome).toBe("Maria Souza");
-        expect(estudante.cpf).toBe("98765432100");
-        expect(estudante.cns).toBe("543210987654321");
-        expect(estudante.matricula).toBe("20230001");
+        expect(estudante.cpf).toBe(cpf);
+        expect(estudante.cns).toBe(cns);
+        expect(estudante.matricula).toBe(matricula);
         expect(estudante.cbo).toBe("Estudante");
     });
 

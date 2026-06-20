@@ -10,7 +10,7 @@ export const listarEstudantes = async () => {
 
 //buscar por id - verifica se o registro encontrado é do tipo estudante
 export const buscarEstudantePorId = async (id) => {
-  const registro = await Profissional.buscar_profissional_tipo('estudante')
+  const registro = await Profissional.buscar_profissional_id(id)
 
   // não retorna um profissional comum pelo id
   if (!registro || registro.tipo !== 'estudante') return null

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { fetchPacientesApi, cadastrarPacienteApi, atualizarPacienteApi, deletarPacienteApi } from './pacientesService.js';
 import { prepararPacienteParaEnvio, transformarPacienteDoBackend } from './pacientesMappers.js';
 
@@ -8,7 +8,7 @@ const initialFormValues = {
   idade: '',
   sexo: '',
   racaCor: '',
-  etnia: '', // Adicionado
+  etnia: '',
   nacionalidade: '',
   cns: '',
   cpf: '',
@@ -16,8 +16,8 @@ const initialFormValues = {
   logradouro: '',
   numero: '',
   bairro: '',
-  cidade: '', 
-  uf: '' 
+  cidade: '',
+  uf: ''
 };
 
 export function usePacientes() {
@@ -26,18 +26,21 @@ export function usePacientes() {
   const [modalAberto, setModalAberto] = useState(false);
   const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
   const [loading, setLoading] = useState(false);
-  
-
   const [alert, setAlert] = useState(null);
 
-  const carregarPacientes = async (termoBusca = '') => {
+  const mostrarFeedback = useCallback((tipo, mensagem) => {
+    setAlert({ tipo, mensagem });
+    setTimeout(() => setAlert(null), 4000);
+  }, []);
+
+  const carregarPacientes = useCallback(async (termoBusca = '') => {
     try {
       setLoading(true);
       const dados = await fetchPacientesApi(termoBusca);
-      
-      const pacientesTransformados = Array.isArray(dados) 
+      const pacientesTransformados = Array.isArray(dados)
         ? dados.map(transformarPacienteDoBackend)
         : [];
+
       setPacientes(pacientesTransformados);
     } catch (err) {
       mostrarFeedback('error', 'Não foi possível carregar a lista de pacientes.');
@@ -45,19 +48,15 @@ export function usePacientes() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [mostrarFeedback]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       carregarPacientes(busca);
     }, 400);
-    return () => clearTimeout(delayDebounce);
-  }, [busca]);
 
-  const mostrarFeedback = (tipo, mensagem) => {
-    setAlert({ tipo, mensagem });
-    setTimeout(() => setAlert(null), 4000); // Some após 4 segundos
-  };
+    return () => clearTimeout(delayDebounce);
+  }, [busca, carregarPacientes]);
 
   const abrirModalNovo = () => {
     setPacienteSelecionado(null);
@@ -72,7 +71,7 @@ export function usePacientes() {
   const salvarPaciente = async (formValues) => {
     try {
       const dadosTratados = prepararPacienteParaEnvio(formValues);
-      
+
       if (pacienteSelecionado?.id) {
         await atualizarPacienteApi(pacienteSelecionado.id, dadosTratados);
         mostrarFeedback('success', 'Paciente atualizado com sucesso!');
@@ -80,7 +79,7 @@ export function usePacientes() {
         await cadastrarPacienteApi(dadosTratados);
         mostrarFeedback('success', 'Paciente cadastrado com sucesso!');
       }
-      
+
       setModalAberto(false);
       carregarPacientes(busca);
     } catch (err) {
@@ -89,14 +88,17 @@ export function usePacientes() {
   };
 
   const deletarPaciente = async (id) => {
-    if (window.confirm('Tem certeza de que deseja excluir este paciente?')) {
-      try {
-        await deletarPacienteApi(id);
-        mostrarFeedback('success', 'Paciente removido com sucesso!');
-        carregarPacientes(busca);
-      } catch (err) {
-        mostrarFeedback('error', 'Falha ao deletar paciente.');
-      }
+    if (!window.confirm('Tem certeza de que deseja excluir este paciente?')) {
+      return;
+    }
+
+    try {
+      await deletarPacienteApi(id);
+      mostrarFeedback('success', 'Paciente removido com sucesso!');
+      carregarPacientes(busca);
+    } catch (err) {
+      console.error('Erro ao deletar paciente:', err);
+      mostrarFeedback('error', 'Falha ao deletar paciente.');
     }
   };
 

@@ -80,7 +80,44 @@ class AuthController {
       if (error.message === 'E-mail não encontrado') {
         return res.status(404).json({ erro: error.message });
       }
+      if (error.code === '42703') {
+        console.error('ERRO RECUPERACAO:', error);
+        return res.status(500).json({
+          erro: 'Banco de dados desatualizado. Rode npm run migrate no backend e tente novamente.'
+        });
+      }
+      if (
+        error.message === 'Serviço de e-mail não configurado.' ||
+        error.code ||
+        error.command
+      ) {
+        console.error('ERRO RECUPERACAO:', error);
+        return res.status(502).json({
+          erro: 'Não foi possível enviar o e-mail de recuperação agora. Verifique as configurações do provedor de e-mail.'
+        });
+      }
       return res.status(500).json({ erro: 'Erro interno no servidor.' });
+    }
+  }
+
+  async redefinirSenha(req, res) {
+    try {
+      const { email, token, novaSenha } = req.body;
+
+      const resultado = await authService.redefinirSenha(token || email, novaSenha);
+
+      return res.status(200).json({
+        mensagem: 'Senha redefinida com sucesso!',
+        dados: resultado
+      });
+    } catch (error) {
+      if (
+        error.message === 'Usuário não encontrado.' ||
+        error.message === 'Link de recuperação inválido ou expirado.'
+      ) {
+        return res.status(404).json({ erro: error.message });
+      }
+      return res.status(400).json({ erro: error.message || 'Erro interno no servidor.' });
     }
   }
 }

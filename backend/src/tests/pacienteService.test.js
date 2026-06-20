@@ -15,15 +15,19 @@ describe("Testes para criar paciente", () => {
 
     //Teste 1
     test("Deve criar um paciente com dados válidos", async () => {
+        const sufixo = String(Date.now()).slice(-9);
+        const cpf = `12${sufixo}`;
+        const cns = `123456${sufixo}`;
+
         const paciente = await criarPaciente({
             nome: "João Silva",
             data_nascimento: "1990-01-01",
-            cpf: "12345678909",
-            sexo: "M",
+            cpf,
+            sexo: "Masculino",
             raca: "Branca",
             etnia: "Não informado",
             nacionalidade: "Brasileiro",
-            cns: "123456789012346",
+            cns,
             endereco: {
                 cep: "12345-678",
                 logradouro: "Rua A",
@@ -37,12 +41,12 @@ describe("Testes para criar paciente", () => {
         expect(paciente).toHaveProperty("id");
         expect(paciente.nome).toBe("João Silva");
         expect(paciente.data_nascimento).toBe("1990-01-01");
-        expect(paciente.cpf).toBe("12345678909");
-        expect(paciente.sexo).toBe("M");
+        expect(paciente.cpf).toBe(cpf);
+        expect(paciente.sexo).toBe("Masculino");
         expect(paciente.raca).toBe("Branca");
         expect(paciente.etnia).toBe("Não informado");
         expect(paciente.nacionalidade).toBe("Brasileiro");
-        expect(paciente.cns).toBe("123456789012346");
+        expect(paciente.cns).toBe(cns);
         expect(paciente.cep).toBe("12345-678");
         expect(paciente.logradouro).toBe("Rua A");
         expect(paciente.numero).toBe("123");

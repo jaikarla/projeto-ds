@@ -5,6 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "dev": "node server.js",
+    "migrate": "node src/database/migrate.js",
     "test": "vitest run",
     "start": "node server.js"
   },
@@ -17,6 +19,7 @@
     "dotenv": "^16.6.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^9.0.1",
     "pg": "^8.20.0"
   },
   "devDependencies": {
