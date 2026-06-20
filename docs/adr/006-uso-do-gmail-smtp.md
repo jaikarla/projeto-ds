@@ -1,4 +1,4 @@
-# ADR 006 - Uso do Gmail SMTP para Envio Real de E-mails e Fluxo de Migrações Automáticas
+# ADR 007 - Uso do Gmail SMTP para Envio Real de E-mails e Fluxo de Migrações Automáticas
 
 Status: Aceito
 Data: 20/06/2026
