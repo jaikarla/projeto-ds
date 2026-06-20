@@ -22,8 +22,7 @@ export function ProcedimentosPage() {
             type="button"
             onClick={procedimentos.handleOpenModal}
           >
-            <Plus size={19} strokeWidth={2.2} />
-            Novo Procedimento
+            <span>+</span> Novo Procedimento
           </button>
         </div>
 

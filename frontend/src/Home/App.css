@@ -1,6 +1,6 @@
 /* __________________________________________________________
 
-FUNDO
+FUNDO GERAL 
 _________________________________________________________________*/
 .home-screen-wrapper {
   min-height: 100vh;
@@ -8,73 +8,351 @@ _________________________________________________________________*/
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  
+  justify-content: flex-start;
   background-color: #ffffff;
-  background-image: 
-    /* Mancha Azul-Escuro gigante no canto esquerdo */
+  background-image:
     radial-gradient(at 5% 20%, rgba(100, 135, 170, 0.8) 0px, transparent 55%),
-    /* Mancha Verde-Água cobrindo o meio/topo */
     radial-gradient(at 45% 30%, rgba(105, 200, 185, 0.75) 0px, transparent 60%),
-    /* Mancha Lilás/Roxa no canto direito inferior */
     radial-gradient(at 95% 65%, rgba(185, 160, 225, 0.8) 0px, transparent 50%);
-    
-  padding: 40px 20px;
+  padding-bottom: 60px;
   box-sizing: border-box;
+  position: relative;
 }
-/* _____________________________________________________
-  
-LOGO E CARD
-  _________________________________________________________*/
 
-/* ÁREA DA LOGO (Centralizada acima do card) */
-.top-logo-area {
-  margin-bottom: 20px;
+/* __________________________________________________________
+
+BARRA DE NAVEGAÇÃO ESTÁTICA COM ESTILO VIDRO
+_________________________________________________________________*/
+.navbar-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.navbar-container {
+  width: 90%;
+  max-width: 1220px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo-img {
+  height: 54px;
+  object-fit: contain;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.nav-btn {
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-btn-login {
+  background: rgba(4, 62, 110, 0.08);
+  color: #043E6E;
+  border: 1px solid rgba(4, 62, 110, 0.15);
+}
+
+.nav-btn-login:hover {
+  background: rgba(4, 62, 110, 0.14);
+  transform: translateY(-1px);
+}
+
+.nav-btn-cadastro {
+  background: linear-gradient(90deg, #043E6E 0%, #1A827E 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(4, 62, 110, 0.12);
+}
+
+.nav-btn-cadastro:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(4, 62, 110, 0.22);
+  opacity: 0.95;
+}
+
+.navbar-spacer {
+  height: 70px;
+  width: 100%;
+}
+
+/* __________________________________________________________
+
+ÁREA DA LOGO CENTRAL DA PÁGINA
+_________________________________________________________________*/
+.home-screen-wrapper .top-logo-area {
+  margin-top: 0px;    
+  margin-bottom: 10px;  
   display: flex;
   justify-content: center;
   width: 100%;
 }
 
-.logo-bpa-img {
-  height: 150px; 
-  
-  max-width: 100%; 
-  
+.home-screen-wrapper .logo-bpa-img {
+  height: 150px;        
+  max-width: 100%;
   object-fit: contain;
+  display: block;
 }
 
-/* CARD DE VIDRO (Glassmorphism) */
-.main-glass-card {
-  /* Fundo branco transparente para aparecer o colorido de trás */
-  background: rgba(255, 255, 255, 0.4); 
-  
-  /* O efeito de desfoque do vidro */
+/* CONTAINER DO CARROSSEL */
+.home-screen-wrapper .center-home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  max-width: 1220px;
+  width: 90%;        
+  box-sizing: border-box;
+  margin-top: -35px;    
+  margin-bottom: 50px;
+}
+
+/* ________________________________________________________
+
+CARROSSEL E LAYOUT SPLIT
+_______________________________________________________*/
+.center-home-container .carousel-main-box {
+  height: 520px;
+  width: 100%;
+  border-radius: 28px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.12);
+}
+
+.carousel-main-box.slide-bg-relatorios { background: linear-gradient(135deg, #094b5c 0%, #157981 100%); }
+.carousel-main-box.slide-bg-atendimentos { background: linear-gradient(135deg, #1f938b 0%, #52beac 100%); }
+.carousel-main-box.slide-bg-sistema { background: linear-gradient(135deg, #024b91 0%, #0c73d4 100%); }
+.carousel-main-box.slide-bg-eficiencia { background: linear-gradient(135deg, #246bc4 0%, #7670be 100%); }
+
+.carousel-main-box .carousel-display-content {
+  width: 100%;
+  height: 100%;
+  padding: 0 85px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.slide-split-layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+  height: 100%;
+}
+
+.slide-text-side {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide-text-side .slide-icon-wrapper {
+  background: rgba(255, 255, 255, 0.12);
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.slide-icon-wrapper .slide-icon-svg { stroke: #ffffff; display: block; }
+
+.slide-text-side h2 {
+  font-size: 38px;
+  font-weight: 800;
+  margin: 0 0 14px 0;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.slide-text-side p { 
+  font-size: 18px; 
+  opacity: 0.9; 
+  margin: 0; 
+  font-family: 'Inter', sans-serif; 
+  line-height: 1.5;
+}
+
+.slide-image-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.window-mockup-frame {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  width: 100%;
+  height: auto;
+  max-height: 410px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+}
+
+.window-mockup-header {
+  height: 32px;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.mockup-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.mockup-dot.red { background: #ff5f56; }
+.mockup-dot.yellow { background: #ffbd2e; }
+.mockup-dot.green { background: #27c93f; }
+
+.carousel-main-box .slide-imported-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #f8fafc;
+  display: block;
+}
+
+/* NAVEGAÇÃO DO CARROSSEL */
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s, transform 0.2s;
+}
+.carousel-nav-btn:hover { background: rgba(0, 0, 0, 0.35); transform: translateY(-50%) scale(1.08); }
+.carousel-nav-btn.btn-prev { left: 24px; }
+.carousel-nav-btn.btn-next { right: 24px; }
+
+.carousel-main-box .carousel-dots {
+  position: absolute;
+  bottom: 24px;
+  left: 85px; 
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+.carousel-dots .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.carousel-dots .dot.active { background: #ffffff; width: 26px; border-radius: 6px; }
+
+.carousel-bottom-info-card {
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
-  
-  /* Borda sutil imitando o reflexo da luz */
   border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 28px; 
-  
-  max-width: 1050px;
+  border-radius: 24px;
+  padding: 26px 45px;
+  box-sizing: border-box;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
+  text-align: center;
+  max-width: 1220px;
   width: 100%;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.carousel-bottom-info-card h4 { color: #003366; font-size: 19px; font-weight: 700; margin: 0 0 8px 0; font-family: 'Inter', sans-serif; }
+.carousel-bottom-info-card p { color: #4a5966; font-size: 14.5px; line-height: 1.6; margin: 0; font-family: 'Inter', sans-serif; }
+
+/* ___________________________________________________________
+
+CARD DE VIDRO INFERIOR
+__________________________________________________________________ */
+.main-glass-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 28px;
+  max-width: 1220px;
+  width: 90%;
   padding: 60px 50px;
-  
-  /* Sombra do card */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
-  
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
 }
 
-/* ________________________________________________________
-  
-CONTEÚDO DO CARD
-_______________________________________________________*/
-
-/* GRADE DE FUNCIONALIDADES (2 colunas) */
 .home-features-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -83,13 +361,8 @@ _______________________________________________________*/
   margin-bottom: 50px;
 }
 
-.home-feature-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-}
+.home-feature-item { display: flex; align-items: flex-start; gap: 20px; }
 
-/* CÍRCULO DO ÍCONE (gradiente) */
 .home-icon-circle {
   background: linear-gradient(135deg, #1A827E 0%, #0876D6 100%) !important;
   min-width: 52px;
@@ -100,71 +373,27 @@ _______________________________________________________*/
   justify-content: center;
   box-shadow: 0 6px 15px rgba(26, 130, 126, 0.2);
   flex-shrink: 0;
-
-  /* ANIMAÇÃO (Deixa o movimento suave quando passa o mouse) */
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-              box-shadow 0.3s ease, 
-              background 0.3s ease
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, filter 0.3s ease;
 }
 
-/* 2. EFEITO AO PASSAR O MOUSE (Hover) */
 .home-feature-item:hover .home-icon-circle {
-  /* círculo crescer levemente e girar de forma sutil */
   transform: scale(1.12) rotate(8deg);
-  
-  /* A sombra fica mais forte e espalhada para dar efeito de profundidade */
   box-shadow: 0 10px 22px rgba(8, 118, 214, 0.4);
-  
-  /* Inverte levemente a tonalidade do gradiente dando efeito de brilho */
   filter: hue-rotate(15deg);
 }
 
-/* Garante o ícone do Lucide totalmente branco e adiciona uma transição para ele também */
-.home-icon-circle svg {
-  stroke: #ffffff !important;
-  transition: transform 0.3s ease;
-}
+.home-icon-circle svg { stroke: #ffffff !important; transition: transform 0.3s ease; }
+.home-feature-item:hover .home-icon-circle svg { transform: scale(1.05); }
+.home-feature-text h3 { color: #003366; font-size: 18px; font-weight: 700; margin: 0 0 8px 0; font-family: 'Inter', sans-serif; }
+.home-feature-text p { color: #4a5966; font-size: 14px; line-height: 1.6; margin: 0; font-family: 'Inter', sans-serif; }
 
-/* Faz o ícone interno dar uma leve balançada quando passa o mouse */
-.home-feature-item:hover .home-icon-circle svg {
-  transform: scale(1.05);
-}
-
-.home-icon-placeholder {
-  font-size: 20px;
-}
-
-/* ESTILO DOS TEXTOS */
-.home-feature-text h3 {
-  color: #003366; 
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0 0 8px 0;
-  font-family: 'Inter', sans-serif;
-}
-
-.home-feature-text p {
-  color: #4a5966; 
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-}
-
-/* 5. BOTÕES DE LOGIN / CADASTRO */
-.home-action-buttons {
-  
-  display: flex;
-  gap: 20px;
-  width: 100%;
-  justify-content: center;
-}
+.home-action-buttons { display: flex; gap: 20px; width: 100%; justify-content: center; }
 
 .home-btn {
   width: 195px;
   padding: 14px;
   border: none;
-  border-radius: 25px; 
+  border-radius: 25px;
   font-size: 16px;
   font-weight: 600;
   color: white;
@@ -173,49 +402,40 @@ _______________________________________________________*/
   font-family: 'Inter', sans-serif;
   background: linear-gradient(90deg, #043E6E 0%, #1A827E 50%, #8574C0 100%);
   box-shadow: 0 5px 15px rgba(0, 85, 119, 0.2);
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.home-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+
+/* TRANSIÇÕES __________________________________________________________*/
+.slide-enter { opacity: 1; transform: scale(1); transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+.slide-exit { opacity: 0; transform: scale(0.99); transition: opacity 0.25s ease-in, transform 0.25s ease-in; }
+
+/* RESPONSIVIDADE _________________________________________________________*/
+@media (max-width: 1024px) {
+  .slide-split-layout { grid-template-columns: 1fr; gap: 20px; }
+  .slide-image-side { display: none; } 
+  .slide-text-side { text-align: center; align-items: center; }
+  .carousel-main-box .carousel-dots { left: 50%; transform: translateX(-50%); }
 }
 
-.home-btn:hover {
-  transform: translateY(-2px);
-  opacity: 0.95;
-}
-
-/* _________________________________________________________________
-   
-RESPONSIVIDADE (Tablets e Celulares)
-   ____________________________________________________________________
-*/
 @media (max-width: 850px) {
-  .main-glass-card {
-    padding: 40px 30px;
-  }
-  .home-features-grid {
-    gap: 30px;
-  }
+  .main-glass-card { padding: 40px 30px; }
+  .home-features-grid { gap: 30px; }
 }
 
 @media (max-width: 768px) {
-  /* Vira 1 coluna no celular */
-  .home-features-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  /* Ajusta as manchas no celular para não sumirem */
-  .home-screen-wrapper {
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(135, 160, 185, 0.5) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(195, 180, 225, 0.5) 0px, transparent 50%);
-    padding: 30px 15px;
-  }
-
-  .home-action-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .home-btn {
-    width: 100%;
-    max-width: 300px;
-  }
+  .navbar-container { width: 95%; }
+  .nav-logo-img { height: 56px; }
+  .nav-btn { padding: 8px 18px; font-size: 13px; }
+  .home-features-grid { grid-template-columns: 1fr; }
+  .carousel-main-box .carousel-display-content { padding: 0 45px; }
+  .slide-text-side h2 { font-size: 28px; }
+  .carousel-main-box { height: 420px; }
+  .home-screen-wrapper { padding: 0 15px 40px 15px; }
+  .home-action-buttons { flex-direction: column; align-items: center; gap: 12px; }
+  .home-btn { width: 100%; max-width: 300px; }
+  .home-screen-wrapper .center-home-container { margin-top: -10px; }
 }

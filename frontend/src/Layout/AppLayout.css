@@ -2,20 +2,28 @@
   height: 100vh;
   overflow: hidden;
   background: #f8fafc;
-  color: #071b31;
   display: grid;
   grid-template-columns: 292px minmax(0, 1fr);
 }
 
 .app-sidebar {
   height: 100vh;
-  /* overflow alterado para garantir que o flexbox calcule o espaço vertical do respiro */
-  overflow-y: auto; 
-  background: #073759;
-  color: #c8ddf1;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 40px 0; 
+
+  background-color: #043e6e
+  ; 
+  background-image:
+    radial-gradient(at 100% 40%, #1a827fd5 0px, transparent 70%),
+    radial-gradient(at 20% 90%, #8474c0d7 0px, transparent 70%),  
+    linear-gradient(to bottom, #032846, #043e6e); 
+  background-size: 100% 100%;
+
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .app-sidebar-brand {
@@ -27,11 +35,11 @@
 }
 
 .app-sidebar-brand img {
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
   border-radius: 13px;
   object-fit: contain;
-  background: #fff;
+  background: #ffffff;
   padding: 5px;
 }
 
@@ -59,7 +67,7 @@
 .app-sidebar-nav-item {
   width: 100%;
   min-height: 50px;
-  color: #b8d4ec;
+  color: #f0f0f0;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -123,7 +131,7 @@
 .app-header {
   min-height: 68px;
   background: #fff;
-  border-bottom: 1px solid #d7dfe7;
+  border-bottom: 1px solid #d9dee6;
   display: flex;
   justify-content: flex-end;
   align-items: center;

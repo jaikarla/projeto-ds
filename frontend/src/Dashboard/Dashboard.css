@@ -48,8 +48,12 @@ button:disabled {
   gap: 10px;
   min-height: 51px;
   color: #001f3f;
-  font-size: 16px;
+  font-size: 25px;
   font-weight: 700;
+
+  min-height: auto;                    
+  transform: translateY(-25px);
+
 }
 
 .dashboard-filter-title svg {
@@ -111,13 +115,13 @@ button:disabled {
   min-width: 112px;
   padding: 0 18px;
   border: 0;
-  background: #064779;
+  background: linear-gradient(90deg, #1a827f 40%, #8474c0 100%);
   color: #ffffff;
   box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
 }
 
 .dashboard-primary-button:hover {
-  background: #003b69;
+ background:  #043E6E ;
 }
 
 .dashboard-secondary-button {

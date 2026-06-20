@@ -37,8 +37,7 @@ export default function PacientesPage() {
           <p>Gerencie os pacientes cadastrados</p>
         </div>
         <button className="btn-novo-paciente" onClick={abrirModalNovo}>
-          <Plus size={18} />
-          <span>Novo Paciente</span>
+          <span>+</span> Novo Paciente
         </button>
       </div>
 

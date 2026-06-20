@@ -40,18 +40,45 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px; 
   min-height: 50px;
   padding: 0 22px;
   border-radius: 9px;
-  background: #064779;
+  background: linear-gradient(90deg, #1a827f 40%, #8474c0 100%);
   color: #ffffff;
   font-weight: 700;
   box-shadow: 0 1px 0 rgba(4, 38, 66, 0.18);
+  font-size: 16px; 
 }
 
 .procedimentos-primary-button:hover {
-  background: #003b69;
+  background: #043E6E;
+  background-image: none;
+}
+
+.procedimentos-primary-button span {
+  font-size: 28px;
+  line-height: 1;
+  transform: translateY(-1px);
+  font-weight: 700;
+  display: inline-block; 
+}
+
+.procedimentos-secondary-button {
+  min-width: 110px;
+  min-height: 50px;
+  border: 1px solid #d8e0e8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #001f3f;
+
+  font-family: inherit;      
+  font-size: 16px;           
+  font-weight: normal;       
+}
+
+.procedimentos-secondary-button:hover {
+  background: #e0e0e0;       
 }
 
 .procedimentos-toolbar {
@@ -336,20 +363,6 @@ button:disabled {
   justify-content: flex-end;
   gap: 10px;
   padding-top: 10px;
-}
-
-.procedimentos-secondary-button {
-  min-width: 110px;
-  min-height: 50px;
-  border: 1px solid #d8e0e8;
-  border-radius: 9px;
-  background: #ffffff;
-  color: #001f3f;
-  font-weight: 700;
-}
-
-.procedimentos-secondary-button:hover {
-  background: #f4f7fa;
 }
 
 .procedimentos-modal-actions .procedimentos-primary-button {
