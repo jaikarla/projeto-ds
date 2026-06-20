@@ -1,18 +1,24 @@
-// Usa bcrypt instalado no projeto para comparação de senha.
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 import Faturista from '../models/faturista.js';
 import { criarFaturista } from './faturistaService.js';
+import { sendPasswordResetEmail } from './emailService.js';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST || 'smtp.mailtrap.io',
-  port: process.env.EMAIL_PORT || 2525,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const RESET_TOKEN_EXPIRATION_MS = 60 * 60 * 1000;
+const PASSWORD_REQUIREMENTS_MESSAGE =
+  'Senha invalida. Deve ter no minimo 6 caracteres, 1 letra maiuscula, 1 letra minuscula e 1 simbolo.';
+
+function hashResetToken(token) {
+  return crypto.createHash('sha256').update(token).digest('hex');
+}
+
+function validarSenha(senha) {
+  const senhaRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{6,}$/;
+  if (!senhaRegex.test(senha)) {
+    throw new Error(PASSWORD_REQUIREMENTS_MESSAGE);
+  }
+}
 
 class AuthService {
   async login(email, senha) {
@@ -20,12 +26,12 @@ class AuthService {
     const faturista = await Faturista.busca_faturista_email(emailFormatado);
 
     if (!faturista) {
-      throw new Error('Credenciais inválidas');
+      throw new Error('Credenciais invalidas');
     }
 
     const senhaValida = await bcrypt.compare(senha, faturista.senha);
     if (!senhaValida) {
-      throw new Error('Credenciais inválidas');
+      throw new Error('Credenciais invalidas');
     }
 
     const token = jwt.sign(
@@ -45,52 +51,41 @@ class AuthService {
     const faturista = await Faturista.busca_faturista_email(emailFormatado);
 
     if (!faturista) {
-      throw new Error('E-mail não encontrado');
+      return { emailSolicitado: emailFormatado, enviado: false };
     }
-    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
-    const linkRecuperacao = `${frontendUrl}/definir-nova-senha?email=${encodeURIComponent(faturista.email)}`;
 
-    // dispara o email
-    await transporter.sendMail({
-      from: '"Suporte BPA" <suporte@sistemabpa.com>',
+    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const tokenHash = hashResetToken(resetToken);
+    const expiresAt = new Date(Date.now() + RESET_TOKEN_EXPIRATION_MS);
+    const linkRecuperacao = `${frontendUrl}/definir-nova-senha?token=${resetToken}`;
+
+    await Faturista.salvar_token_recuperacao(faturista.id, tokenHash, expiresAt);
+
+    await sendPasswordResetEmail({
       to: faturista.email,
-      subject: "Recuperação de Senha - Faturista",
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2>Olá, ${faturista.nome}!</h2>
-          <p>Recebemos uma solicitação para redefinir a senha da sua conta de Faturista no sistema BPA.</p>
-          <p>Para escolher uma nova senha, clique no botão abaixo:</p>
-          <a href="${linkRecuperacao}" style="background-color: #4F46E5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 15px 0;">
-            Redefinir Minha Senha
-          </a>
-          <p style="font-size: 12px; color: #666;">Se você não solicitou essa alteração, pode ignorar este e-mail com segurança.</p>
-        </div>
-      `,
+      nome: faturista.nome,
+      resetLink: linkRecuperacao,
     });
+
     return {
-      email: faturista.email,
-      nome: faturista.nome
+      emailSolicitado: emailFormatado,
+      enviado: true
     };
   }
 
-  async redefinirSenha(email, novaSenha) {
-    if (!email || !novaSenha) {
-      throw new Error('E-mail e nova senha são obrigatórios.');
+  async redefinirSenha(token, novaSenha) {
+    if (!token || !novaSenha) {
+      throw new Error('Token e nova senha sao obrigatorios.');
     }
 
-    const emailFormatado = String(email).trim().toLowerCase();
-    
-    const faturista = await Faturista.busca_faturista_email(emailFormatado);
+    const tokenHash = hashResetToken(String(token).trim());
+    const faturista = await Faturista.busca_faturista_token_recuperacao(tokenHash);
     if (!faturista) {
-      throw new Error('Usuário não encontrado.');
+      throw new Error('Link de recuperacao invalido ou expirado.');
     }
 
-    const senhaRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{6,}$/;
-    if (!senhaRegex.test(novaSenha)) {
-      throw new Error(
-        'Senha inválida. Deve ter no mínimo 6 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 símbolo.'
-      );
-    }
+    validarSenha(novaSenha);
 
     const salt = await bcrypt.genSalt(10);
     const senhaCriptografada = await bcrypt.hash(novaSenha, salt);
@@ -105,22 +100,16 @@ class AuthService {
 
   async register({ nome, email, senha, cpf, telefone }) {
     if (!nome || !email || !senha || !cpf) {
-      throw new Error('Todos os campos obrigatórios devem ser preenchidos.');
+      throw new Error('Todos os campos obrigatorios devem ser preenchidos.');
     }
 
-    const senhaRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).{6,}$/;
-    if (!senhaRegex.test(senha)) {
-      throw new Error(
-        'Senha inválida. Deve ter no mínimo 6 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 símbolo.'
-      );
-    }
+    validarSenha(senha);
 
     const cpfLimpo = String(cpf).replace(/\D/g, '');
     if (cpfLimpo.length !== 11) {
-      throw new Error('CPF inválido. Deve conter 11 dígitos.');
+      throw new Error('CPF invalido. Deve conter 11 digitos.');
     }
 
-    // Cria o faturista no banco e gera token JWT para o login automático.
     const novoFaturista = await criarFaturista({ nome, email, senha, cpf: cpfLimpo, telefone });
 
     const token = jwt.sign(
@@ -135,4 +124,5 @@ class AuthService {
     };
   }
 }
+
 export default new AuthService();

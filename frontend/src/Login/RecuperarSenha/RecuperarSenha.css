@@ -144,6 +144,29 @@
   box-shadow: 0 6px 16px rgba(26, 130, 126, 0.3);
 }
 
+.recuperar-success-message,
+.recuperar-error-message {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.recuperar-success-message {
+  background: rgba(236, 253, 245, 0.82);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #065f46;
+}
+
+.recuperar-error-message {
+  background: rgba(254, 242, 242, 0.86);
+  border: 1px solid rgba(239, 68, 68, 0.32);
+  color: #991b1b;
+}
+
 /* CARD FOOTER ___________________________________________*/
 .recuperar-card-footer {
   margin-top: 35px;

@@ -29,6 +29,37 @@ Explique que eles verificam esses testes e porquê.
 
 Explique que eles verificam esses testes e porquê.
 
+## Recuperacao de senha
+
+O fluxo de recuperacao usa um token temporario enviado por e-mail. Para habilitar envio real com Resend, configure no `.env` do backend:
+
+```env
+FRONTEND_URL=http://localhost:5173
+EMAIL_PROVIDER=resend
+RESEND_API_KEY=sua_chave_resend
+EMAIL_FROM="Suporte BPA <senha@seudominio.com>"
+```
+
+Para envio por SMTP/nodemailer, use:
+
+```env
+FRONTEND_URL=http://localhost:5173
+EMAIL_PROVIDER=smtp
+EMAIL_HOST=smtp.seuprovedor.com
+EMAIL_PORT=587
+EMAIL_USER=usuario
+EMAIL_PASS=senha
+EMAIL_FROM="Suporte BPA <senha@seudominio.com>"
+```
+
+Em bancos ja criados, execute a migracao:
+
+```bash
+psql "$DATABASE_URL" -f backend/src/database/migration_password_reset.sql
+```
+
+Depois, teste com um faturista real cadastrado: acesse `/recuperar-senha`, solicite o link, confira caixa de entrada e spam, abra o link `/definir-nova-senha?token=...` recebido e faca login com a nova senha.
+
 ## 🛠️ Construído com
 
 Mencione as ferramentas utilizadas para criar seu projeto.

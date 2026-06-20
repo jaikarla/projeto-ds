@@ -19,7 +19,9 @@ CREATE TABLE faturistas(
     email VARCHAR(100) UNIQUE NOT NULL,
     cpf VARCHAR(14) UNIQUE NOT NULL, --(string para preservar formatação)
     telefone VARCHAR(20),
-    senha VARCHAR(255) NOT NULL --armazenar em bcrypt (segurança)
+    senha VARCHAR(255) NOT NULL, --armazenar em bcrypt (segurança)
+    reset_password_token VARCHAR(64),
+    reset_password_expires_at TIMESTAMP
 );
 
 --============================================
@@ -131,3 +133,4 @@ CREATE INDEX idx_atendimentos_data     ON atendimentos(data_atendimento);
 CREATE INDEX idx_atendimentos_paciente ON atendimentos(paciente_id);
 CREATE INDEX idx_procedimentos_codigo  ON procedimentos(codigo);
 CREATE INDEX idx_procedimentos_tipo    ON procedimentos(tipo);
+CREATE INDEX idx_faturistas_reset_token ON faturistas(reset_password_token);

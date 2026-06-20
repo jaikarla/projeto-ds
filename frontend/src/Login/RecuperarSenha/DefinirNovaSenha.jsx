@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { resetPassword } from '../../auth/authService.js';
 
 export default function DefinirNovaSenha() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  
-  const email = searchParams.get('email') || '';
+  const token = searchParams.get('token') || '';
 
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
@@ -19,8 +18,8 @@ export default function DefinirNovaSenha() {
     setErro('');
     setSucesso('');
 
-    if (!email) {
-      setErro('Link de recuperação inválido. Solicite um novo e-mail de recuperação.');
+    if (!token) {
+      setErro('Link de recuperacao invalido. Solicite um novo e-mail de recuperacao.');
       return;
     }
 
@@ -30,7 +29,7 @@ export default function DefinirNovaSenha() {
     }
 
     if (senha !== confirmarSenha) {
-      setErro('As senhas não coincidem.');
+      setErro('As senhas nao coincidem.');
       return;
     }
 
@@ -38,17 +37,15 @@ export default function DefinirNovaSenha() {
 
     try {
       await resetPassword({
-        email,
+        token,
         novaSenha: senha
       });
 
       setSucesso('Senha redefinida com sucesso! Redirecionando para o login...');
-      
-      // Aguarda 3 segundos para o usuário ler a mensagem e joga para o login
+
       setTimeout(() => {
         navigate('/login');
       }, 3000);
-
     } catch (error) {
       setErro(error.message || 'Erro ao redefinir a senha. Tente novamente.');
     } finally {
@@ -61,56 +58,65 @@ export default function DefinirNovaSenha() {
       <div style={styles.card}>
         <h2 style={styles.title}>Redefinir Senha</h2>
         <p style={styles.subtitle}>
-          Defina a nova credencial de acesso para a conta: <br />
-          <strong>{email || 'E-mail não identificado'}</strong>
+          Cadastre uma nova senha para acessar o Sistema BPA.
         </p>
 
+        {!token && (
+          <div style={styles.errorAlert}>
+            Link de recuperacao invalido. Solicite um novo e-mail de recuperacao.
+          </div>
+        )}
         {erro && <div style={styles.errorAlert}>{erro}</div>}
         {sucesso && <div style={styles.successAlert}>{sucesso}</div>}
 
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.inputGroup}>
-            <label style={styles.label}>Nova Senha</label>
+            <label style={styles.label} htmlFor="novaSenha">Nova Senha</label>
             <input
+              id="novaSenha"
               type="password"
               placeholder="Digite sua nova senha"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               required
-              disabled={carregando || !email}
+              disabled={carregando || !token}
               style={styles.input}
             />
           </div>
 
           <div style={styles.inputGroup}>
-            <label style={styles.label}>Confirmar Nova Senha</label>
+            <label style={styles.label} htmlFor="confirmarSenha">Confirmar Nova Senha</label>
             <input
+              id="confirmarSenha"
               type="password"
               placeholder="Repita a nova senha"
               value={confirmarSenha}
               onChange={(e) => setConfirmarSenha(e.target.value)}
               required
-              disabled={carregando || !email}
+              disabled={carregando || !token}
               style={styles.input}
             />
           </div>
 
           <button
             type="submit"
-            disabled={carregando || !email}
+            disabled={carregando || !token}
             style={{
               ...styles.button,
-              backgroundColor: carregando || !email ? '#a5b4fc' : '#4f46e5'
+              backgroundColor: carregando || !token ? '#94a3b8' : '#2563eb'
             }}
           >
             {carregando ? 'Salvando...' : 'Atualizar Senha'}
           </button>
         </form>
+
+        <Link to="/recuperar-senha" style={styles.recoverLink}>
+          Enviar um novo e-mail
+        </Link>
       </div>
     </div>
   );
 }
-
 
 const styles = {
   container: {
@@ -177,6 +183,15 @@ const styles = {
     cursor: 'pointer',
     transition: 'background-color 0.2s',
     marginTop: '10px',
+  },
+  recoverLink: {
+    display: 'block',
+    marginTop: '18px',
+    color: '#2563eb',
+    fontSize: '14px',
+    fontWeight: '600',
+    textAlign: 'center',
+    textDecoration: 'none',
   },
   errorAlert: {
     backgroundColor: '#fef2f2',

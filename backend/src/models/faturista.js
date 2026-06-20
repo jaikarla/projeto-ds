@@ -37,6 +37,17 @@ const Faturista={
         return result.rows[0]
     },
 
+    async busca_faturista_token_recuperacao(tokenHash){
+        const result = await pool.query(
+            `SELECT *
+            FROM faturistas
+            WHERE reset_password_token = $1
+              AND reset_password_expires_at > NOW()`,
+            [tokenHash]
+        )
+        return result.rows[0]
+    },
+
     async busca_faturista_cpf(cpf){
         const result = await pool.query(
             'SELECT * FROM faturistas WHERE cpf = $1',
@@ -71,8 +82,22 @@ const Faturista={
     //atualizar apenas a senha 
     async atualizar_senha_faturista(id, senhaNova){
         await pool.query(
-            'UPDATE faturistas SET senha = $1 WHERE id = $2',
+            `UPDATE faturistas
+            SET senha = $1,
+                reset_password_token = NULL,
+                reset_password_expires_at = NULL
+            WHERE id = $2`,
             [senhaNova, id]
+        )
+    },
+
+    async salvar_token_recuperacao(id, tokenHash, expiresAt){
+        await pool.query(
+            `UPDATE faturistas
+            SET reset_password_token = $1,
+                reset_password_expires_at = $2
+            WHERE id = $3`,
+            [tokenHash, expiresAt, id]
         )
     },
 
