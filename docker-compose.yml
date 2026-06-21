@@ -1,0 +1,19 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+    container_name: bpa-backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: bpa-frontend
+    ports:
+      - "4173:4173"
+    depends_on:
+      - backend
