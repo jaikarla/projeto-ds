@@ -145,18 +145,15 @@ As requisições podem ser testadas utilizando Postman, Insomnia ou outra ferram
 | Neon PostgreSQL | Cloud Service | Hospedagem do banco de dados em nuvem |
 | React | 19.2.5 | Construção da interface do usuário |
 | React Router DOM | 7.16.0 | Gerenciamento de rotas no frontend |
-| Axios | 1.17.0 | Comunicação entre frontend e backend |
 | Vite | 8.0.9 | Ambiente de desenvolvimento e build do frontend |
 | JWT (jsonwebtoken) | 9.0.3 | Autenticação baseada em tokens |
+| Gmail SMTP | SMTP SSL/TLS | Envio de e-mails de recuperação de senha |
+| Nodemailer | 7.x | Integração do backend com servidores SMTP |
 | bcrypt | 6.0.0 | Criptografia de senhas |
 | Vitest | 4.1.6 | Testes unitários do backend |
 | Lucide React | 1.17.0 | Biblioteca de ícones para a interface |
 | Git | Controle de versão | Gerenciamento do histórico do código |
 | GitHub | Plataforma Web | Hospedagem e colaboração do projeto |
-
-## 📌 Versão
-
-Nós usamos Git e Github para controle de versão. Para as versões disponíveis `add aqui as informações pertinentes`
 
 ## 🖇️ Colaborando
 
