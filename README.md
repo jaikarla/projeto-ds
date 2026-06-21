@@ -38,10 +38,11 @@ git clone https://github.com/jaikarla/projeto-ds.git
 cd projeto-ds
 ```
 
-#### 3. Instale as dependências do backend
+#### 3. Instale todas as dependências
+
+O projeto utiliza **npm workspaces**, permitindo instalar as dependências do frontend e backend com um único comando executado na raiz do projeto.
 
 ```bash
-cd backend
 npm install
 ```
 
@@ -57,13 +58,22 @@ Execute o script de criação das tabelas disponível em:
 backend/src/database/schema.sql
 ```
 
-Utilize o PostgreSQL ou Neon para executar o script.
+O script pode ser executado em uma instância PostgreSQL local ou no banco hospedado no Neon.
 
-#### 6. Inicie o servidor backend
+### 6. Execute as migrações
 
-Ainda na pasta `backend`, execute:
+Após criar a estrutura inicial, execute as migrações pendentes:
 
 ```bash
+npm run migrate -w backend
+```
+
+Esse comando aplica automaticamente alterações incrementais no banco de dados, incluindo recursos adicionados após a criação inicial das tabelas, como o fluxo de recuperação de senha.
+
+#### 7. Inicie o backend
+
+```bash
+cd backend
 node server.js
 ```
 
@@ -79,18 +89,12 @@ O servidor ficará disponível em:
 http://localhost:3000
 ```
 
-#### 7. Instale as dependências do frontend
+#### 8. Inicie o frontend
 
-Abra um novo terminal:
+Em um novo terminal, execute:
 
 ```bash
 cd frontend
-npm install
-```
-
-#### 8. Execute o frontend
-
-```bash
 npm run dev
 ```
 
