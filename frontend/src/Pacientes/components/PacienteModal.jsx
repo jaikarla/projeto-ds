@@ -114,7 +114,7 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
             {erros.nomeCompleto && <span className="field-error">{erros.nomeCompleto}</span>}
           </div>
 
-<div className="form-grid-3">
+          <div className="form-grid-3">
             <div>
               <label>Data de Nascimento *</label>
               <input 
