@@ -18,7 +18,7 @@ import './Global.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/bpa">
       <Routes>
         {/* Rota da página Home */}
         <Route path="/" element={<App />} />
