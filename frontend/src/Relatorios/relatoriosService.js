@@ -1,4 +1,4 @@
-const API_BASE_URL = '/api'; 
+const API_BASE_URL = '/bpa/api'; 
 
 export async function fetchRelatoriosContadores(dataInicial, dataFinal) {
   if (!dataInicial || !dataFinal) return { total: 0, bpaC: 0, bpaI: 0 };

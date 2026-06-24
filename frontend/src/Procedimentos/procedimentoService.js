@@ -1,6 +1,6 @@
 import { apiToProcedimento, formToApi } from './procedimentoMappers'
 
-const API_URL = '/api/procedimentos'
+const API_URL = '/bpa/api/procedimentos'
 
 async function requestJson(url, options) {
   const response = await fetch(url, options)

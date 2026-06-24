@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 
 app.use(express.json()); //p/ ler o jason
 app.use(logger); //middleware para logar as requisições
-app.use('/api', rotasProjeto); //prefixo para as rotas do projeto
+app.use('/bpa/api', rotasProjeto); //prefixo para as rotas do projeto
 app.use(errorHandler); //middleware para tratamento de erros
 
 export default app;

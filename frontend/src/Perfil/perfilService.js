@@ -1,4 +1,4 @@
-const API_URL = '/api/faturistas';
+const API_URL = '/bpa/api/faturistas';
 const SESSION_STORAGE_KEY = 'bpaAuthSession';
 
 function getStoredSession() {

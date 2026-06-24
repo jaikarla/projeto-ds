@@ -1,7 +1,7 @@
-const ATENDIMENTOS_URL = '/api/atendimentos'
-const PACIENTES_URL = '/api/pacientes'
-const PROFISSIONAIS_URL = '/api/profissionais'
-const PROCEDIMENTOS_URL = '/api/procedimentos'
+const ATENDIMENTOS_URL = '/bpa/api/atendimentos'
+const PACIENTES_URL = '/bpa/api/pacientes'
+const PROFISSIONAIS_URL = '/bpa/api/profissionais'
+const PROCEDIMENTOS_URL = '/bpa/api/procedimentos'
 
 async function requestJson(url, options) {
   const response = await fetch(url, options)

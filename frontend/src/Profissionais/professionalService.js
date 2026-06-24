@@ -1,6 +1,6 @@
 import { apiToProfessional, formToApi } from './professionalMappers'
 
-const API_URL = '/api/profissionais'
+const API_URL = '/bpa/api/profissionais'
 
 async function requestJson(url, options) {
   const response = await fetch(url, options)

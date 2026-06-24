@@ -1,4 +1,4 @@
-const API_URL = '/api/dashboard'
+const API_URL = '/bpa/api/dashboard'
 
 const emptyDashboard = {
   periodo: { dataInicio: null, dataFim: null },

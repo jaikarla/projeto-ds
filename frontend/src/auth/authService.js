@@ -1,4 +1,4 @@
-const API_URL = '/api/auth'
+const API_URL = '/bpa/api/auth'
 
 async function requestJson(url, options = {}) {
   const response = await fetch(url, options)
