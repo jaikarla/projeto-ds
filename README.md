@@ -70,6 +70,8 @@ npm run migrate -w backend
 
 Esse comando aplica automaticamente alterações incrementais no banco de dados, incluindo recursos adicionados após a criação inicial das tabelas, como o fluxo de recuperação de senha.
 
+### ▶️ Execução em Ambiente de Desenvolvimento
+
 #### 7. Inicie o backend
 
 ```bash
@@ -102,6 +104,47 @@ O sistema estará disponível em:
 
 ```text
 http://localhost:5173
+```
+
+### 🐳 Execução com Docker
+
+#### 7. Pré-requisitos
+
+Certifique-se de possuir:
+
+- Docker Desktop instalado;
+- Docker Compose habilitado;
+- Arquivo `.env` configurado em `backend/.env`.
+
+#### 8. Inicie a aplicação
+
+Na raiz do projeto, execute:
+
+```bash
+docker compose up --build
+```
+
+O Docker Compose irá:
+
+- Construir as imagens do frontend e backend;
+- Criar os containers necessários;
+- Configurar a rede interna entre os serviços;
+- Iniciar o Nginx como servidor web e proxy reverso.
+
+#### 9. Acesse a aplicação
+
+Após a inicialização dos containers, a aplicação estará disponível em:
+
+```text
+http://localhost
+```
+
+#### 10. Encerrar a aplicação
+
+Para interromper a execução dos containers:
+
+```bash
+docker compose down
 ```
 
 ## ⚙️ Executando os testes
