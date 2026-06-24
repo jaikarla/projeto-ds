@@ -3,17 +3,19 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: bpa-backend
+    container_name: projeto-2-backend
     ports:
-      - "3000:3000"
+      - "3002:3000"
     env_file:
       - ./backend/.env
+    restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
-    container_name: bpa-frontend
-    ports:
-      - "80:80"
+    container_name: projeto-2-frontend
+    volumes:
+      - /opt/docker/frontends/projeto2:/output
     depends_on:
       - backend
+    restart: "no"
