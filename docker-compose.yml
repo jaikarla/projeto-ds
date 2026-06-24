@@ -1,5 +1,4 @@
 services:
-
   backend:
     build:
       context: ./backend
@@ -9,6 +8,8 @@ services:
     env_file:
       - ./backend/.env
     restart: unless-stopped
+    networks:
+      - cin_proxy
 
   frontend:
     build:
@@ -19,3 +20,7 @@ services:
     depends_on:
       - backend
     restart: "no"
+
+networks:
+  cin_proxy:
+    external: true
