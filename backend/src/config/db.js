@@ -16,7 +16,7 @@ const poolConfig = {
   password: normalizeEnvValue(process.env.DB_PASSWORD || process.env.PGPASSWORD),
   database: normalizeEnvValue(process.env.DB_NAME || process.env.PGDATABASE),
   port: parsedPort ? Number(parsedPort) : 5432,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 20000,
 };
 
 // Habilita SSL se especificado ou se usar Neon
