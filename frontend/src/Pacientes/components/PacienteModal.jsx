@@ -126,6 +126,7 @@ export function PacienteModal({ aberto, fechar, paciente, aoSalvar, valoresInici
               {erros.dataNascimento && <span className="field-error">{erros.dataNascimento}</span>}
             </div>
             <div>
+              <label>Idade</label> 
               <input
                 type="text"
                 disabled
