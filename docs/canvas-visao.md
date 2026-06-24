@@ -66,7 +66,7 @@ Item 1 - Integração com o TI Saúde e/ou outro sistema de saúde que a clínic
 | Camada de Aplicação - Backend | Node.js + Express | Padrão da disciplina |
 | Camada de Apresentação - Frontend | React via Vite | Padrão da disciplina |
 | Camada de Persistência - Banco de Dados | PostgreSQL | Além de gratuito, este garante confiabilidade e a durabilidade dos dados. |
-| Deploy | `a ser definido` | |
+| Deploy | Docker | Padrão da disciplina |
 
 ---
 
