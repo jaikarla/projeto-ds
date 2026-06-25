@@ -210,6 +210,12 @@ Por favor, leia o  [CONTRIBUTING.md](./CONTRIBUTING.md)  para obter detalhes sob
 
 Você pode ver a lista de todos os colaboradores que participaram deste projeto em [CONTRIBUTORS.md](./CONTRIBUTORS.md).
 
+## 📑 Apresentação
+
+Os slides utilizados na apresentação final do projeto encontram-se em:
+
+- [`docs/apresentacao-bpa-final/Projeto_bpa_2026.pdf`](docs/apresentacao-bpa-final/Projeto_bpa_2026.pdf)
+
 ## 📄 Licença
 
 Este projeto está sob licença - veja o arquivo [LICENSE](./LICENSE) para detalhes.
