@@ -1,4 +1,4 @@
-const API_URL = "/api/pacientes"; 
+const API_URL = "/bpa/api/pacientes"; 
 
 function extrairMensagemErro(errorData) {
   if (typeof errorData === 'string') {
