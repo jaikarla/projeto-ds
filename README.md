@@ -215,6 +215,7 @@ Você pode ver a lista de todos os colaboradores que participaram deste projeto 
 Os slides utilizados na apresentação final do projeto encontram-se em:
 
 - [`docs/apresentacao-bpa-final/Projeto_bpa_2026.pdf`](docs/apresentacao-bpa-final/Projeto_bpa_2026.pdf)
+- [Gravação da Apresentação - YouTube](https://youtu.be/lvfDvFIgZiQ?si=m8zYwvhE3k0VG3eV)
 
 ## 📄 Licença
 
